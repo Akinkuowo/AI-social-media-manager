@@ -1,8 +1,21 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import speakeasy from "speakeasy";
+
+class TwoFactorRequiredError extends CredentialsSignin {
+  code = "2FA_REQUIRED";
+}
+
+class InvalidTwoFactorError extends CredentialsSignin {
+  code = "INVALID_2FA_CODE";
+}
+
+class TwoFactorSecretMissingError extends CredentialsSignin {
+  code = "2FA_SECRET_MISSING";
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -32,17 +45,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (user.twoFactorEnabled) {
           if (!credentials.code) {
-             throw new Error("2FA_REQUIRED");
+             console.log(`[AUTH] 2FA required for user: ${user.email}`);
+             // Instead of throwing, we return the user but mark them as NOT 2FA authenticated.
+             // This allows Auth.js to create a session that we can then use in middleware
+             // to force the user to the 2FA page.
+             return {
+               id: user.id,
+               email: user.email,
+               name: user.name,
+               twoFactorEnabled: user.twoFactorEnabled,
+               isTwoFactorAuthenticated: false,
+             };
           }
 
-          const { authenticator } = require("otplib");
-          const isTwoFactorValid = authenticator.verify({
-            token: credentials.code as string,
-            secret: user.twoFactorSecret!
+          if (!user.twoFactorSecret) {
+             console.error(`[AUTH] 2FA enabled but secret missing for user: ${user.email}`);
+             throw new TwoFactorSecretMissingError();
+          }
+
+          const cleanCode = String(credentials.code).replace(/\s+/g, '');
+          const isTwoFactorValid = speakeasy.totp.verify({
+            secret: user.twoFactorSecret,
+            encoding: 'base32',
+            token: cleanCode,
+            window: 10
           });
 
           if (!isTwoFactorValid) {
-            throw new Error("INVALID_2FA_CODE");
+            const currentExpected = speakeasy.totp({ secret: user.twoFactorSecret, encoding: 'base32' });
+            console.log(`[LOGIN_2FA] Failed for ${user.email}. Provided: ${cleanCode}, Expected: ${currentExpected}`);
+            throw new InvalidTwoFactorError();
           }
         }
 
@@ -50,6 +82,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.name,
+          twoFactorEnabled: user.twoFactorEnabled,
+          isTwoFactorAuthenticated: true,
         };
       },
     }),

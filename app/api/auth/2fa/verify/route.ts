@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { authenticator } from "otplib";
+import speakeasy from "speakeasy";
 
 export async function POST(req: Request) {
   try {
@@ -13,8 +13,10 @@ export async function POST(req: Request) {
 
     const { code, enable } = await req.json();
 
-    if (!code) {
-      return NextResponse.json({ message: "Code is required" }, { status: 400 });
+    const cleanCode = String(code).replace(/\s+/g, '');
+
+    if (!cleanCode || cleanCode.length !== 6) {
+      return NextResponse.json({ message: "A valid 6-digit code is required" }, { status: 400 });
     }
 
     const user = await prisma.user.findUnique({
@@ -25,13 +27,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "2FA setup not initiated" }, { status: 400 });
     }
 
-    const isValid = authenticator.verify({
-      token: code,
-      secret: user.twoFactorSecret
+    const isValid = speakeasy.totp.verify({
+      secret: user.twoFactorSecret,
+      encoding: 'base32',
+      token: cleanCode,
+      window: 10 // Extended window to 10 (allows 5 minutes of drift) to cover extreme laptop clock skews
     });
 
     if (!isValid) {
-      return NextResponse.json({ message: "Invalid code" }, { status: 400 });
+      const currentExpected = speakeasy.totp({ secret: user.twoFactorSecret, encoding: 'base32' });
+      // Debug log to confirm parameters during dev
+      console.log(`2FA Failed for ${user.email}`);
+      console.log(`User provided code: ${cleanCode}`);
+      console.log(`Server generated code right now: ${currentExpected}`);
+      return NextResponse.json({ message: "Invalid code. Please ensure your device clock is synced." }, { status: 400 });
     }
 
     await prisma.user.update({

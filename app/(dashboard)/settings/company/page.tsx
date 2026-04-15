@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Building2, Save, Palette, Target, Image as ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { INDUSTRIES, BUSINESS_GOALS, TARGET_AUDIENCES } from '@/lib/constants';
 
 export default function CompanySettingsPage() {
   const [formData, setFormData] = useState({
@@ -23,11 +24,49 @@ export default function CompanySettingsPage() {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [isFetching, setIsFetching] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // In a real implementation this would fetch from /api/company
-    // using the user's active company ID.
+    const fetchCompanyData = async () => {
+      try {
+        console.log("[SETTINGS] Fetching company data...");
+        const res = await fetch('/api/company');
+        
+        if (res.ok) {
+          const data = await res.json();
+          console.log("[SETTINGS] Company data received:", data);
+          setFormData({
+            companyName: data.name || '',
+            niche: data.niche || '',
+            brandVoice: data.brandVoice || 'professional',
+            targetAudience: data.targetAudience || '',
+            businessGoals: data.businessGoals || '',
+            primaryColor: data.primaryColor || '#3b82f6',
+            secondaryColor: data.secondaryColor || '#1e3a8a',
+            brandFont: data.brandFont || 'Inter',
+            logo: data.logo || '',
+          });
+          if (data.logo) {
+            setLogoPreview(data.logo);
+          }
+        } else {
+          console.error(`[SETTINGS] Fetch failed with status: ${res.status}`);
+          if (res.status === 404) {
+            setMessage({ type: 'error', text: 'No company found. Please complete onboarding.' });
+          } else {
+            setMessage({ type: 'error', text: 'Failed to load company profile.' });
+          }
+        }
+      } catch (err) {
+        console.error("[SETTINGS] Unexpected fetch error:", err);
+        setMessage({ type: 'error', text: 'An unexpected error occurred while loading data.' });
+      } finally {
+        setIsFetching(false);
+      }
+    };
+
+    fetchCompanyData();
   }, []);
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,20 +97,55 @@ export default function CompanySettingsPage() {
         }
       }
 
-      // Here you would make a PUT request to /api/company
-      // Using a placeholder since we didn't write the PUT route
-      // Wait, we don't have a PUT route in /api/company for updates yet,
-      // but the UI setup signifies readiness for that flow.
-      setTimeout(() => {
+      const res = await fetch('/api/company', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...formData, logo: finalLogoUrl }),
+      });
+
+      if (res.ok) {
         setMessage({ type: 'success', text: 'Brand identity updated successfully!' });
-        setIsLoading(false);
-      }, 1000);
+      } else {
+        const errorData = await res.json();
+        setMessage({ type: 'error', text: errorData.message || 'Failed to update company settings.' });
+      }
       
     } catch (err) {
-      setMessage({ type: 'error', text: 'Failed to update company settings.' });
+      setMessage({ type: 'error', text: 'An error occurred while saving.' });
+    } finally {
       setIsLoading(false);
     }
   };
+
+  if (isFetching) {
+    return (
+      <div className="flex flex-col gap-8 max-w-4xl w-full">
+        <header className="animate-pulse">
+          <div className="h-8 w-64 bg-surface rounded-lg mb-2"></div>
+          <div className="h-4 w-96 bg-surface rounded-lg"></div>
+        </header>
+        <Card variant="glass" padding="lg">
+          <div className="flex flex-col gap-6">
+            <div className="h-6 w-48 bg-surface rounded-lg mb-4"></div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="h-12 bg-surface rounded-xl"></div>
+              <div className="h-12 bg-surface rounded-xl"></div>
+            </div>
+          </div>
+        </Card>
+        <Card variant="glass" padding="lg">
+          <div className="h-6 w-48 bg-surface rounded-lg mb-6"></div>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="h-12 bg-surface rounded-xl"></div>
+            <div className="h-12 bg-surface rounded-xl"></div>
+            <div className="h-12 bg-surface rounded-xl"></div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 max-w-4xl w-full">
@@ -94,27 +168,57 @@ export default function CompanySettingsPage() {
             value={formData.companyName}
             onChange={e => setFormData({...formData, companyName: e.target.value})}
           />
-          <Input 
-            label="Industry / Niche" 
-            value={formData.niche}
-            onChange={e => setFormData({...formData, niche: e.target.value})}
-          />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Industry / Niche</label>
+            <select 
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              value={formData.niche}
+              onChange={(e) => setFormData({...formData, niche: e.target.value})}
+            >
+              <option value="" disabled>Select an industry</option>
+              {INDUSTRIES.map((industry) => (
+                <option key={industry} value={industry}>
+                  {industry}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </Card>
 
       <Card variant="glass" padding="lg">
         <h3 className="text-lg font-bold mb-6 flex items-center gap-2"><Target size={20} className="text-primary"/> Setup & Goals</h3>
         <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1">
-          <Input 
-            label="Primary Business Goals" 
-            value={formData.businessGoals}
-            onChange={e => setFormData({...formData, businessGoals: e.target.value})}
-          />
-          <Input 
-            label="Target Audience" 
-            value={formData.targetAudience}
-            onChange={e => setFormData({...formData, targetAudience: e.target.value})}
-          />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Primary Business Goals</label>
+            <select 
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              value={formData.businessGoals}
+              onChange={(e) => setFormData({...formData, businessGoals: e.target.value})}
+            >
+              <option value="" disabled>Select business goal</option>
+              {BUSINESS_GOALS.map((goal) => (
+                <option key={goal} value={goal}>
+                  {goal}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Target Audience</label>
+            <select 
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              value={formData.targetAudience}
+              onChange={(e) => setFormData({...formData, targetAudience: e.target.value})}
+            >
+              <option value="" disabled>Select target audience</option>
+              {TARGET_AUDIENCES.map((audience) => (
+                <option key={audience} value={audience}>
+                  {audience}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className="block text-sm font-medium mb-2">Brand Voice</label>
             <select 

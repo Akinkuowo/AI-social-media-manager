@@ -55,9 +55,17 @@ export default function ProfileSettingsPage() {
         setMessage({ type: 'success', text: data.message });
         setShowTwoFactorSetup(false);
         setVerifyCode('');
-        // You would normally also update the session here if twoFactorEnabled is part of it.
-        // For now, NextAuth session doesn't natively expose twoFactorEnabled unless we add it,
-        // so a manual refresh or just state relying message is fine.
+        
+        // Refresh the session with the new 2FA status
+        await update({
+          ...session,
+          user: {
+            ...session?.user,
+            twoFactorEnabled: enable
+          },
+          twoFactorEnabled: enable
+        });
+        
       } else {
         setMessage({ type: 'error', text: data.message });
       }
@@ -67,6 +75,8 @@ export default function ProfileSettingsPage() {
       setIsVerifying(false);
     }
   };
+
+  const is2FAEnabled = (session?.user as any)?.twoFactorEnabled;
 
   return (
     <div className="flex flex-col gap-8 max-w-4xl w-full">
@@ -94,12 +104,18 @@ export default function ProfileSettingsPage() {
         <div className="flex items-start justify-between max-md:flex-col max-md:gap-4 border-b border-border/50 pb-6 mb-6">
           <div>
             <h3 className="text-lg font-bold flex items-center gap-2">
-              <Shield size={20} className="text-secondary" /> Two-Factor Authentication
+              <Shield size={20} className={is2FAEnabled ? "text-success" : "text-secondary"} /> Two-Factor Authentication
             </h3>
             <p className="text-sm text-muted mt-1 max-w-lg">Protect your account with an extra layer of security. Once configured, you'll be required to enter both your password and an authentication code from your mobile phone in order to sign in.</p>
           </div>
           <div>
-            <Button variant="secondary" onClick={initTwoFactor} isLoading={isSettingUp}>Enable 2FA</Button>
+            {is2FAEnabled ? (
+              <div className="flex items-center gap-2 bg-success/10 text-success px-4 py-2 rounded-xl border border-success/20 font-bold text-sm">
+                <Shield size={16} /> Enabled
+              </div>
+            ) : (
+              <Button variant="secondary" onClick={initTwoFactor} isLoading={isSettingUp}>Enable 2FA</Button>
+            )}
           </div>
         </div>
 
@@ -132,17 +148,19 @@ export default function ProfileSettingsPage() {
           </div>
         )}
 
-        <div className="mt-6 flex items-start gap-4 p-4 rounded-xl border border-warning/30 bg-warning/5">
-          <ShieldAlert size={24} className="text-warning flex-shrink-0" />
-          <div className="text-sm">
-            <strong className="text-foreground block mb-1">To disable 2FA</strong>
-            <p className="text-muted mb-3">If you lose access to your authenticator app, you will need to use a recovery code or contact support to regain access. Disable it below if you need to.</p>
-            <div className="flex gap-2">
-              <Input placeholder="Current 6-digit code" value={verifyCode} onChange={(e) => setVerifyCode(e.target.value)} className="w-48" />
-              <Button variant="error" onClick={() => verifyTwoFactor(false)} isLoading={isVerifying} disabled={verifyCode.length !== 6}>Disable 2FA</Button>
+        {is2FAEnabled && (
+          <div className="mt-6 flex items-start gap-4 p-4 rounded-xl border border-warning/30 bg-warning/5">
+            <ShieldAlert size={24} className="text-warning flex-shrink-0" />
+            <div className="text-sm">
+              <strong className="text-foreground block mb-1">To disable 2FA</strong>
+              <p className="text-muted mb-3">If you lose access to your authenticator app, you will need to use a recovery code or contact support to regain access. Disable it below if you need to.</p>
+              <div className="flex gap-2">
+                <Input placeholder="Current 6-digit code" value={verifyCode} onChange={(e) => setVerifyCode(e.target.value)} className="w-48" />
+                <Button variant="error" onClick={() => verifyTwoFactor(false)} isLoading={isVerifying} disabled={verifyCode.length !== 6}>Disable 2FA</Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </Card>
     </div>
   );

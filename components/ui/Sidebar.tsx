@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import { 
   Home, 
   Calendar, 
@@ -62,7 +63,10 @@ export const Sidebar = () => {
           <Settings size={20} />
           <span>Settings</span>
         </Link>
-        <button className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-muted hover:text-error hover:bg-error/10 transition-all duration-200 w-full">
+        <button 
+          onClick={() => signOut({ callbackUrl: '/login' })}
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-muted hover:text-error hover:bg-error/10 transition-all duration-200 w-full"
+        >
           <LogOut size={20} />
           <span>Logout</span>
         </button>

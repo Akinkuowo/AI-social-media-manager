@@ -12,6 +12,7 @@ import {
   Palette
 } from 'lucide-react';
 import { clsx } from 'clsx';
+import { INDUSTRIES, BUSINESS_GOALS, TARGET_AUDIENCES } from '@/lib/constants';
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1);
@@ -103,13 +104,22 @@ export default function OnboardingPage() {
                 onChange={(e) => setFormData({...formData, companyName: e.target.value})}
                 required
               />
-              <Input 
-                label="Industry / Niche"
-                placeholder="e.g. Digital Marketing, SaaS, Fashion"
-                value={formData.niche}
-                onChange={(e) => setFormData({...formData, niche: e.target.value})}
-                required
-              />
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium">Industry / Niche</label>
+                <select 
+                  className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                  value={formData.niche}
+                  onChange={(e) => setFormData({...formData, niche: e.target.value})}
+                  required
+                >
+                  <option value="" disabled>Select an industry</option>
+                  {INDUSTRIES.map((industry) => (
+                    <option key={industry} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <Button size="lg" onClick={handleNext} disabled={!formData.companyName || !formData.niche} className="mt-4">
                 Next Step <ArrowRight size={18} className="ml-2" />
               </Button>
@@ -159,18 +169,37 @@ export default function OnboardingPage() {
               <p className="text-muted">What are we trying to achieve?</p>
             </div>
             <div className="flex flex-col gap-5">
-              <Input 
-                label="Target Audience"
-                placeholder="e.g. Small business owners, tech enthusiasts"
-                value={formData.targetAudience}
-                onChange={(e) => setFormData({...formData, targetAudience: e.target.value})}
-              />
-              <Input 
-                label="Primary Business Goal"
-                placeholder="e.g. Brand awareness, Generate sales, Engagement"
-                value={formData.businessGoals}
-                onChange={(e) => setFormData({...formData, businessGoals: e.target.value})}
-              />
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium">Target Audience</label>
+                <select 
+                  className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                  value={formData.targetAudience}
+                  onChange={(e) => setFormData({...formData, targetAudience: e.target.value})}
+                >
+                  <option value="" disabled>Select target audience</option>
+                  {TARGET_AUDIENCES.map((audience) => (
+                    <option key={audience} value={audience}>
+                      {audience}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium">Primary Business Goal</label>
+                <select 
+                  className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                  value={formData.businessGoals}
+                  onChange={(e) => setFormData({...formData, businessGoals: e.target.value})}
+                >
+                  <option value="" disabled>Select business goal</option>
+                  {BUSINESS_GOALS.map((goal) => (
+                    <option key={goal} value={goal}>
+                      {goal}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="flex gap-4 mt-4">
                 <Button variant="ghost" className="flex-1" onClick={handleBack}>Back</Button>
                 <Button className="flex-[2]" onClick={handleNext}>Next Step <ArrowRight size={18} className="ml-2" /></Button>

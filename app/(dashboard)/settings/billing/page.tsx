@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { 
@@ -8,9 +9,11 @@ import {
   Crown, 
   Globe, 
   ShieldCheck,
-  DownloadCloud
+  DownloadCloud,
+  Loader2
 } from 'lucide-react';
 import { clsx } from 'clsx';
+import { format } from 'date-fns';
 
 const plans = [
   {
@@ -41,6 +44,50 @@ const plans = [
 ];
 
 export default function BillingPage() {
+  const [subscription, setSubscription] = useState<any>(null);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [subRes, invRes] = await Promise.all([
+          fetch('/api/billing/subscription'),
+          fetch('/api/billing/history')
+        ]);
+
+        if (subRes.ok) {
+          const subData = await subRes.json();
+          setSubscription(subData);
+        }
+
+        if (invRes.ok) {
+          const invData = await invRes.json();
+          setInvoices(invData);
+        }
+      } catch (err) {
+        console.error("FAILED_TO_FETCH_BILLING:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[400px]">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  const currentUsage = subscription?.usageCount || 0;
+  const maxUsage = subscription?.plan === 'AGENCY' ? Infinity : subscription?.plan === 'PRO' ? 100 : 3;
+  const usagePercentage = maxUsage === Infinity ? 10 : Math.min((currentUsage / maxUsage) * 100, 100);
+  const planName = subscription?.plan || 'FREE';
+
   return (
     <div className="flex flex-col gap-8 max-w-5xl mx-auto w-full pb-12">
       <header>
@@ -52,19 +99,30 @@ export default function BillingPage() {
         <div>
           <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full w-fit mb-4">
             <Zap size={16} className="text-primary" />
-            <span className="text-sm font-semibold text-primary">Free Plan</span>
+            <span className="text-sm font-semibold text-primary capitalize">{planName.toLowerCase()} Plan</span>
           </div>
-          <h3 className="text-xl font-bold mb-1">You are currently on the Free version</h3>
-          <p className="text-sm text-muted">Your next billing date is <strong className="text-foreground">May 14, 2026</strong> (always $0).</p>
+          <h3 className="text-xl font-bold mb-1">
+            You are currently on the {planName === 'FREE' ? 'Free version' : `${planName.toLowerCase()} plan`}
+          </h3>
+          <p className="text-sm text-muted">
+            {subscription?.currentPeriodEnd 
+              ? `Your next billing date is ${format(new Date(subscription.currentPeriodEnd), 'MMM dd, yyyy')}.`
+              : "No upcoming payments scheduled."}
+          </p>
         </div>
         <div className="min-w-[200px] w-full md:w-auto">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between text-sm font-medium">
               <span className="text-foreground">AI Generations</span>
-              <span className="text-muted">1 / 3 used</span>
+              <span className="text-muted">
+                {currentUsage} / {maxUsage === Infinity ? '∞' : maxUsage} used
+              </span>
             </div>
             <div className="w-full h-2 bg-surface border border-border rounded-full overflow-hidden">
-              <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: '33%' }}></div>
+              <div 
+                className="h-full bg-primary rounded-full transition-all duration-500" 
+                style={{ width: `${usagePercentage}%` }}
+              ></div>
             </div>
           </div>
         </div>
@@ -95,8 +153,8 @@ export default function BillingPage() {
                 </div>
               ))}
             </div>
-            <Button variant={plan.variant as any} className="w-full mt-auto" disabled={plan.name === 'Free'}>
-              {plan.button}
+            <Button variant={plan.variant as any} className="w-full mt-auto" disabled={planName.toUpperCase() === plan.name.toUpperCase()}>
+              {planName.toUpperCase() === plan.name.toUpperCase() ? 'Current Plan' : plan.button}
             </Button>
           </Card>
         ))}
@@ -111,14 +169,31 @@ export default function BillingPage() {
             <span>Status</span>
             <span className="text-center">Invoice</span>
           </div>
-          {[1, 2].map((i) => (
-            <div key={i} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-4 py-4 border-b border-border/50 items-center last:border-0 hover:bg-surface-hover transition-colors rounded-xl px-2 -mx-2">
-              <span className="font-medium text-foreground">Apr 14, 2026</span>
-              <span className="text-foreground">$0.00</span>
-              <span className="text-success font-medium bg-success/10 px-2.5 py-1 rounded-md w-fit">Paid</span>
-              <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface hover:bg-border text-muted hover:text-foreground transition-colors"><DownloadCloud size={16} /></button>
+          {invoices.length > 0 ? (
+            invoices.map((invoice) => (
+              <div key={invoice.id} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-4 py-4 border-b border-border/50 items-center last:border-0 hover:bg-surface-hover transition-colors rounded-xl px-2 -mx-2">
+                <span className="font-medium text-foreground">{format(new Date(invoice.date), 'MMM dd, yyyy')}</span>
+                <span className="text-foreground">${invoice.amount.toFixed(2)}</span>
+                <span className={clsx(
+                  "text-xs font-bold px-2.5 py-1 rounded-md w-fit uppercase tracking-wider",
+                  invoice.status === 'paid' ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
+                )}>
+                  {invoice.status}
+                </span>
+                <button 
+                  onClick={() => invoice.invoiceUrl && window.open(invoice.invoiceUrl, '_blank')}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface hover:bg-border text-muted hover:text-foreground transition-colors disabled:opacity-30"
+                  disabled={!invoice.invoiceUrl}
+                >
+                  <DownloadCloud size={16} />
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="py-12 text-center text-muted">
+              No billing history available.
             </div>
-          ))}
+          )}
         </div>
       </Card>
     </div>

@@ -28,6 +28,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Reset email sent" }, { status: 200 });
 
   } catch (error) {
+    console.error("[FORGOT_PASSWORD_ERROR]", error);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }

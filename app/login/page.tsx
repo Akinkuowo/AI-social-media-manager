@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { loginAction } from '@/actions/login';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -16,35 +17,23 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const [showTwoFactor, setShowTwoFactor] = useState(false);
-  const [code, setCode] = useState('');
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        code: showTwoFactor ? code : undefined,
-        redirect: false,
-      });
+      const result = await loginAction({ email, password });
 
       if (result?.error) {
-        if (result.error.includes("2FA_REQUIRED")) {
-          setShowTwoFactor(true);
-        } else if (result.error.includes("INVALID_2FA_CODE")) {
-          setError('Invalid two-factor authentication code');
-        } else {
-          setError('Invalid email or password');
-        }
-      } else {
+        setError('Invalid email or password');
+      } else if (result?.success) {
+        // Redirecting to dashboard triggers the middleware check for 2FA
         router.push('/dashboard');
         router.refresh();
       }
     } catch (err) {
+      console.error("[LOGIN_PAGE] Unexpected error:", err);
       setError('An unexpected error occurred');
     } finally {
       setIsLoading(false);
@@ -60,8 +49,8 @@ export default function LoginPage() {
               Social<span className="text-primary">AI</span>
             </span>
           </div>
-          <h1 className="text-2xl font-bold mb-2">{showTwoFactor ? "Two-Factor Verification" : "Welcome Back"}</h1>
-          <p className="text-muted">{showTwoFactor ? "Enter the 6-digit code from your authenticator app." : "Login to manage your social media presence."}</p>
+          <h1 className="text-2xl font-bold mb-2">Welcome Back</h1>
+          <p className="text-muted">Login to manage your social media presence.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -71,46 +60,32 @@ export default function LoginPage() {
             </div>
           )}
           
-          {!showTwoFactor ? (
-            <>
-              <Input 
-                label="Email Address"
-                type="email"
-                placeholder="name@company.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                icon={<Mail size={18} />}
-                required
-              />
+          <Input 
+            label="Email Address"
+            type="email"
+            placeholder="name@company.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            icon={<Mail size={18} />}
+            required
+          />
 
-              <Input 
-                label="Password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                icon={<Lock size={18} />}
-                required
-              />
+          <Input 
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            icon={<Lock size={18} />}
+            showPasswordToggle
+            required
+          />
 
-              <div className="flex justify-end">
-                <Link href="/forgot-password" className="text-sm text-primary hover:text-secondary transition-colors">
-                  Forgot password?
-                </Link>
-              </div>
-            </>
-          ) : (
-            <Input 
-              label="Authentication Code"
-              type="text"
-              placeholder="000 000"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              icon={<Lock size={18} />}
-              required
-              maxLength={6}
-            />
-          )}
+          <div className="flex justify-end">
+            <Link href="/forgot-password" className="text-sm text-primary hover:text-secondary transition-colors">
+              Forgot password?
+            </Link>
+          </div>
 
           <Button type="submit" variant="primary" size="lg" isLoading={isLoading} className="w-full mt-2">
             Login <ArrowRight size={18} className="ml-2" />

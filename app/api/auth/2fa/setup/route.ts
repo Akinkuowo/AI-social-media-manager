@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { authenticator } from "otplib";
+import speakeasy from "speakeasy";
 import QRCode from "qrcode";
 
 export async function POST(req: Request) {
@@ -20,26 +20,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    // Generate a new TOTP secret if user doesn't have one, or reuse existing temporarily
-    // Usually it's better to always generate a new one during setup until verified
-    const secret = authenticator.generateSecret();
+    const secret = speakeasy.generateSecret({
+      name: `SocialAI (${session.user.email})`
+    });
     
-    // Create the provisioning URI for Google Authenticator / Authy etc.
-    const otpauth = authenticator.keyuri(
-      session.user.email,
-      "SocialAI",
-      secret
-    );
+    if (!secret.otpauth_url) {
+      return NextResponse.json({ message: "Failed to generate QR URL" }, { status: 500 });
+    }
 
-    const qrCodeDataUrl = await QRCode.toDataURL(otpauth);
+    const qrCodeDataUrl = await QRCode.toDataURL(secret.otpauth_url);
 
-    // Save the secret temporarily in the database to be verified in the next step
+    // Save the base32 secret temporarily in the database to be verified in the next step
     await prisma.user.update({
       where: { id: user.id },
-      data: { twoFactorSecret: secret },
+      data: { twoFactorSecret: secret.base32 },
     });
 
-    return NextResponse.json({ qrCode: qrCodeDataUrl, secret });
+    return NextResponse.json({ qrCode: qrCodeDataUrl, secret: secret.base32 });
 
   } catch (err) {
     console.error("2FA_SETUP_ERROR", err);

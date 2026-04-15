@@ -89,6 +89,7 @@ export default function RegisterPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             icon={<Lock size={18} />}
+            showPasswordToggle
             required
             minLength={8}
           />

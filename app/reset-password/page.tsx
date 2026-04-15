@@ -92,6 +92,7 @@ function ResetPasswordForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           icon={<Lock size={18} />}
+          showPasswordToggle
           required
           minLength={8}
         />
@@ -103,6 +104,7 @@ function ResetPasswordForm() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           icon={<Lock size={18} />}
+          showPasswordToggle
           required
           minLength={8}
         />

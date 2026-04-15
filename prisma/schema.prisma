@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -37,6 +38,7 @@ model User {
   companies          TeamMember[]
   accounts           Account[]
   sessions           Session[]
+  activityLogs       ActivityLog[]
 }
 
 model VerificationToken {
@@ -101,6 +103,10 @@ model Company {
   socialAccounts SocialAccount[]
   calendars     Calendar[]
   campaigns     Campaign[]
+  subscription  Subscription?
+  invoices      Invoice[]
+  invitations   Invitation[]
+  activityLogs  ActivityLog[]
 }
 
 model TeamMember {
@@ -194,3 +200,68 @@ model Campaign {
 
   company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
+
+enum SubscriptionPlan {
+  FREE
+  PRO
+  AGENCY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+}
+
+model Subscription {
+  id               String           @id @default(cuid())
+  companyId        String           @unique
+  plan             SubscriptionPlan @default(FREE)
+  status           SubscriptionStatus @default(ACTIVE)
+  currentPeriodEnd DateTime?
+  usageCount       Int              @default(0)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  company          Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id         String   @id @default(cuid())
+  companyId  String
+  amount     Float
+  status     String   // "paid", "pending", "failed"
+  date       DateTime @default(now())
+  invoiceUrl String?
+  createdAt  DateTime @default(now())
+
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Invitation {
+  id        String   @id @default(cuid())
+  email     String
+  companyId String
+  role      Role     @default(VIEWER)
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([email, companyId])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  companyId String
+  userId    String?
+  action    String   // "MEMBER_INVITED", "ROLE_UPDATED", "POST_SCHEDULED", etc.
+  details   String?
+  createdAt DateTime @default(now())
+
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+
