@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import { loginAction } from '@/actions/login';
+import { showAlert } from '@/lib/alerts';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -26,15 +27,14 @@ export default function LoginPage() {
       const result = await loginAction({ email, password });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        showAlert.error('Login Failed', 'The email or password you entered is incorrect.');
       } else if (result?.success) {
-        // Redirecting to dashboard triggers the middleware check for 2FA
         router.push('/dashboard');
         router.refresh();
       }
     } catch (err) {
       console.error("[LOGIN_PAGE] Unexpected error:", err);
-      setError('An unexpected error occurred');
+      showAlert.error('System Error', 'An unexpected error occurred during login. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -54,11 +54,7 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {error && (
-            <div className="bg-error/10 border border-error/30 text-error text-sm rounded-xl px-4 py-3">
-              {error}
-            </div>
-          )}
+
           
           <Input 
             label="Email Address"

@@ -1,7 +1,6 @@
 'use client';
 
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import { useState, useEffect } from 'react';
 import { 
   AreaChart, 
   Area, 
@@ -17,151 +16,256 @@ import {
 import { 
   TrendingUp, 
   Users, 
-  BarChart2, 
   MousePointer2, 
-  Download,
-  Calendar,
-  Sparkles
+  Share2, 
+  Loader2,
+  ChevronRight,
+  Target,
+  BarChart3
 } from 'lucide-react';
+import { Card } from '@/components/ui/Card';
+import { clsx } from 'clsx';
 
-const data = [
-  { name: 'Mon', reach: 4000, engagement: 2400 },
-  { name: 'Tue', reach: 3000, engagement: 1398 },
-  { name: 'Wed', reach: 2000, engagement: 9800 },
-  { name: 'Thu', reach: 2780, engagement: 3908 },
-  { name: 'Fri', reach: 1890, engagement: 4800 },
-  { name: 'Sat', reach: 2390, engagement: 3800 },
-  { name: 'Sun', reach: 3490, engagement: 4300 },
-];
-
-const platformData = [
-  { name: 'Instagram', value: 45, color: '#E1306C' },
-  { name: 'Facebook', value: 25, color: '#1877F2' },
-  { name: 'X / Twitter', value: 20, color: '#000000' },
-  { name: 'LinkedIn', value: 10, color: '#0A66C2' },
-];
+const COLORS = ['#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#10B981'];
 
 export default function AnalyticsPage() {
+  const [data, setData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAnalytics() {
+      try {
+        const res = await fetch('/api/analytics');
+        if (res.ok) {
+          const json = await res.json();
+          setData(json);
+        }
+      } catch (err) {
+        console.error("PAGE_FETCH_ERROR:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAnalytics();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[500px]">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  const { totalStats, engagementRate, timeSeries, platformBreakdown, topPosts } = data || {};
+
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex items-center justify-between max-md:flex-col max-md:gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">Analytics & Insights</h1>
-          <p className="text-sm text-muted mt-1">Track your performance and get AI-driven recommendations.</p>
-        </div>
-        <div className="flex gap-3">
-          <Button variant="secondary" size="md"><Calendar size={18} className="mr-2" /> Last 30 Days</Button>
-          <Button variant="primary" size="md"><Download size={18} className="mr-2" /> Export Report</Button>
-        </div>
+    <div className="flex flex-col gap-8 pb-12">
+      <header>
+        <h1 className="text-2xl font-bold">Performance Analytics</h1>
+        <p className="text-sm text-muted mt-1">Deep insights into your brand's social media growth and audience engagement.</p>
       </header>
 
-      <section className="grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-md:grid-cols-1">
-        <Card variant="glass" padding="md" className="flex flex-col">
-          <TrendingUp size={24} className="text-primary mb-2" />
-          <span className="text-sm text-muted">Total Reach</span>
-          <p className="text-3xl font-bold mt-1">48.2k</p>
-          <span className="text-xs text-success mt-2 font-medium">+15.2%</span>
-        </Card>
-        <Card variant="glass" padding="md" className="flex flex-col">
-          <Users size={24} className="text-secondary mb-2" />
-          <span className="text-sm text-muted">Audience Growth</span>
-          <p className="text-3xl font-bold mt-1">1,240</p>
-          <span className="text-xs text-success mt-2 font-medium">+8.4%</span>
-        </Card>
-        <Card variant="glass" padding="md" className="flex flex-col">
-          <BarChart2 size={24} className="text-success mb-2" />
-          <span className="text-sm text-muted">Engagement Rate</span>
-          <p className="text-3xl font-bold mt-1">4.8%</p>
-          <span className="text-xs text-success mt-2 font-medium">+0.6%</span>
-        </Card>
-        <Card variant="glass" padding="md" className="flex flex-col">
-          <MousePointer2 size={24} className="text-warning mb-2" />
-          <span className="text-sm text-muted">Link Clicks</span>
-          <p className="text-3xl font-bold mt-1">842</p>
-          <span className="text-xs text-error mt-2 font-medium">-2.4%</span>
-        </Card>
-      </section>
-
-      <div className="grid grid-cols-[2fr_1fr] gap-6 max-lg:grid-cols-1">
-        <Card variant="glass" padding="lg">
-          <div className="mb-6">
-            <h3 className="text-lg font-bold">Reach vs Engagement</h3>
-            <p className="text-sm text-muted mt-1">Growth performance over the last 7 days.</p>
-          </div>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data}>
-                <defs>
-                  <linearGradient id="colorReach" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
-                <XAxis dataKey="name" stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
-                  contentStyle={{ background: '#050505', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
-                  itemStyle={{ color: 'white' }}
-                />
-                <Area type="monotone" dataKey="reach" stroke="#3b82f6" fillOpacity={1} fill="url(#colorReach)" strokeWidth={2} />
-                <Area type="monotone" dataKey="engagement" stroke="#6366f1" fillOpacity={1} fill="transparent" strokeWidth={2} strokeDasharray="5 5" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </Card>
-
-        <Card variant="glass" padding="lg" className="flex flex-col">
-          <h3 className="text-lg font-bold mb-6">Platform Distribution</h3>
-          <div className="h-[240px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={platformData} layout="vertical">
-                <XAxis type="number" hide />
-                <YAxis dataKey="name" type="category" stroke="white" fontSize={12} width={100} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ fill: 'transparent' }} />
-                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>
-                  {platformData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-border">
-            {platformData.map((p) => (
-              <div key={p.name} className="flex justify-between items-center px-4 py-3 bg-surface rounded-xl">
-                <div className="flex items-center gap-3">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: p.color }}></div>
-                  <span className="text-sm font-medium">{p.name}</span>
-                </div>
-                <span className="text-sm font-bold">{p.value}%</span>
-              </div>
-            ))}
-          </div>
-        </Card>
+      {/* Stats Overview */}
+      <div className="grid grid-cols-4 gap-6 max-xl:grid-cols-2 max-md:grid-cols-1">
+        <StatCard 
+          label="Total Reach" 
+          value={totalStats?.reach.toLocaleString()} 
+          change="+12.5%" 
+          icon={Users} 
+          color="primary"
+        />
+        <StatCard 
+          label="Engagement" 
+          value={totalStats?.engagement.toLocaleString()} 
+          change="+8.2%" 
+          icon={Target} 
+          color="secondary"
+        />
+        <StatCard 
+          label="Engagement Rate" 
+          value={`${engagementRate?.toFixed(2)}%`} 
+          change="+1.4%" 
+          icon={TrendingUp} 
+          color="success"
+        />
+        <StatCard 
+          label="Total Shares" 
+          value={totalStats?.shares.toLocaleString()} 
+          change="+22.1%" 
+          icon={Share2} 
+          color="warning"
+        />
       </div>
 
-      <Card variant="glass" padding="lg">
-        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border">
-          <Sparkles size={24} className="text-primary" />
-          <h3 className="text-lg font-bold">AI Strategy Recommendations</h3>
+      <div className="grid grid-cols-[1fr_350px] gap-8 max-xl:grid-cols-1">
+        <div className="flex flex-col gap-8">
+          {/* Main Growth Chart */}
+          <Card variant="glass" padding="lg">
+            <h3 className="text-lg font-bold mb-8 flex items-center gap-2">
+              <BarChart3 size={20} className="text-primary" /> Engagement Trends
+            </h3>
+            <div className="h-[350px] w-full mt-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={timeSeries}>
+                  <defs>
+                    <linearGradient id="colorReach" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorEngagement" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                    dy={10}
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                  />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                    itemStyle={{ fontSize: 12 }}
+                  />
+                  <Area type="monotone" dataKey="reach" stroke="#3B82F6" fillOpacity={1} fill="url(#colorReach)" strokeWidth={3} />
+                  <Area type="monotone" dataKey="engagement" stroke="#8B5CF6" fillOpacity={1} fill="url(#colorEngagement)" strokeWidth={3} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
+
+          {/* Platform Performance */}
+          <Card variant="glass" padding="lg">
+            <h3 className="text-lg font-bold mb-8">Platform Breakdown</h3>
+            <div className="h-[250px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={platformBreakdown} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
+                  <XAxis type="number" hide />
+                  <YAxis 
+                    dataKey="platform" 
+                    type="category" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }} 
+                  />
+                  <Tooltip 
+                    cursor={{ fill: 'rgba(255,255,255,0.02)' }}
+                    contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  />
+                  <Bar dataKey="engagement" radius={[0, 8, 8, 0]} barSize={32}>
+                    {platformBreakdown?.map((entry: any, index: number) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
         </div>
-        <div className="grid grid-cols-3 gap-6 max-lg:grid-cols-1">
-          <div className="bg-surface p-6 rounded-xl border border-border">
-            <h4 className="font-bold mb-2">Best Time to Post</h4>
-            <p className="text-sm text-muted">Your audience is most active on <strong className="text-foreground">Tuesdays at 10:00 AM</strong>. Schedule your next big announcement for this slot.</p>
-          </div>
-          <div className="bg-surface p-6 rounded-xl border border-border">
-            <h4 className="font-bold mb-2">Top Content Type</h4>
-            <p className="text-sm text-muted"><strong className="text-foreground">Educational Carousel</strong> posts are currently outperforming memes by 2.4x. Focus on "How To" guides this week.</p>
-          </div>
-          <div className="bg-surface p-6 rounded-xl border border-border">
-            <h4 className="font-bold mb-2">Hashtag Strategy</h4>
-            <p className="text-sm text-muted">Your reach is boosted by 15% when using niche tags like #SaaSMarketing. Avoid generic ones like #Business.</p>
-          </div>
+
+        {/* Sidebar: Top Posts */}
+        <div className="flex flex-col gap-6">
+          <Card variant="glass" padding="lg" className="flex flex-col h-full">
+            <h3 className="text-lg font-bold mb-6">Top Performing Posts</h3>
+            <div className="flex flex-col gap-4 flex-1">
+              {topPosts?.map((post: any) => (
+                <div key={post.id} className="p-4 rounded-2xl bg-white/2 border border-white/5 hover:bg-white/5 transition-all cursor-pointer group">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="px-2 py-0.5 rounded-lg bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">{post.platform}</div>
+                    <div className="text-[10px] text-muted font-bold uppercase tracking-widest">{post.type}</div>
+                  </div>
+                  <p className="text-xs line-clamp-2 text-muted leading-relaxed group-hover:text-foreground transition-colors mb-3">
+                    {post.caption}
+                  </p>
+                  <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                    <div className="flex items-center gap-4">
+                       <div className="flex flex-col">
+                         <span className="text-[10px] text-muted font-bold">REACH</span>
+                         <span className="text-xs font-black">{post.reach}</span>
+                       </div>
+                       <div className="flex flex-col">
+                         <span className="text-[10px] text-muted font-bold">ENG.</span>
+                         <span className="text-xs font-black">{post.engagement}</span>
+                       </div>
+                    </div>
+                    <ChevronRight size={14} className="text-muted group-hover:text-primary transition-colors" />
+                  </div>
+                </div>
+              ))}
+              {(!topPosts || topPosts.length === 0) && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-8 opacity-40">
+                  <AlertCircle size={40} className="mb-4" />
+                  <p className="text-sm font-medium">No high-performing posts recorded yet.</p>
+                </div>
+              )}
+            </div>
+          </Card>
         </div>
-        <Button variant="secondary" className="mt-6">Apply All Recommendations</Button>
-      </Card>
+      </div>
     </div>
+  );
+}
+
+function StatCard({ label, value, change, icon: Icon, color }: any) {
+  const colorMap: any = {
+    primary: 'text-primary bg-primary/10 border-primary/20',
+    secondary: 'text-secondary bg-secondary/10 border-secondary/20',
+    success: 'text-success bg-success/10 border-success/20',
+    warning: 'text-warning bg-warning/10 border-warning/20',
+  };
+
+  return (
+    <Card variant="glass" padding="lg" className="relative overflow-hidden group">
+      <div className="flex items-start justify-between relative z-10">
+        <div>
+          <p className="text-xs font-bold text-muted uppercase tracking-widest mb-1">{label}</p>
+          <p className="text-3xl font-black tracking-tight">{value}</p>
+        </div>
+        <div className={clsx("p-3 rounded-2xl border transition-all duration-300 group-hover:scale-110 group-hover:rotate-6", colorMap[color])}>
+          <Icon size={24} />
+        </div>
+      </div>
+      <div className="mt-4 flex items-center gap-2 relative z-10">
+        <span className="text-xs font-bold text-success animate-pulse">{change}</span>
+        <span className="text-[10px] text-muted uppercase tracking-widest font-bold">vs last month</span>
+      </div>
+      
+      {/* Background Decorative Element */}
+      <div className={clsx("absolute -bottom-6 -right-6 w-24 h-24 rounded-full blur-3xl opacity-10 transition-all duration-700 group-hover:opacity-20", 
+        color === 'primary' ? 'bg-primary' : 
+        color === 'secondary' ? 'bg-secondary' : 
+        color === 'success' ? 'bg-success' : 'bg-warning'
+      )}></div>
+    </Card>
+  );
+}
+
+function AlertCircle(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
   );
 }

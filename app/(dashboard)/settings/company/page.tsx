@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Building2, Save, Palette, Target, Image as ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { INDUSTRIES, BUSINESS_GOALS, TARGET_AUDIENCES } from '@/lib/constants';
+import { showAlert } from '@/lib/alerts';
 
 export default function CompanySettingsPage() {
   const [formData, setFormData] = useState({
@@ -23,7 +24,6 @@ export default function CompanySettingsPage() {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
   const [isFetching, setIsFetching] = useState(true);
   const router = useRouter();
 
@@ -52,15 +52,11 @@ export default function CompanySettingsPage() {
           }
         } else {
           console.error(`[SETTINGS] Fetch failed with status: ${res.status}`);
-          if (res.status === 404) {
-            setMessage({ type: 'error', text: 'No company found. Please complete onboarding.' });
-          } else {
-            setMessage({ type: 'error', text: 'Failed to load company profile.' });
-          }
+          showAlert.error('Load Failed', 'Could not retrieve your company profile. Please check your connection.');
         }
       } catch (err) {
         console.error("[SETTINGS] Unexpected fetch error:", err);
-        setMessage({ type: 'error', text: 'An unexpected error occurred while loading data.' });
+        showAlert.error('Data Error', 'An unexpected error occurred while loading your profile.');
       } finally {
         setIsFetching(false);
       }
@@ -106,14 +102,14 @@ export default function CompanySettingsPage() {
       });
 
       if (res.ok) {
-        setMessage({ type: 'success', text: 'Brand identity updated successfully!' });
+        showAlert.success('Identity Updated', 'Your brand assets and settings have been saved successfully.');
       } else {
         const errorData = await res.json();
-        setMessage({ type: 'error', text: errorData.message || 'Failed to update company settings.' });
+        showAlert.error('Save Failed', errorData.message || 'Failed to update company settings.');
       }
       
     } catch (err) {
-      setMessage({ type: 'error', text: 'An error occurred while saving.' });
+      showAlert.error('Connection Error', 'An error occurred while saving. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -154,11 +150,7 @@ export default function CompanySettingsPage() {
         <p className="text-sm text-muted mt-1">Manage your brand assets and marketing configuration.</p>
       </header>
 
-      {message.text && (
-        <div className={`p-4 rounded-xl text-sm font-medium ${message.type === 'error' ? 'bg-error/10 text-error border border-error/20' : 'bg-success/10 text-success border border-success/20'}`}>
-          {message.text}
-        </div>
-      )}
+
 
       <Card variant="glass" padding="lg">
         <h3 className="text-lg font-bold mb-6 flex items-center gap-2"><Building2 size={20} className="text-primary"/> General Information</h3>

@@ -138,7 +138,7 @@ model SocialAccount {
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   posts   Post[]
 
-  @@unique([platform, platformId])
+  @@unique([companyId, platform, platformId])
 }
 
 model Calendar {

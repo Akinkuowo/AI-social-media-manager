@@ -5,14 +5,14 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
-import { 
-  Users, 
-  UserPlus, 
-  Shield, 
-  ShieldCheck, 
-  User, 
-  MoreVertical, 
-  Trash2, 
+import {
+  Users,
+  UserPlus,
+  Shield,
+  ShieldCheck,
+  User,
+  MoreVertical,
+  Trash2,
   History,
   Clock,
   CheckCircle2,
@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
+import { showAlert } from '@/lib/alerts';
 
 type Role = 'OWNER' | 'ADMIN' | 'MANAGER' | 'VIEWER';
 
@@ -74,7 +75,7 @@ export default function TeamPage() {
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState<Role>('VIEWER');
   const [isSubmittingInvite, setIsSubmittingInvite] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+
 
   const fetchData = async () => {
     try {
@@ -107,8 +108,6 @@ export default function TeamPage() {
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmittingInvite(true);
-    setMessage({ type: '', text: '' });
-
     try {
       const res = await fetch('/api/team', {
         method: 'POST',
@@ -117,16 +116,16 @@ export default function TeamPage() {
       });
 
       if (res.ok) {
-        setMessage({ type: 'success', text: `Invitation sent to ${inviteEmail}` });
+        showAlert.success('Invitation Sent', `A seat has been reserved for ${inviteEmail}.`);
         setInviteEmail('');
         setIsInviteModalOpen(false);
         fetchData();
       } else {
         const data = await res.json();
-        setMessage({ type: 'error', text: data.message || 'Failed to send invitation' });
+        showAlert.error('Invite Failed', data.message || 'Failed to send invitation');
       }
     } catch (err) {
-      setMessage({ type: 'error', text: 'An error occurred' });
+      showAlert.error('Invite Failed', 'An unexpected error occurred.');
     } finally {
       setIsSubmittingInvite(false);
     }
@@ -141,7 +140,10 @@ export default function TeamPage() {
       });
 
       if (res.ok) {
+        showAlert.toast('Role updated successfully');
         fetchData();
+      } else {
+        showAlert.error('Update Failed', 'You may not have permission to change this role.');
       }
     } catch (err) {
       console.error("FAILED_TO_UPDATE_ROLE:", err);
@@ -149,7 +151,13 @@ export default function TeamPage() {
   };
 
   const handleRemoveMember = async (memberId: string) => {
-    if (!confirm('Are you sure you want to remove this member?')) return;
+    const result = await showAlert.confirm(
+      'Remove Member?',
+      'This user will lose all access to this workspace immediately.',
+      'Yes, Remove Member'
+    );
+
+    if (!result.isConfirmed) return;
 
     try {
       const res = await fetch(`/api/team/${memberId}`, {
@@ -157,10 +165,14 @@ export default function TeamPage() {
       });
 
       if (res.ok) {
+        showAlert.toast('Member removed', 'success');
         fetchData();
+      } else {
+        showAlert.error('Delete Failed', 'Could not remove member. Please try again.');
       }
     } catch (err) {
       console.error("FAILED_TO_REMOVE_MEMBER:", err);
+      showAlert.error('Error', 'An unexpected error occurred.');
     }
   };
 
@@ -184,14 +196,7 @@ export default function TeamPage() {
         </Button>
       </header>
 
-      {message.text && (
-        <div className={clsx(
-          "p-4 rounded-xl text-sm font-medium border animate-in fade-in slide-in-from-top-2",
-          message.type === 'error' ? 'bg-error/10 text-error border-error/20' : 'bg-success/10 text-success border-success/20'
-        )}>
-          {message.text}
-        </div>
-      )}
+
 
       <div className="grid grid-cols-[1fr_320px] gap-8 max-xl:grid-cols-1">
         <div className="flex flex-col gap-8">
@@ -230,7 +235,7 @@ export default function TeamPage() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex flex-col gap-1 w-fit">
-                            <select 
+                            <select
                               className="bg-transparent border-none text-sm font-medium focus:ring-0 cursor-pointer text-foreground hover:text-primary transition-colors pr-8 appearance-none"
                               value={member.role}
                               onChange={(e) => handleUpdateRole(member.id, e.target.value as Role)}
@@ -247,7 +252,7 @@ export default function TeamPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <button 
+                          <button
                             onClick={() => handleRemoveMember(member.id)}
                             className="p-2 rounded-lg text-muted hover:text-error hover:bg-error/10 transition-all opacity-0 group-hover:opacity-100 disabled:opacity-0"
                             disabled={member.role === 'OWNER'}
@@ -345,15 +350,15 @@ export default function TeamPage() {
       </div>
 
       {/* Invite Modal */}
-      <Modal 
-        isOpen={isInviteModalOpen} 
+      <Modal
+        isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
         title="Invite Team Member"
       >
         <form onSubmit={handleInvite} className="flex flex-col gap-6 py-4">
-          <Input 
-            label="Email Address" 
-            placeholder="colleague@example.com" 
+          <Input
+            label="Email Address"
+            placeholder="colleague@example.com"
             type="email"
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}
@@ -369,8 +374,8 @@ export default function TeamPage() {
                   onClick={() => setInviteRole(r)}
                   className={clsx(
                     "px-4 py-3 rounded-xl border text-sm font-medium transition-all text-left",
-                    inviteRole === r 
-                      ? "bg-primary/10 border-primary text-primary shadow-sm" 
+                    inviteRole === r
+                      ? "bg-primary/10 border-primary text-primary shadow-sm"
                       : "bg-surface border-border text-muted hover:border-primary/50"
                   )}
                 >

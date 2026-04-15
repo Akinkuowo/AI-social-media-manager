@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { format } from 'date-fns';
+import { showAlert } from '@/lib/alerts';
 
 const plans = [
   {
@@ -67,6 +68,7 @@ export default function BillingPage() {
         }
       } catch (err) {
         console.error("FAILED_TO_FETCH_BILLING:", err);
+        showAlert.error('Billing Error', 'We could not retrieve your billing details. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -153,7 +155,18 @@ export default function BillingPage() {
                 </div>
               ))}
             </div>
-            <Button variant={plan.variant as any} className="w-full mt-auto" disabled={planName.toUpperCase() === plan.name.toUpperCase()}>
+            <Button 
+              variant={plan.variant as any} 
+              className="w-full mt-auto" 
+              disabled={planName.toUpperCase() === plan.name.toUpperCase()}
+              onClick={() => {
+                if (plan.name === 'Agency') {
+                  showAlert.success('Contact Sales', 'Our agency solutions are tailored to your needs. Our team will reach out to you within 24 hours!');
+                } else if (plan.name === 'Pro') {
+                  showAlert.info('Upgrade to Pro', 'Real payment integration is coming soon. Stay tuned for the complete launch!');
+                }
+              }}
+            >
               {planName.toUpperCase() === plan.name.toUpperCase() ? 'Current Plan' : plan.button}
             </Button>
           </Card>

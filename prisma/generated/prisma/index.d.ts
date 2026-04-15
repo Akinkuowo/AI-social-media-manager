@@ -21556,7 +21556,7 @@ export namespace Prisma {
 
   export type SocialAccountWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    platform_platformId?: SocialAccountPlatformPlatformIdCompoundUniqueInput
+    companyId_platform_platformId?: SocialAccountCompanyIdPlatformPlatformIdCompoundUniqueInput
     AND?: SocialAccountWhereInput | SocialAccountWhereInput[]
     OR?: SocialAccountWhereInput[]
     NOT?: SocialAccountWhereInput | SocialAccountWhereInput[]
@@ -21572,7 +21572,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SocialAccount"> | Date | string
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     posts?: PostListRelationFilter
-  }, "id" | "platform_platformId">
+  }, "id" | "companyId_platform_platformId">
 
   export type SocialAccountOrderByWithAggregationInput = {
     id?: SortOrder
@@ -23993,7 +23993,8 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type SocialAccountPlatformPlatformIdCompoundUniqueInput = {
+  export type SocialAccountCompanyIdPlatformPlatformIdCompoundUniqueInput = {
+    companyId: string
     platform: string
     platformId: string
   }

@@ -18,6 +18,9 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
+import { showAlert } from '@/lib/alerts';
+import { Modal } from '@/components/ui/Modal';
+import { format } from 'date-fns';
 
 const Instagram = ({ size, className }: { size: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -69,6 +72,9 @@ export default function GeneratePage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<{ caption: string; hashtags: string[]; mediaPrompt: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const [scheduleDay, setScheduleDay] = useState(new Date().getDate());
+  const [isScheduling, setIsScheduling] = useState(false);
 
   const handleGenerate = async () => {
     setIsGenerating(true);
@@ -84,6 +90,10 @@ export default function GeneratePage() {
         const data = await res.json();
         setResult(data);
         setStep(3);
+        showAlert.toast('Content generated successfully!');
+      } else {
+        const error = await res.json();
+        showAlert.error('Generation Failed', error.message || 'Something went wrong while generating your post.');
       }
     } catch (err) {
       console.error("GENERATION_FAILED:", err);
@@ -94,8 +104,43 @@ export default function GeneratePage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    showAlert.toast('Copied to clipboard!');
+  };
+
+  const handleSchedule = async () => {
+    if (!result) return;
+    setIsScheduling(true);
+
+    try {
+      // 1. Get current month's calendar
+      const calRes = await fetch(`/api/calendar?month=${new Date().getMonth()}&year=${new Date().getFullYear()}`);
+      if (!calRes.ok) throw new Error("Could not find calendar");
+      const calendar = await calRes.json();
+
+      // 2. Schedule the post
+      const res = await fetch('/api/calendar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          calendarId: calendar.id,
+          day: scheduleDay,
+          type,
+          caption: result.caption,
+          hashtags: result.hashtags.join(' '),
+          // Note: In a real app, we'd selection a socialAccountId too
+        })
+      });
+
+      if (res.ok) {
+        showAlert.success('Scheduled!', 'Your AI content has been added to the calendar.');
+        setIsScheduleModalOpen(false);
+      }
+    } catch (err) {
+      console.error("SCHEDULING_FAILED:", err);
+      showAlert.error('Error', 'Failed to schedule post.');
+    } finally {
+      setIsScheduling(false);
+    }
   };
 
   return (
@@ -303,7 +348,7 @@ export default function GeneratePage() {
 
                   <div className="p-6 bg-surface/50 border-t border-border flex items-center justify-between">
                     <span className="text-xs text-muted font-medium">Auto-saved to your content library</span>
-                    <Button variant="primary" size="sm">
+                    <Button variant="primary" size="sm" onClick={() => setIsScheduleModalOpen(true)}>
                        Schedule Post <ArrowRight size={16} className="ml-2" />
                     </Button>
                   </div>
@@ -325,6 +370,43 @@ export default function GeneratePage() {
           </AnimatePresence>
         </main>
       </div>
+      <Modal
+        isOpen={isScheduleModalOpen}
+        onClose={() => setIsScheduleModalOpen(false)}
+        title="Schedule to Calendar"
+      >
+        <div className="flex flex-col gap-6 py-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Select Day ({format(new Date(), 'MMMM yyyy')})</label>
+            <div className="grid grid-cols-7 gap-2">
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setScheduleDay(d)}
+                  className={clsx(
+                    "w-10 h-10 rounded-xl border text-xs font-bold transition-all",
+                    scheduleDay === d 
+                      ? "bg-primary border-primary text-white shadow-lg shadow-primary/20" 
+                      : "bg-surface border-border text-muted hover:border-primary/50"
+                  )}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+             <p className="text-[10px] text-primary uppercase font-bold tracking-widest mb-1">Preview</p>
+             <p className="text-xs text-muted line-clamp-2">{result?.caption}</p>
+          </div>
+
+          <div className="pt-4 flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={() => setIsScheduleModalOpen(false)}>Cancel</Button>
+            <Button className="flex-1" onClick={handleSchedule} isLoading={isScheduling}>Confirm Schedule</Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

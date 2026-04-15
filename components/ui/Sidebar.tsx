@@ -11,6 +11,7 @@ import {
   BarChart2, 
   Settings, 
   Users,
+  Share2,
   LogOut,
   ChevronRight
 } from 'lucide-react';
@@ -22,6 +23,7 @@ const menuItems = [
   { icon: PenTool, label: 'Content Generator', href: '/generate' },
   { icon: ImageIcon, label: 'Media Library', href: '/media' },
   { icon: BarChart2, label: 'Analytics', href: '/analytics' },
+  { icon: Share2, label: 'Social Connections', href: '/settings/accounts' },
   { icon: Users, label: 'Team', href: '/team' },
 ];
 

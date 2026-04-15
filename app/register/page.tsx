@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { showAlert } from '@/lib/alerts';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -30,13 +31,15 @@ export default function RegisterPage() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong');
+      if (response.ok) {
+        await showAlert.success('Account Created', 'Your account has been successfully registered. Please log in to continue.');
+        router.push('/login?registered=true');
+      } else {
+        showAlert.error('Registration Failed', data.message || 'We could not create your account. Please try again.');
       }
-
-      router.push('/login?registered=true');
     } catch (err: any) {
-      setError(err.message);
+      console.error("[REGISTER_PAGE] Unexpected error:", err);
+      showAlert.error('System Error', 'An unexpected error occurred. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -56,11 +59,7 @@ export default function RegisterPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {error && (
-            <div className="bg-error/10 border border-error/30 text-error text-sm rounded-xl px-4 py-3">
-              {error}
-            </div>
-          )}
+
           
           <Input 
             label="Full Name"

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { INDUSTRIES, BUSINESS_GOALS, TARGET_AUDIENCES } from '@/lib/constants';
+import { showAlert } from '@/lib/alerts';
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1);
@@ -69,10 +70,15 @@ export default function OnboardingPage() {
       });
 
       if (res.ok) {
+        await showAlert.success('Welcome to the Studio!', 'Your brand identity has been created successfully.');
         router.push('/dashboard');
+      } else {
+        const error = await res.json();
+        showAlert.error('Setup Failed', error.message || 'We could not save your company details. Please try again.');
       }
     } catch (err) {
       console.error(err);
+      showAlert.error('Connection Error', 'Failed to reach the server. Please check your connection.');
     } finally {
       setIsLoading(false);
     }

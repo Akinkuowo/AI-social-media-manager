@@ -1,124 +1,208 @@
 'use client';
 
-import { useState } from 'react';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, isSameDay, addDays } from 'date-fns';
+import { useState, useEffect } from 'react';
+import { Calendar } from '@/components/Calendar';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { ChevronLeft, ChevronRight, Sparkles, Plus, Filter, Download } from 'lucide-react';
-import { clsx } from 'clsx';
+import { Modal } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Input';
+import { 
+  Plus, 
+  TrendingUp, 
+  Layout, 
+  Target, 
+  Share2,
+  Loader2,
+  Sparkles
+} from 'lucide-react';
+import { showAlert } from '@/lib/alerts';
+import { useRouter } from 'next/navigation';
 
 export default function CalendarPage() {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [calendar, setCalendar] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [newPost, setNewPost] = useState({
+    caption: '',
+    type: 'educational',
+    status: 'DRAFT'
+  });
+  const router = useRouter();
 
-  const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
-  const prevMonth = () => setCurrentMonth(subMonths(currentMonth, -1));
-
-  const generateCalendar = async () => {
-    setIsGenerating(true);
+  const fetchCalendar = async (date: Date) => {
+    setIsLoading(true);
     try {
-      const res = await fetch('/api/calendar/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ month: currentMonth.getMonth() + 1, year: currentMonth.getFullYear() }),
-      });
+      const month = date.getMonth();
+      const year = date.getFullYear();
+      const res = await fetch(`/api/calendar?month=${month}&year=${year}`);
       if (res.ok) {
         const data = await res.json();
-        setPosts(data.posts);
-      } else {
-        const errorData = await res.json();
-        if (errorData.message === "No company found") {
-          alert('You need to complete onboarding to generate a calendar. Please go to /onboarding.');
-          window.location.href = '/onboarding';
-        } else {
-          alert('Failed to generate calendar: ' + errorData.message);
-        }
+        setCalendar(data);
       }
     } catch (err) {
-      console.error(err);
-      alert('An unexpected error occurred during generation.');
+      console.error("FAILED_TO_FETCH_CALENDAR:", err);
+      showAlert.error('Sync Failed', 'Could not load your calendar. Please try again.');
     } finally {
-      setIsGenerating(false);
+      setIsLoading(false);
     }
   };
 
-  const renderCells = () => {
-    const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(monthStart);
-    const startDate = startOfWeek(monthStart);
-    const endDate = endOfWeek(monthEnd);
-    const rows = [];
-    let days = [];
-    let day = startDate;
+  useEffect(() => {
+    fetchCalendar(currentDate);
+  }, [currentDate]);
 
-    while (day <= endDate) {
-      for (let i = 0; i < 7; i++) {
-        const formattedDate = format(day, "d");
-        const cloneDay = day;
-        const dayPosts = posts.filter(p => isSameDay(new Date(p.scheduledAt), cloneDay));
-        const isCurrentMonth = isSameMonth(day, monthStart);
+  const handleAddPost = (day: number) => {
+    setSelectedDay(day);
+    setIsModalOpen(true);
+  };
 
-        days.push(
-          <div key={day.toString()} className={clsx(
-            'min-h-[100px] p-2 border border-border rounded-xl relative group transition-colors',
-            isCurrentMonth ? 'bg-surface hover:bg-surface-hover' : 'opacity-30'
-          )}>
-            <span className="text-xs font-medium text-muted">{formattedDate}</span>
-            <div className="mt-1 flex flex-col gap-1">
-              {dayPosts.map((post, idx) => (
-                <div key={idx} className="text-[10px] px-2 py-1 rounded-md bg-primary/15 text-primary truncate">
-                  {post.type}
-                </div>
-              ))}
-            </div>
-            <button className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 w-6 h-6 rounded-md bg-surface-hover text-muted hover:text-foreground flex items-center justify-center transition-all">
-              <Plus size={14} />
-            </button>
-          </div>
-        );
-        day = addDays(day, 1);
+  const handleSavePost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!calendar || !selectedDay) return;
+
+    try {
+      const res = await fetch('/api/calendar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          calendarId: calendar.id,
+          day: selectedDay,
+          ...newPost
+        })
+      });
+
+      if (res.ok) {
+        showAlert.success('Scheduled', 'Post added to your calendar.');
+        setIsModalOpen(false);
+        setNewPost({ caption: '', type: 'educational', status: 'DRAFT' });
+        fetchCalendar(currentDate);
       }
-      rows.push(<div className="grid grid-cols-7 gap-1" key={day.toString()}>{days}</div>);
-      days = [];
+    } catch (err) {
+      showAlert.error('Error', 'Failed to save post.');
     }
-    return <div className="flex flex-col gap-1">{rows}</div>;
   };
+
+  if (isLoading && !calendar) {
+    return (
+      <div className="flex items-center justify-center h-[500px]">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  const posts = calendar?.posts || [];
+  const platforms = posts.reduce((acc: any, post: any) => {
+    const platform = post.socialAccount?.platform || 'instagram';
+    acc[platform] = (acc[platform] || 0) + 1;
+    return acc;
+  }, {});
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between max-md:flex-col max-md:gap-4">
+    <div className="flex flex-col gap-8 h-[calc(100vh-140px)]">
+      <header className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Content Calendar</h1>
-          <p className="text-sm text-muted mt-1">Manage and schedule your AI-generated social media posts.</p>
+          <p className="text-sm text-muted mt-1">Manage your multi-platform content schedule effortlessly.</p>
         </div>
-        <div className="flex gap-3">
-          <Button variant="secondary" size="md"><Download size={18} className="mr-2" /> Export</Button>
-          <Button variant="primary" size="md" onClick={generateCalendar} isLoading={isGenerating}>
-            <Sparkles size={18} className="mr-2" /> Generate 30 Days
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" onClick={() => router.push('/generate')}>
+            <Sparkles size={18} className="mr-2 text-primary" /> AI Studio
           </Button>
+          <Button onClick={() => handleAddPost(new Date().getDate())}>
+            <Plus size={18} className="mr-2" /> New Post
+          </Button>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-[1fr_300px] gap-8 h-full overflow-hidden">
+        <div className="overflow-auto pr-2 custom-scrollbar">
+          <Calendar 
+            posts={posts}
+            currentDate={currentDate}
+            onDateChange={setCurrentDate}
+            onAddPost={handleAddPost}
+            onEditPost={(post) => {
+              showAlert.info('Coming Soon', 'Detailed post editing is currently under development.');
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col gap-6">
+          <Card variant="glass" padding="lg">
+            <h3 className="font-bold mb-6 flex items-center gap-2">
+              <TrendingUp size={18} className="text-primary" /> Month Summary
+            </h3>
+            <div className="flex flex-col gap-6">
+              <div className="space-y-2">
+                <p className="text-xs text-muted uppercase font-bold tracking-widest">Total Scheduled</p>
+                <p className="text-3xl font-black">{posts.length}</p>
+              </div>
+              
+              <div className="space-y-4 pt-4 border-t border-white/5">
+                {Object.entries(platforms).map(([platform, count]: [any, any]) => (
+                  <div key={platform} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary/40"></div>
+                      <span className="text-sm capitalize">{platform}</span>
+                    </div>
+                    <span className="text-sm font-bold">{count}</span>
+                  </div>
+                ))}
+                {posts.length === 0 && <p className="text-xs text-muted italic">No posts scheduled yet.</p>}
+              </div>
+            </div>
+          </Card>
+
+          <Card variant="glass" padding="lg" className="bg-primary/5 border-primary/10">
+            <h3 className="font-bold mb-4 flex items-center gap-2 text-sm">
+              <Target size={18} className="text-primary" /> Strategy Tip
+            </h3>
+            <p className="text-xs leading-relaxed text-muted font-medium">
+              Based on your <span className="text-primary">Engagement Goals</span>, we recommend posting at least 3 times a week between 6 PM and 9 PM.
+            </p>
+          </Card>
         </div>
       </div>
 
-      <Card variant="glass" padding="none">
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <div className="flex items-center gap-4">
-            <button onClick={prevMonth} className="p-2 rounded-lg hover:bg-surface-hover text-muted hover:text-foreground transition-colors"><ChevronLeft size={20} /></button>
-            <h2 className="text-lg font-bold min-w-[200px] text-center">{format(currentMonth, "MMMM yyyy")}</h2>
-            <button onClick={nextMonth} className="p-2 rounded-lg hover:bg-surface-hover text-muted hover:text-foreground transition-colors"><ChevronRight size={20} /></button>
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)}
+        title={`Schedule Post for Day ${selectedDay}`}
+      >
+        <form onSubmit={handleSavePost} className="flex flex-col gap-6 py-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Post Content</label>
+            <textarea 
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground min-h-[120px]"
+              placeholder="What would you like to share?"
+              value={newPost.caption}
+              onChange={(e) => setNewPost({...newPost, caption: e.target.value})}
+              required
+            />
           </div>
-          <Button variant="ghost" size="sm"><Filter size={16} className="mr-2" /> Filters</Button>
-        </div>
-        
-        <div className="p-4">
-          <div className="grid grid-cols-7 gap-1 mb-2">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <div key={day} className="text-xs font-semibold text-muted text-center py-2">{day}</div>
-            ))}
+          
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Post Type</label>
+            <select 
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              value={newPost.type}
+              onChange={(e) => setNewPost({...newPost, type: e.target.value})}
+            >
+              <option value="educational">🎓 Educational</option>
+              <option value="promotional">🔥 Promotional</option>
+              <option value="storytelling">📖 Storytelling</option>
+              <option value="behind-the-scenes">🤳 Behind the Scenes</option>
+            </select>
           </div>
-          {renderCells()}
-        </div>
-      </Card>
+
+          <div className="pt-4 flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button className="flex-1" type="submit">Schedule Post</Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }
