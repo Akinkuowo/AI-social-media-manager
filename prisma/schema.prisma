@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MANAGER
+  VIEWER
+}
+
+enum PostStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+model User {
+  id                 String    @id @default(cuid())
+  name               String?
+  email              String?   @unique
+  emailVerified      DateTime?
+  image              String?
+  password           String?
+  twoFactorEnabled   Boolean   @default(false)
+  twoFactorSecret    String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  companies          TeamMember[]
+  accounts           Account[]
+  sessions           Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Company {
+  id            String    @id @default(cuid())
+  name          String
+  niche         String?
+  brandVoice    String?   @default("professional")
+  targetAudience String?
+  businessGoals  String?
+  logo          String?
+  primaryColor  String?
+  secondaryColor String?
+  brandFont     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  members       TeamMember[]
+  socialAccounts SocialAccount[]
+  calendars     Calendar[]
+  campaigns     Campaign[]
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  userId    String
+  companyId String
+  role      Role     @default(VIEWER)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, companyId])
+}
+
+model SocialAccount {
+  id           String   @id @default(cuid())
+  companyId    String
+  platform     String   // "facebook", "instagram", "twitter", "linkedin", "tiktok"
+  platformId   String
+  name         String
+  accessToken  String   @db.Text
+  refreshToken String?  @db.Text
+  expiresAt    DateTime?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  posts        Post[]
+
+  @@unique([platform, platformId])
+}
+
+model Calendar {
+  id        String   @id @default(cuid())
+  companyId String
+  month     Int
+  year      Int
+  createdAt DateTime @default(now())
+
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  posts     Post[]
+
+  @@unique([companyId, month, year])
+}
+
+model Post {
+  id              String      @id @default(cuid())
+  calendarId      String
+  socialAccountId String?
+  day             Int
+  scheduledAt     DateTime?
+  status          PostStatus  @default(DRAFT)
+  type            String      // "educational", "promotional", "storytelling", etc.
+  caption         String      @db.Text
+  hashtags        String?     @db.Text
+  mediaUrls       String[]
+  platformOptimized Json?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  calendar      Calendar       @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  socialAccount SocialAccount? @relation(fields: [socialAccountId], references: [id])
+  analytics     Analytics?
+}
+
+model Analytics {
+  id          String   @id @default(cuid())
+  postId      String   @unique
+  impressions Int      @default(0)
+  reach       Int      @default(0)
+  engagement  Int      @default(0)
+  likes       Int      @default(0)
+  shares      Int      @default(0)
+  comments    Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Campaign {
+  id        String   @id @default(cuid())
+  companyId String
+  name      String
+  goal      String?
+  hashtag   String?
+  startDate DateTime?
+  endDate   DateTime?
+  status    String   @default("active")
+
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}

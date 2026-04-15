@@ -1,290 +1,80 @@
+"use client";
+
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="landing-container">
-      <nav className="navbar glass">
-        <div className="logo-section">
-          <span className="logo-text">Social<span className="text-primary">AI</span></span>
+    <div className="min-h-screen flex flex-col">
+      <nav className="glass flex justify-between items-center px-16 py-6 sticky top-0 z-50 mt-4 mx-8 rounded-2xl max-lg:px-8">
+        <div>
+          <span className="text-2xl font-extrabold tracking-tight">
+            Social<span className="text-primary">AI</span>
+          </span>
         </div>
-        <div className="nav-links">
-          <Link href="/pricing" className="nav-link">Pricing</Link>
-          <Link href="/login" className="btn-secondary">Login</Link>
-          <Link href="/register" className="btn-primary">Get Started</Link>
+        <div className="flex items-center gap-6">
+          <Link href="/pricing" className="text-muted hover:text-foreground transition-all duration-300">Pricing</Link>
+          <Link href="/login" className="font-semibold px-6 py-3">Login</Link>
+          <Link href="/register" className="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(59,130,246,0.2)] transition-all duration-300">
+            Get Started
+          </Link>
         </div>
       </nav>
 
-      <main className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">
+      <main className="px-16 py-24 grid grid-cols-[1.2fr_1fr] gap-16 items-center max-w-[1400px] mx-auto max-lg:grid-cols-1 max-lg:text-center max-lg:px-8">
+        <div>
+          <h1 className="text-7xl font-bold leading-[1.1] mb-8 max-lg:text-5xl">
             Manage your social media <br />
-            <span className="gradient-text">with Superhuman Intelligence</span>
+            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              with Superhuman Intelligence
+            </span>
           </h1>
-          <p className="hero-description">
+          <p className="text-xl text-muted mb-12 max-w-[600px] max-lg:mx-auto">
             Generate 30 days of content in seconds. Auto-publish, analyze, and optimize 
             your brand across all platforms with our AI-first manager.
           </p>
-          <div className="hero-actions">
-            <Link href="/register" className="btn-primary btn-lg">Start Free Trial</Link>
-            <Link href="/demo" className="btn-glass btn-lg">Watch Demo</Link>
+          <div className="flex gap-4 max-lg:justify-center">
+            <Link href="/register" className="bg-primary text-white font-semibold px-10 py-4 text-lg rounded-lg hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(59,130,246,0.2)] transition-all duration-300">
+              Start Free Trial
+            </Link>
+            <Link href="/demo" className="glass text-white font-semibold px-10 py-4 text-lg rounded-lg hover:bg-surface-hover hover:-translate-y-0.5 transition-all duration-300">
+              Watch Demo
+            </Link>
           </div>
         </div>
 
-        <div className="hero-visual">
-          <div className="dashboard-preview glass">
-            {/* Visual placeholder for dashboard */}
-            <div className="preview-header">
-              <div className="header-dot red"></div>
-              <div className="header-dot yellow"></div>
-              <div className="header-dot green"></div>
+        <div className="perspective-[1000px] max-lg:hidden">
+          <div className="glass h-[400px] rounded-3xl overflow-hidden [transform:rotateY(-15deg)_rotateX(5deg)] shadow-[-20px_20px_50px_rgba(0,0,0,0.5)]">
+            <div className="h-10 bg-white/5 flex gap-2 items-center px-4">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]"></div>
             </div>
-            <div className="preview-content">
-              <div className="preview-sidebar"></div>
-              <div className="preview-main">
-                <div className="preview-card"></div>
-                <div className="preview-card"></div>
-                <div className="preview-card"></div>
+            <div className="grid grid-cols-[80px_1fr] h-full">
+              <div className="bg-white/[0.02] border-r border-border"></div>
+              <div className="p-8 grid grid-cols-3 gap-6">
+                <div className="h-[120px] bg-white/[0.03] rounded-xl border border-border"></div>
+                <div className="h-[120px] bg-white/[0.03] rounded-xl border border-border"></div>
+                <div className="h-[120px] bg-white/[0.03] rounded-xl border border-border"></div>
               </div>
             </div>
           </div>
         </div>
       </main>
 
-      <section className="features-grid">
-        <div className="feature-card glass glass-hover">
-          <h3>AI Calendar</h3>
-          <p>Generate a full month of posts based on your niche and goals.</p>
+      <section className="grid grid-cols-3 gap-8 px-16 max-w-[1400px] mx-auto pb-16 max-lg:grid-cols-1 max-lg:px-8">
+        <div className="glass glass-hover p-10 rounded-3xl text-center transition-all duration-300">
+          <h3 className="text-2xl font-bold mb-4">AI Calendar</h3>
+          <p className="text-muted">Generate a full month of posts based on your niche and goals.</p>
         </div>
-        <div className="feature-card glass glass-hover">
-          <h3>Auto-Publish</h3>
-          <p>Schedule and post automatically to FB, IG, X, and LinkedIn.</p>
+        <div className="glass glass-hover p-10 rounded-3xl text-center transition-all duration-300">
+          <h3 className="text-2xl font-bold mb-4">Auto-Publish</h3>
+          <p className="text-muted">Schedule and post automatically to FB, IG, X, and LinkedIn.</p>
         </div>
-        <div className="feature-card glass glass-hover">
-          <h3>Smart Analytics</h3>
-          <p>Get AI-driven insights on how to improve your engagement.</p>
+        <div className="glass glass-hover p-10 rounded-3xl text-center transition-all duration-300">
+          <h3 className="text-2xl font-bold mb-4">Smart Analytics</h3>
+          <p className="text-muted">Get AI-driven insights on how to improve your engagement.</p>
         </div>
       </section>
-
-      <style jsx>{`
-        .landing-container {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .navbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1.5rem 4rem;
-          position: sticky;
-          top: 0;
-          z-index: 100;
-          margin-top: 1rem;
-          margin-left: 2rem;
-          margin-right: 2rem;
-          border-radius: 1rem;
-        }
-
-        .logo-text {
-          font-size: 1.5rem;
-          font-weight: 800;
-          letter-spacing: -0.05em;
-        }
-
-        .text-primary {
-          color: var(--primary);
-        }
-
-        .nav-links {
-          display: flex;
-          gap: 1.5rem;
-          align-items: center;
-        }
-
-        .nav-link {
-          color: var(--text-muted);
-          transition: var(--transition-smooth);
-        }
-
-        .nav-link:hover {
-          color: var(--foreground);
-        }
-
-        .hero-section {
-          padding: 6rem 4rem;
-          display: grid;
-          grid-template-columns: 1.2fr 1fr;
-          gap: 4rem;
-          align-items: center;
-          max-width: 1400px;
-          margin: 0 auto;
-        }
-
-        .hero-title {
-          font-size: 4.5rem;
-          line-height: 1.1;
-          margin-bottom: 2rem;
-        }
-
-        .gradient-text {
-          background: linear-gradient(90deg, var(--primary), var(--secondary));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        .hero-description {
-          font-size: 1.25rem;
-          margin-bottom: 3rem;
-          max-width: 600px;
-        }
-
-        .hero-actions {
-          display: flex;
-          gap: 1rem;
-        }
-
-        .btn-primary {
-          background: var(--primary);
-          color: white;
-          padding: 0.75rem 1.5rem;
-          border-radius: 0.5rem;
-          font-weight: 600;
-          transition: var(--transition-smooth);
-        }
-
-        .btn-primary:hover {
-          background: var(--secondary);
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
-        }
-
-        .btn-secondary {
-          color: white;
-          padding: 0.75rem 1.5rem;
-          font-weight: 600;
-        }
-
-        .btn-glass {
-          background: var(--surface);
-          border: 1px solid var(--border);
-          color: white;
-          padding: 0.75rem 1.5rem;
-          border-radius: 0.5rem;
-          font-weight: 600;
-          backdrop-filter: var(--glass-blur);
-          transition: var(--transition-smooth);
-        }
-
-        .btn-glass:hover {
-          background: var(--surface-hover);
-          transform: translateY(-2px);
-        }
-
-        .btn-lg {
-          padding: 1rem 2.5rem;
-          font-size: 1.1rem;
-        }
-
-        .hero-visual {
-          perspective: 1000px;
-        }
-
-        .dashboard-preview {
-          height: 400px;
-          border-radius: 1.5rem;
-          overflow: hidden;
-          transform: rotateY(-15deg) rotateX(5deg);
-          box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .preview-header {
-          height: 40px;
-          background: rgba(255, 255, 255, 0.05);
-          display: flex;
-          gap: 8px;
-          align-items: center;
-          padding: 0 1rem;
-        }
-
-        .header-dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-        }
-
-        .red { background: #ff5f57; }
-        .yellow { background: #febc2e; }
-        .green { background: #28c840; }
-
-        .preview-content {
-          display: grid;
-          grid-template-columns: 80px 1fr;
-          height: 100%;
-        }
-
-        .preview-sidebar {
-          background: rgba(255, 255, 255, 0.02);
-          border-right: 1px solid var(--border);
-        }
-
-        .preview-main {
-          padding: 2rem;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
-        }
-
-        .preview-card {
-          height: 120px;
-          background: rgba(255, 255, 255, 0.03);
-          border-radius: 0.75rem;
-          border: 1px solid var(--border);
-        }
-
-        .features-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 2rem;
-          padding: 4rem;
-          max-width: 1400px;
-          margin: 0 auto;
-        }
-
-        .feature-card {
-          padding: 2.5rem;
-          border-radius: 1.5rem;
-          text-align: center;
-          transition: var(--transition-smooth);
-        }
-
-        .feature-card h3 {
-          margin-bottom: 1rem;
-          font-size: 1.5rem;
-        }
-
-        @media (max-width: 1024px) {
-          .hero-section {
-            grid-template-columns: 1fr;
-            text-align: center;
-          }
-          .hero-description {
-            margin: 0 auto 3rem;
-          }
-          .hero-actions {
-            justify-content: center;
-          }
-          .hero-visual {
-            display: none;
-          }
-          .features-grid {
-            grid-template-columns: 1fr;
-          }
-          .navbar {
-            padding: 1rem 2rem;
-          }
-        }
-      `}</style>
     </div>
   );
 }

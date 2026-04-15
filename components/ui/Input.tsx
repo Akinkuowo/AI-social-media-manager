@@ -1,4 +1,4 @@
-import styles from './Input.module.css';
+import { clsx } from 'clsx';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -8,13 +8,19 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = ({ label, error, icon, className = '', ...props }: InputProps) => {
   return (
-    <div className={`${styles.container} ${className}`}>
-      {label && <label className={styles.label}>{label}</label>}
-      <div className={`${styles.inputWrapper} ${error ? styles.errorBorder : ''}`}>
-        {icon && <span className={styles.icon}>{icon}</span>}
-        <input className={styles.input} {...props} />
+    <div className={clsx('flex flex-col gap-2', className)}>
+      {label && <label className="text-sm font-medium text-muted">{label}</label>}
+      <div className={clsx(
+        'flex items-center gap-3 rounded-xl border bg-surface px-4 py-3 transition-all duration-300 focus-within:border-border-focus focus-within:bg-surface-hover',
+        error ? 'border-error' : 'border-border'
+      )}>
+        {icon && <span className="text-muted flex-shrink-0">{icon}</span>}
+        <input 
+          className="flex-1 bg-transparent text-foreground outline-none placeholder:text-muted/50 text-sm" 
+          {...props} 
+        />
       </div>
-      {error && <p className={styles.errorText}>{error}</p>}
+      {error && <p className="text-xs text-error">{error}</p>}
     </div>
   );
 };

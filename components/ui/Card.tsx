@@ -1,4 +1,4 @@
-import styles from './Card.module.css';
+import { clsx } from 'clsx';
 
 interface CardProps {
   children: React.ReactNode;
@@ -8,6 +8,13 @@ interface CardProps {
   onClick?: () => void;
 }
 
+const paddingStyles = {
+  none: '',
+  sm: 'p-3',
+  md: 'p-5',
+  lg: 'p-8',
+};
+
 export const Card = ({ 
   children, 
   variant = 'glass', 
@@ -15,16 +22,18 @@ export const Card = ({
   className = '',
   onClick 
 }: CardProps) => {
-  const cardClasses = `
-    ${styles.card} 
-    ${styles[variant]} 
-    ${styles[`p-${padding}`]} 
-    ${onClick ? styles.clickable : ''}
-    ${className}
-  `.trim();
-
   return (
-    <div className={cardClasses} onClick={onClick}>
+    <div 
+      className={clsx(
+        'rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]',
+        variant === 'glass' && 'glass',
+        variant === 'flat' && 'bg-surface-hover border border-border',
+        paddingStyles[padding],
+        onClick && 'cursor-pointer hover:border-border-focus hover:bg-surface-hover',
+        className
+      )}
+      onClick={onClick}
+    >
       {children}
     </div>
   );
