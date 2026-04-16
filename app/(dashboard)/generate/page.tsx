@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -17,10 +17,11 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { format } from 'date-fns';
+import Link from 'next/link';
 import { clsx } from 'clsx';
 import { showAlert } from '@/lib/alerts';
 import { Modal } from '@/components/ui/Modal';
-import { format } from 'date-fns';
 
 const Instagram = ({ size, className }: { size: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -66,7 +67,7 @@ const POST_TYPES = [
 
 export default function GeneratePage() {
   const [step, setStep] = useState(1);
-  const [platform, setPlatform] = useState('instagram');
+  const [platform, setPlatform] = useState('');
   const [type, setType] = useState('educational');
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -75,6 +76,35 @@ export default function GeneratePage() {
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [scheduleDay, setScheduleDay] = useState(new Date().getDate());
   const [isScheduling, setIsScheduling] = useState(false);
+  const [accounts, setAccounts] = useState<any[]>([]);
+  const [selectedAccount, setSelectedAccount] = useState<string>('');
+
+  useEffect(() => {
+    fetchAccounts();
+  }, []);
+
+  const fetchAccounts = async () => {
+    try {
+      const res = await fetch('/api/social/accounts');
+      if (res.ok) {
+        const data = await res.json();
+        setAccounts(data);
+        if (data.length > 0) {
+          // Find if any of the default platforms match
+          const connectedPlatforms = data.map((a: any) => a.platform);
+          // Set default platform to first connected one if not set
+          const firstAvailable = PLATFORMS.find(p => connectedPlatforms.includes(p.id))?.id;
+          if (firstAvailable) setPlatform(firstAvailable);
+        }
+      }
+    } catch (err) {
+      console.error("FETCH_ACCOUNTS_FAILED:", err);
+    }
+  };
+
+  const filteredPlatforms = PLATFORMS.filter(p => 
+    accounts.some(acc => acc.platform === p.id)
+  );
 
   const handleGenerate = async () => {
     setIsGenerating(true);
@@ -107,6 +137,15 @@ export default function GeneratePage() {
     showAlert.toast('Copied to clipboard!');
   };
 
+  const openScheduleModal = async () => {
+    setIsScheduleModalOpen(true);
+    if (accounts.length > 0) {
+      setSelectedAccount(accounts[0].id);
+    } else {
+      fetchAccounts(); // Refresh if empty
+    }
+  };
+
   const handleSchedule = async () => {
     if (!result) return;
     setIsScheduling(true);
@@ -127,7 +166,8 @@ export default function GeneratePage() {
           type,
           caption: result.caption,
           hashtags: result.hashtags.join(' '),
-          // Note: In a real app, we'd selection a socialAccountId too
+          socialAccountId: selectedAccount || null,
+          status: 'SCHEDULED'
         })
       });
 
@@ -162,26 +202,35 @@ export default function GeneratePage() {
               {/* Step 1: Platform */}
               <div>
                 <label className="text-xs font-bold uppercase tracking-widest text-muted mb-4 block">1. Select Platform</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {PLATFORMS.map((p) => {
-                    const Icon = p.icon;
-                    return (
-                      <button
-                        key={p.id}
-                        onClick={() => setPlatform(p.id)}
-                        className={clsx(
-                          "flex flex-col items-center justify-center p-4 rounded-2xl border transition-all duration-300 gap-2",
-                          platform === p.id 
-                            ? "bg-primary/10 border-primary text-primary shadow-lg shadow-primary/5" 
-                            : "bg-surface border-border text-muted hover:border-primary/50"
-                        )}
-                      >
-                        <Icon size={24} className={clsx(platform === p.id ? p.color : "text-muted")} />
-                        <span className="text-xs font-bold uppercase tracking-tight">{p.name.split(' ')[0]}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                {filteredPlatforms.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-3">
+                    {filteredPlatforms.map((p) => {
+                      const Icon = p.icon;
+                      return (
+                        <button
+                          key={p.id}
+                          onClick={() => setPlatform(p.id)}
+                          className={clsx(
+                            "flex flex-col items-center justify-center p-4 rounded-2xl border transition-all duration-300 gap-2",
+                            platform === p.id 
+                              ? "bg-primary/10 border-primary text-primary shadow-lg shadow-primary/5" 
+                              : "bg-surface border-border text-muted hover:border-primary/50"
+                          )}
+                        >
+                          <Icon size={24} className={clsx(platform === p.id ? p.color : "text-muted")} />
+                          <span className="text-xs font-bold uppercase tracking-tight">{p.name.split(' ')[0]}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <Card variant="glass" padding="md" className="border-dashed border-primary/20 bg-primary/2">
+                    <p className="text-[10px] text-muted text-center leading-relaxed">
+                      No social accounts connected.<br/>
+                      <Link href="/settings/accounts" className="text-primary font-bold hover:underline">Connect accounts</Link> to start generating.
+                    </p>
+                  </Card>
+                )}
               </div>
 
               {/* Step 2: Post Type */}
@@ -227,7 +276,7 @@ export default function GeneratePage() {
                   className="w-full py-6 rounded-xl text-lg font-bold"
                   isLoading={isGenerating}
                   onClick={handleGenerate}
-                  disabled={!prompt}
+                  disabled={!prompt || !platform}
                 >
                   <Sparkles size={20} className="mr-2" /> Generate Post
                 </Button>
@@ -348,7 +397,7 @@ export default function GeneratePage() {
 
                   <div className="p-6 bg-surface/50 border-t border-border flex items-center justify-between">
                     <span className="text-xs text-muted font-medium">Auto-saved to your content library</span>
-                    <Button variant="primary" size="sm" onClick={() => setIsScheduleModalOpen(true)}>
+                    <Button variant="primary" size="sm" onClick={openScheduleModal}>
                        Schedule Post <ArrowRight size={16} className="ml-2" />
                     </Button>
                   </div>
@@ -396,9 +445,42 @@ export default function GeneratePage() {
             </div>
           </div>
 
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Connect Platform</label>
+            <div className="flex flex-col gap-2 max-h-[150px] overflow-y-auto">
+              {accounts.length > 0 ? (
+                accounts.map((acc) => (
+                  <button
+                    key={acc.id}
+                    onClick={() => setSelectedAccount(acc.id)}
+                    className={clsx(
+                      "flex items-center gap-3 p-3 rounded-xl border transition-all text-left",
+                      selectedAccount === acc.id 
+                        ? "bg-primary/10 border-primary shadow-sm" 
+                        : "bg-surface border-border hover:border-primary/50"
+                    )}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-bold text-[10px] uppercase">
+                      {acc.platform.substring(0, 2)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold truncate">{acc.name}</p>
+                      <p className="text-[10px] text-muted">{acc.platform}</p>
+                    </div>
+                    {selectedAccount === acc.id && <Check size={14} className="text-primary" />}
+                  </button>
+                ))
+              ) : (
+                <div className="p-4 rounded-xl border border-dashed border-border text-center">
+                  <p className="text-xs text-muted">No accounts connected. <Link href="/settings/accounts" className="text-primary font-bold">Connect now</Link></p>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
              <p className="text-[10px] text-primary uppercase font-bold tracking-widest mb-1">Preview</p>
-             <p className="text-xs text-muted line-clamp-2">{result?.caption}</p>
+             <p className="text-xs text-muted line-clamp-1">{result?.caption}</p>
           </div>
 
           <div className="pt-4 flex gap-3">

@@ -104,3 +104,17 @@ export async function fetchFacebookPages(accessToken: string) {
   return response.json();
 }
 
+/**
+ * Fetch the basic profile of the authenticated LinkedIn member.
+ */
+export async function fetchLinkedInProfile(accessToken: string) {
+  const response = await fetch('https://api.linkedin.com/v2/me', {
+    headers: { 'Authorization': `Bearer ${accessToken}` }
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch LinkedIn profile');
+  }
+  return response.json();
+}
+
+

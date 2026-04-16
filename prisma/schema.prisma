@@ -7,38 +7,21 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  OWNER
-  ADMIN
-  MANAGER
-  VIEWER
-}
-
-enum PostStatus {
-  DRAFT
-  PENDING_REVIEW
-  APPROVED
-  SCHEDULED
-  PUBLISHED
-  FAILED
-}
-
 model User {
-  id                 String    @id @default(cuid())
-  name               String?
-  email              String?   @unique
-  emailVerified      DateTime?
-  image              String?
-  password           String?
-  twoFactorEnabled   Boolean   @default(false)
-  twoFactorSecret    String?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-
-  companies          TeamMember[]
-  accounts           Account[]
-  sessions           Session[]
-  activityLogs       ActivityLog[]
+  id               String        @id @default(cuid())
+  name             String?
+  email            String?       @unique
+  emailVerified    DateTime?
+  image            String?
+  password         String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  twoFactorEnabled Boolean       @default(false)
+  twoFactorSecret  String?
+  accounts         Account[]
+  activityLogs     ActivityLog[]
+  sessions         Session[]
+  companies        TeamMember[]
 }
 
 model VerificationToken {
@@ -59,20 +42,19 @@ model PasswordResetToken {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -86,27 +68,26 @@ model Session {
 }
 
 model Company {
-  id            String    @id @default(cuid())
-  name          String
-  niche         String?
-  brandVoice    String?   @default("professional")
+  id             String          @id @default(cuid())
+  name           String
+  niche          String?
+  brandVoice     String?         @default("professional")
   targetAudience String?
   businessGoals  String?
-  logo          String?
-  primaryColor  String?
+  logo           String?
+  primaryColor   String?
   secondaryColor String?
-  brandFont     String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  members       TeamMember[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  brandFont      String?
+  activityLogs   ActivityLog[]
+  calendars      Calendar[]
+  campaigns      Campaign[]
+  invitations    Invitation[]
+  invoices       Invoice[]
   socialAccounts SocialAccount[]
-  calendars     Calendar[]
-  campaigns     Campaign[]
-  subscription  Subscription?
-  invoices      Invoice[]
-  invitations   Invitation[]
-  activityLogs  ActivityLog[]
+  subscription   Subscription?
+  members        TeamMember[]
 }
 
 model TeamMember {
@@ -115,28 +96,26 @@ model TeamMember {
   companyId String
   role      Role     @default(VIEWER)
   createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, companyId])
 }
 
 model SocialAccount {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   companyId    String
-  platform     String   // "facebook", "instagram", "twitter", "linkedin", "tiktok"
+  platform     String
   platformId   String
   name         String
-  accessToken  String   @db.Text
-  refreshToken String?  @db.Text
+  accessToken  String
+  refreshToken String?
   expiresAt    DateTime?
   metadata     Json?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   posts        Post[]
+  company      Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@unique([companyId, platform, platformId])
 }
@@ -147,7 +126,6 @@ model Calendar {
   month     Int
   year      Int
   createdAt DateTime @default(now())
-
   company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   posts     Post[]
 
@@ -155,23 +133,22 @@ model Calendar {
 }
 
 model Post {
-  id              String      @id @default(cuid())
-  calendarId      String
-  socialAccountId String?
-  day             Int
-  scheduledAt     DateTime?
-  status          PostStatus  @default(DRAFT)
-  type            String      // "educational", "promotional", "storytelling", etc.
-  caption         String      @db.Text
-  hashtags        String?     @db.Text
-  mediaUrls       String[]
+  id                String         @id @default(cuid())
+  calendarId        String
+  socialAccountId   String?
+  day               Int
+  scheduledAt       DateTime?
+  status            PostStatus     @default(DRAFT)
+  type              String
+  caption           String
+  hashtags          String?
+  mediaUrls         String[]
   platformOptimized Json?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  calendar      Calendar       @relation(fields: [calendarId], references: [id], onDelete: Cascade)
-  socialAccount SocialAccount? @relation(fields: [socialAccountId], references: [id])
-  analytics     Analytics?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  analytics         Analytics?
+  calendar          Calendar       @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  socialAccount     SocialAccount? @relation(fields: [socialAccountId], references: [id])
 }
 
 model Analytics {
@@ -184,21 +161,82 @@ model Analytics {
   shares      Int      @default(0)
   comments    Int      @default(0)
   updatedAt   DateTime @updatedAt
-
   post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Campaign {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   companyId String
   name      String
   goal      String?
   hashtag   String?
   startDate DateTime?
   endDate   DateTime?
-  status    String   @default("active")
+  status    String    @default("active")
+  company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
 
+model Subscription {
+  id               String             @id @default(cuid())
+  companyId        String             @unique
+  plan             SubscriptionPlan   @default(FREE)
+  status           SubscriptionStatus @default(ACTIVE)
+  currentPeriodEnd DateTime?
+  usageCount       Int                @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  company          Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id         String   @id @default(cuid())
+  companyId  String
+  amount     Float
+  status     String
+  date       DateTime @default(now())
+  invoiceUrl String?
+  createdAt  DateTime @default(now())
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Invitation {
+  id        String   @id @default(cuid())
+  email     String
+  companyId String
+  role      Role     @default(VIEWER)
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
   company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([email, companyId])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  companyId String
+  userId    String?
+  action    String
+  details   String?
+  createdAt DateTime @default(now())
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MANAGER
+  VIEWER
+}
+
+enum PostStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  SCHEDULED
+  PUBLISHED
+  FAILED
 }
 
 enum SubscriptionPlan {
@@ -212,56 +250,3 @@ enum SubscriptionStatus {
   CANCELED
   PAST_DUE
 }
-
-model Subscription {
-  id               String           @id @default(cuid())
-  companyId        String           @unique
-  plan             SubscriptionPlan @default(FREE)
-  status           SubscriptionStatus @default(ACTIVE)
-  currentPeriodEnd DateTime?
-  usageCount       Int              @default(0)
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-
-  company          Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
-}
-
-model Invoice {
-  id         String   @id @default(cuid())
-  companyId  String
-  amount     Float
-  status     String   // "paid", "pending", "failed"
-  date       DateTime @default(now())
-  invoiceUrl String?
-  createdAt  DateTime @default(now())
-
-  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-}
-
-model Invitation {
-  id        String   @id @default(cuid())
-  email     String
-  companyId String
-  role      Role     @default(VIEWER)
-  token     String   @unique
-  expires   DateTime
-  createdAt DateTime @default(now())
-
-  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-
-  @@unique([email, companyId])
-}
-
-model ActivityLog {
-  id        String   @id @default(cuid())
-  companyId String
-  userId    String?
-  action    String   // "MEMBER_INVITED", "ROLE_UPDATED", "POST_SCHEDULED", etc.
-  details   String?
-  createdAt DateTime @default(now())
-
-  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-}
-
-

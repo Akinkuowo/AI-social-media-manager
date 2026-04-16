@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { exchangeCodeForToken, fetchFacebookPages } from "@/lib/social-oauth";
+import { exchangeCodeForToken, fetchFacebookPages, fetchFacebookProfile } from "@/lib/social-oauth";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
@@ -25,7 +25,13 @@ export async function GET(req: Request) {
 
   try {
     // 1. Exchange code for token
-    const tokenData = await exchangeCodeForToken('facebook', code);
+    let tokenData;
+    try {
+      tokenData = await exchangeCodeForToken('facebook', code);
+    } catch (tokenErr) {
+      console.error("[FACEBOOK_TOKEN_EXCHANGE_FAILED]:", tokenErr);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=token_exchange_failed`);
+    }
     
     // 2. Find user's company and check limits
     const teamMember = await prisma.teamMember.findFirst({
@@ -52,55 +58,92 @@ export async function GET(req: Request) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=limit_reached`);
     }
 
-    // 3. Fetch Real Page info from Facebook
-    const pagesData = await fetchFacebookPages(tokenData.access_token);
-    
-    if (!pagesData.data || pagesData.data.length === 0) {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=no_pages_found`);
+    // 3. Fetch Real Page/Profile info from Facebook
+    let realPlatformId: string;
+    let realName: string;
+    let pageToken: string;
+
+    try {
+      const pagesData = await fetchFacebookPages(tokenData.access_token);
+      
+      if (pagesData.data && pagesData.data.length > 0) {
+        // Use the first page
+        const page = pagesData.data[0];
+        realPlatformId = page.id;
+        realName = page.name;
+        pageToken = page.access_token;
+      } else {
+        // Fallback to Personal Profile if no pages found
+        const profile = await fetchFacebookProfile(tokenData.access_token);
+        realPlatformId = profile.id;
+        realName = `${profile.name} (Personal)`;
+        pageToken = tokenData.access_token;
+        console.warn("[FACEBOOK_CALLBACK] No pages found, falling back to profile.");
+      }
+    } catch (apiErr) {
+      console.error("[FACEBOOK_API_FETCH_FAILED]:", apiErr);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=facebook_api_error`);
     }
 
-    // Automatically pick the first page for now
-    const page = pagesData.data[0];
-    const realPlatformId = page.id;
-    const realName = page.name;
-    const pageToken = page.access_token; // Important: Use the Page Token for posting, not the User Token
-
     // 4. Save to Database
-    await prisma.socialAccount.upsert({
-      where: {
-        companyId_platform_platformId: {
-          companyId: teamMember.companyId,
-          platform: 'facebook',
-          platformId: realPlatformId
-        }
-      },
-      update: {
-        accessToken: pageToken,
-        refreshToken: tokenData.refresh_token || null,
-        expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
-        name: realName
-      },
-      create: {
+    try {
+      console.log("[FACEBOOK_DB_SAVE] Attempting to save:", {
         companyId: teamMember.companyId,
         platform: 'facebook',
         platformId: realPlatformId,
         name: realName,
-        accessToken: pageToken,
-        refreshToken: tokenData.refresh_token || null,
-        expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null
-      }
-    });
+        hasToken: !!pageToken
+      });
 
+      // Use findFirst + create/update instead of upsert to avoid adapter issues
+      const existing = await prisma.socialAccount.findFirst({
+        where: {
+          companyId: teamMember.companyId,
+          platform: 'facebook',
+          platformId: realPlatformId
+        }
+      });
 
-    // 5. Log Activity
-    await prisma.activityLog.create({
-      data: {
-        companyId: teamMember.companyId,
-        userId: session.user.id,
-        action: 'SOCIAL_ACCOUNT_CONNECTED',
-        details: `Connected Facebook account: ${realName}`
+      if (existing) {
+        await prisma.socialAccount.update({
+          where: { id: existing.id },
+          data: {
+            accessToken: pageToken,
+            refreshToken: tokenData.refresh_token || null,
+            expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
+            name: realName
+          }
+        });
+        console.log("[FACEBOOK_DB_SAVE] Updated existing account:", existing.id);
+      } else {
+        const created = await prisma.socialAccount.create({
+          data: {
+            companyId: teamMember.companyId,
+            platform: 'facebook',
+            platformId: realPlatformId,
+            name: realName,
+            accessToken: pageToken,
+            refreshToken: tokenData.refresh_token || null,
+            expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null
+          }
+        });
+        console.log("[FACEBOOK_DB_SAVE] Created new account:", created.id);
       }
-    });
+
+      // 5. Log Activity
+      await prisma.activityLog.create({
+        data: {
+          companyId: teamMember.companyId,
+          userId: session.user.id,
+          action: 'SOCIAL_ACCOUNT_CONNECTED',
+          details: `Connected Facebook account: ${realName}`
+        }
+      });
+    } catch (dbErr: any) {
+      console.error("[FACEBOOK_DATABASE_FAILED]:", dbErr);
+      const msg = encodeURIComponent(dbErr.message?.substring(0, 200) || "Database failure");
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=database_error&details=${msg}`);
+    }
 
     // Clean up
     cookieStore.delete('oauth_state');

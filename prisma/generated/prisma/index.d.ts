@@ -2292,17 +2292,17 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    companies: number
     accounts: number
-    sessions: number
     activityLogs: number
+    sessions: number
+    companies: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    companies?: boolean | UserCountOutputTypeCountCompaniesArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     activityLogs?: boolean | UserCountOutputTypeCountActivityLogsArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+    companies?: boolean | UserCountOutputTypeCountCompaniesArgs
   }
 
   // Custom InputTypes
@@ -2319,15 +2319,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountCompaniesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TeamMemberWhereInput
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
+  export type UserCountOutputTypeCountActivityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActivityLogWhereInput
   }
 
   /**
@@ -2340,8 +2340,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountActivityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ActivityLogWhereInput
+  export type UserCountOutputTypeCountCompaniesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamMemberWhereInput
   }
 
 
@@ -2350,23 +2350,23 @@ export namespace Prisma {
    */
 
   export type CompanyCountOutputType = {
-    members: number
-    socialAccounts: number
+    activityLogs: number
     calendars: number
     campaigns: number
-    invoices: number
     invitations: number
-    activityLogs: number
+    invoices: number
+    socialAccounts: number
+    members: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | CompanyCountOutputTypeCountMembersArgs
-    socialAccounts?: boolean | CompanyCountOutputTypeCountSocialAccountsArgs
+    activityLogs?: boolean | CompanyCountOutputTypeCountActivityLogsArgs
     calendars?: boolean | CompanyCountOutputTypeCountCalendarsArgs
     campaigns?: boolean | CompanyCountOutputTypeCountCampaignsArgs
-    invoices?: boolean | CompanyCountOutputTypeCountInvoicesArgs
     invitations?: boolean | CompanyCountOutputTypeCountInvitationsArgs
-    activityLogs?: boolean | CompanyCountOutputTypeCountActivityLogsArgs
+    invoices?: boolean | CompanyCountOutputTypeCountInvoicesArgs
+    socialAccounts?: boolean | CompanyCountOutputTypeCountSocialAccountsArgs
+    members?: boolean | CompanyCountOutputTypeCountMembersArgs
   }
 
   // Custom InputTypes
@@ -2383,15 +2383,8 @@ export namespace Prisma {
   /**
    * CompanyCountOutputType without action
    */
-  export type CompanyCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TeamMemberWhereInput
-  }
-
-  /**
-   * CompanyCountOutputType without action
-   */
-  export type CompanyCountOutputTypeCountSocialAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SocialAccountWhereInput
+  export type CompanyCountOutputTypeCountActivityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActivityLogWhereInput
   }
 
   /**
@@ -2411,13 +2404,6 @@ export namespace Prisma {
   /**
    * CompanyCountOutputType without action
    */
-  export type CompanyCountOutputTypeCountInvoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InvoiceWhereInput
-  }
-
-  /**
-   * CompanyCountOutputType without action
-   */
   export type CompanyCountOutputTypeCountInvitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvitationWhereInput
   }
@@ -2425,8 +2411,22 @@ export namespace Prisma {
   /**
    * CompanyCountOutputType without action
    */
-  export type CompanyCountOutputTypeCountActivityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ActivityLogWhereInput
+  export type CompanyCountOutputTypeCountInvoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountSocialAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SocialAccountWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamMemberWhereInput
   }
 
 
@@ -2513,10 +2513,10 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     password: string | null
-    twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    twoFactorEnabled: boolean | null
+    twoFactorSecret: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2526,10 +2526,10 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     password: string | null
-    twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    twoFactorEnabled: boolean | null
+    twoFactorSecret: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2539,10 +2539,10 @@ export namespace Prisma {
     emailVerified: number
     image: number
     password: number
-    twoFactorEnabled: number
-    twoFactorSecret: number
     createdAt: number
     updatedAt: number
+    twoFactorEnabled: number
+    twoFactorSecret: number
     _all: number
   }
 
@@ -2554,10 +2554,10 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     password?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
     createdAt?: true
     updatedAt?: true
+    twoFactorEnabled?: true
+    twoFactorSecret?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2567,10 +2567,10 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     password?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
     createdAt?: true
     updatedAt?: true
+    twoFactorEnabled?: true
+    twoFactorSecret?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2580,10 +2580,10 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     password?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
     createdAt?: true
     updatedAt?: true
+    twoFactorEnabled?: true
+    twoFactorSecret?: true
     _all?: true
   }
 
@@ -2666,10 +2666,10 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     password: string | null
-    twoFactorEnabled: boolean
-    twoFactorSecret: string | null
     createdAt: Date
     updatedAt: Date
+    twoFactorEnabled: boolean
+    twoFactorSecret: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -2696,14 +2696,14 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    companies?: boolean | User$companiesArgs<ExtArgs>
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     activityLogs?: boolean | User$activityLogsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    companies?: boolean | User$companiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2714,10 +2714,10 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2727,10 +2727,10 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2740,18 +2740,18 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "twoFactorEnabled" | "twoFactorSecret" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "createdAt" | "updatedAt" | "twoFactorEnabled" | "twoFactorSecret", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    companies?: boolean | User$companiesArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     activityLogs?: boolean | User$activityLogsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    companies?: boolean | User$companiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2760,10 +2760,10 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      companies: Prisma.$TeamMemberPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
       activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
+      companies: Prisma.$TeamMemberPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2772,10 +2772,10 @@ export namespace Prisma {
       emailVerified: Date | null
       image: string | null
       password: string | null
-      twoFactorEnabled: boolean
-      twoFactorSecret: string | null
       createdAt: Date
       updatedAt: Date
+      twoFactorEnabled: boolean
+      twoFactorSecret: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3170,10 +3170,10 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    companies<T extends User$companiesArgs<ExtArgs> = {}>(args?: Subset<T, User$companiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activityLogs<T extends User$activityLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    companies<T extends User$companiesArgs<ExtArgs> = {}>(args?: Subset<T, User$companiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3209,10 +3209,10 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
-    readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
-    readonly twoFactorSecret: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
+    readonly twoFactorSecret: FieldRef<"User", 'String'>
   }
     
 
@@ -3606,30 +3606,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.companies
-   */
-  export type User$companiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the TeamMember
-     */
-    select?: TeamMemberSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the TeamMember
-     */
-    omit?: TeamMemberOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TeamMemberInclude<ExtArgs> | null
-    where?: TeamMemberWhereInput
-    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
-    cursor?: TeamMemberWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
-  }
-
-  /**
    * User.accounts
    */
   export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3651,6 +3627,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.activityLogs
+   */
+  export type User$activityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityLog
+     */
+    select?: ActivityLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityLog
+     */
+    omit?: ActivityLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityLogInclude<ExtArgs> | null
+    where?: ActivityLogWhereInput
+    orderBy?: ActivityLogOrderByWithRelationInput | ActivityLogOrderByWithRelationInput[]
+    cursor?: ActivityLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
   }
 
   /**
@@ -3678,27 +3678,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.activityLogs
+   * User.companies
    */
-  export type User$activityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$companiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ActivityLog
+     * Select specific fields to fetch from the TeamMember
      */
-    select?: ActivityLogSelect<ExtArgs> | null
+    select?: TeamMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ActivityLog
+     * Omit specific fields from the TeamMember
      */
-    omit?: ActivityLogOmit<ExtArgs> | null
+    omit?: TeamMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ActivityLogInclude<ExtArgs> | null
-    where?: ActivityLogWhereInput
-    orderBy?: ActivityLogOrderByWithRelationInput | ActivityLogOrderByWithRelationInput[]
-    cursor?: ActivityLogWhereUniqueInput
+    include?: TeamMemberInclude<ExtArgs> | null
+    where?: TeamMemberWhereInput
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    cursor?: TeamMemberWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
+    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
   }
 
   /**
@@ -7939,9 +7939,9 @@ export namespace Prisma {
     logo: string | null
     primaryColor: string | null
     secondaryColor: string | null
-    brandFont: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    brandFont: string | null
   }
 
   export type CompanyMaxAggregateOutputType = {
@@ -7954,9 +7954,9 @@ export namespace Prisma {
     logo: string | null
     primaryColor: string | null
     secondaryColor: string | null
-    brandFont: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    brandFont: string | null
   }
 
   export type CompanyCountAggregateOutputType = {
@@ -7969,9 +7969,9 @@ export namespace Prisma {
     logo: number
     primaryColor: number
     secondaryColor: number
-    brandFont: number
     createdAt: number
     updatedAt: number
+    brandFont: number
     _all: number
   }
 
@@ -7986,9 +7986,9 @@ export namespace Prisma {
     logo?: true
     primaryColor?: true
     secondaryColor?: true
-    brandFont?: true
     createdAt?: true
     updatedAt?: true
+    brandFont?: true
   }
 
   export type CompanyMaxAggregateInputType = {
@@ -8001,9 +8001,9 @@ export namespace Prisma {
     logo?: true
     primaryColor?: true
     secondaryColor?: true
-    brandFont?: true
     createdAt?: true
     updatedAt?: true
+    brandFont?: true
   }
 
   export type CompanyCountAggregateInputType = {
@@ -8016,9 +8016,9 @@ export namespace Prisma {
     logo?: true
     primaryColor?: true
     secondaryColor?: true
-    brandFont?: true
     createdAt?: true
     updatedAt?: true
+    brandFont?: true
     _all?: true
   }
 
@@ -8104,9 +8104,9 @@ export namespace Prisma {
     logo: string | null
     primaryColor: string | null
     secondaryColor: string | null
-    brandFont: string | null
     createdAt: Date
     updatedAt: Date
+    brandFont: string | null
     _count: CompanyCountAggregateOutputType | null
     _min: CompanyMinAggregateOutputType | null
     _max: CompanyMaxAggregateOutputType | null
@@ -8136,17 +8136,17 @@ export namespace Prisma {
     logo?: boolean
     primaryColor?: boolean
     secondaryColor?: boolean
-    brandFont?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    members?: boolean | Company$membersArgs<ExtArgs>
-    socialAccounts?: boolean | Company$socialAccountsArgs<ExtArgs>
+    brandFont?: boolean
+    activityLogs?: boolean | Company$activityLogsArgs<ExtArgs>
     calendars?: boolean | Company$calendarsArgs<ExtArgs>
     campaigns?: boolean | Company$campaignsArgs<ExtArgs>
-    subscription?: boolean | Company$subscriptionArgs<ExtArgs>
-    invoices?: boolean | Company$invoicesArgs<ExtArgs>
     invitations?: boolean | Company$invitationsArgs<ExtArgs>
-    activityLogs?: boolean | Company$activityLogsArgs<ExtArgs>
+    invoices?: boolean | Company$invoicesArgs<ExtArgs>
+    socialAccounts?: boolean | Company$socialAccountsArgs<ExtArgs>
+    subscription?: boolean | Company$subscriptionArgs<ExtArgs>
+    members?: boolean | Company$membersArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
@@ -8160,9 +8160,9 @@ export namespace Prisma {
     logo?: boolean
     primaryColor?: boolean
     secondaryColor?: boolean
-    brandFont?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    brandFont?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type CompanySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8175,9 +8175,9 @@ export namespace Prisma {
     logo?: boolean
     primaryColor?: boolean
     secondaryColor?: boolean
-    brandFont?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    brandFont?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type CompanySelectScalar = {
@@ -8190,21 +8190,21 @@ export namespace Prisma {
     logo?: boolean
     primaryColor?: boolean
     secondaryColor?: boolean
-    brandFont?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    brandFont?: boolean
   }
 
-  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "niche" | "brandVoice" | "targetAudience" | "businessGoals" | "logo" | "primaryColor" | "secondaryColor" | "brandFont" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "niche" | "brandVoice" | "targetAudience" | "businessGoals" | "logo" | "primaryColor" | "secondaryColor" | "createdAt" | "updatedAt" | "brandFont", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | Company$membersArgs<ExtArgs>
-    socialAccounts?: boolean | Company$socialAccountsArgs<ExtArgs>
+    activityLogs?: boolean | Company$activityLogsArgs<ExtArgs>
     calendars?: boolean | Company$calendarsArgs<ExtArgs>
     campaigns?: boolean | Company$campaignsArgs<ExtArgs>
-    subscription?: boolean | Company$subscriptionArgs<ExtArgs>
-    invoices?: boolean | Company$invoicesArgs<ExtArgs>
     invitations?: boolean | Company$invitationsArgs<ExtArgs>
-    activityLogs?: boolean | Company$activityLogsArgs<ExtArgs>
+    invoices?: boolean | Company$invoicesArgs<ExtArgs>
+    socialAccounts?: boolean | Company$socialAccountsArgs<ExtArgs>
+    subscription?: boolean | Company$subscriptionArgs<ExtArgs>
+    members?: boolean | Company$membersArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8213,14 +8213,14 @@ export namespace Prisma {
   export type $CompanyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Company"
     objects: {
-      members: Prisma.$TeamMemberPayload<ExtArgs>[]
-      socialAccounts: Prisma.$SocialAccountPayload<ExtArgs>[]
+      activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[]
       calendars: Prisma.$CalendarPayload<ExtArgs>[]
       campaigns: Prisma.$CampaignPayload<ExtArgs>[]
-      subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
-      invoices: Prisma.$InvoicePayload<ExtArgs>[]
       invitations: Prisma.$InvitationPayload<ExtArgs>[]
-      activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[]
+      invoices: Prisma.$InvoicePayload<ExtArgs>[]
+      socialAccounts: Prisma.$SocialAccountPayload<ExtArgs>[]
+      subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
+      members: Prisma.$TeamMemberPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8232,9 +8232,9 @@ export namespace Prisma {
       logo: string | null
       primaryColor: string | null
       secondaryColor: string | null
-      brandFont: string | null
       createdAt: Date
       updatedAt: Date
+      brandFont: string | null
     }, ExtArgs["result"]["company"]>
     composites: {}
   }
@@ -8629,14 +8629,14 @@ export namespace Prisma {
    */
   export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    members<T extends Company$membersArgs<ExtArgs> = {}>(args?: Subset<T, Company$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    socialAccounts<T extends Company$socialAccountsArgs<ExtArgs> = {}>(args?: Subset<T, Company$socialAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activityLogs<T extends Company$activityLogsArgs<ExtArgs> = {}>(args?: Subset<T, Company$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     calendars<T extends Company$calendarsArgs<ExtArgs> = {}>(args?: Subset<T, Company$calendarsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     campaigns<T extends Company$campaignsArgs<ExtArgs> = {}>(args?: Subset<T, Company$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    subscription<T extends Company$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, Company$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    invoices<T extends Company$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, Company$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     invitations<T extends Company$invitationsArgs<ExtArgs> = {}>(args?: Subset<T, Company$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    activityLogs<T extends Company$activityLogsArgs<ExtArgs> = {}>(args?: Subset<T, Company$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invoices<T extends Company$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, Company$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    socialAccounts<T extends Company$socialAccountsArgs<ExtArgs> = {}>(args?: Subset<T, Company$socialAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscription<T extends Company$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, Company$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    members<T extends Company$membersArgs<ExtArgs> = {}>(args?: Subset<T, Company$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8675,9 +8675,9 @@ export namespace Prisma {
     readonly logo: FieldRef<"Company", 'String'>
     readonly primaryColor: FieldRef<"Company", 'String'>
     readonly secondaryColor: FieldRef<"Company", 'String'>
-    readonly brandFont: FieldRef<"Company", 'String'>
     readonly createdAt: FieldRef<"Company", 'DateTime'>
     readonly updatedAt: FieldRef<"Company", 'DateTime'>
+    readonly brandFont: FieldRef<"Company", 'String'>
   }
     
 
@@ -9071,51 +9071,27 @@ export namespace Prisma {
   }
 
   /**
-   * Company.members
+   * Company.activityLogs
    */
-  export type Company$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Company$activityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TeamMember
+     * Select specific fields to fetch from the ActivityLog
      */
-    select?: TeamMemberSelect<ExtArgs> | null
+    select?: ActivityLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TeamMember
+     * Omit specific fields from the ActivityLog
      */
-    omit?: TeamMemberOmit<ExtArgs> | null
+    omit?: ActivityLogOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TeamMemberInclude<ExtArgs> | null
-    where?: TeamMemberWhereInput
-    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
-    cursor?: TeamMemberWhereUniqueInput
+    include?: ActivityLogInclude<ExtArgs> | null
+    where?: ActivityLogWhereInput
+    orderBy?: ActivityLogOrderByWithRelationInput | ActivityLogOrderByWithRelationInput[]
+    cursor?: ActivityLogWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
-  }
-
-  /**
-   * Company.socialAccounts
-   */
-  export type Company$socialAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SocialAccount
-     */
-    select?: SocialAccountSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the SocialAccount
-     */
-    omit?: SocialAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SocialAccountInclude<ExtArgs> | null
-    where?: SocialAccountWhereInput
-    orderBy?: SocialAccountOrderByWithRelationInput | SocialAccountOrderByWithRelationInput[]
-    cursor?: SocialAccountWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SocialAccountScalarFieldEnum | SocialAccountScalarFieldEnum[]
+    distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
   }
 
   /**
@@ -9167,22 +9143,27 @@ export namespace Prisma {
   }
 
   /**
-   * Company.subscription
+   * Company.invitations
    */
-  export type Company$subscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Company$invitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Subscription
+     * Select specific fields to fetch from the Invitation
      */
-    select?: SubscriptionSelect<ExtArgs> | null
+    select?: InvitationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Subscription
+     * Omit specific fields from the Invitation
      */
-    omit?: SubscriptionOmit<ExtArgs> | null
+    omit?: InvitationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SubscriptionInclude<ExtArgs> | null
-    where?: SubscriptionWhereInput
+    include?: InvitationInclude<ExtArgs> | null
+    where?: InvitationWhereInput
+    orderBy?: InvitationOrderByWithRelationInput | InvitationOrderByWithRelationInput[]
+    cursor?: InvitationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvitationScalarFieldEnum | InvitationScalarFieldEnum[]
   }
 
   /**
@@ -9210,51 +9191,70 @@ export namespace Prisma {
   }
 
   /**
-   * Company.invitations
+   * Company.socialAccounts
    */
-  export type Company$invitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Company$socialAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Invitation
+     * Select specific fields to fetch from the SocialAccount
      */
-    select?: InvitationSelect<ExtArgs> | null
+    select?: SocialAccountSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Invitation
+     * Omit specific fields from the SocialAccount
      */
-    omit?: InvitationOmit<ExtArgs> | null
+    omit?: SocialAccountOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InvitationInclude<ExtArgs> | null
-    where?: InvitationWhereInput
-    orderBy?: InvitationOrderByWithRelationInput | InvitationOrderByWithRelationInput[]
-    cursor?: InvitationWhereUniqueInput
+    include?: SocialAccountInclude<ExtArgs> | null
+    where?: SocialAccountWhereInput
+    orderBy?: SocialAccountOrderByWithRelationInput | SocialAccountOrderByWithRelationInput[]
+    cursor?: SocialAccountWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: InvitationScalarFieldEnum | InvitationScalarFieldEnum[]
+    distinct?: SocialAccountScalarFieldEnum | SocialAccountScalarFieldEnum[]
   }
 
   /**
-   * Company.activityLogs
+   * Company.subscription
    */
-  export type Company$activityLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Company$subscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ActivityLog
+     * Select specific fields to fetch from the Subscription
      */
-    select?: ActivityLogSelect<ExtArgs> | null
+    select?: SubscriptionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ActivityLog
+     * Omit specific fields from the Subscription
      */
-    omit?: ActivityLogOmit<ExtArgs> | null
+    omit?: SubscriptionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ActivityLogInclude<ExtArgs> | null
-    where?: ActivityLogWhereInput
-    orderBy?: ActivityLogOrderByWithRelationInput | ActivityLogOrderByWithRelationInput[]
-    cursor?: ActivityLogWhereUniqueInput
+    include?: SubscriptionInclude<ExtArgs> | null
+    where?: SubscriptionWhereInput
+  }
+
+  /**
+   * Company.members
+   */
+  export type Company$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    where?: TeamMemberWhereInput
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    cursor?: TeamMemberWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
+    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
   }
 
   /**
@@ -9440,8 +9440,8 @@ export namespace Prisma {
     companyId?: boolean
     role?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamMember"]>
 
   export type TeamMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9450,8 +9450,8 @@ export namespace Prisma {
     companyId?: boolean
     role?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamMember"]>
 
   export type TeamMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9460,8 +9460,8 @@ export namespace Prisma {
     companyId?: boolean
     role?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamMember"]>
 
   export type TeamMemberSelectScalar = {
@@ -9474,23 +9474,23 @@ export namespace Prisma {
 
   export type TeamMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "companyId" | "role" | "createdAt", ExtArgs["result"]["teamMember"]>
   export type TeamMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type TeamMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type TeamMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $TeamMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TeamMember"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       company: Prisma.$CompanyPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9892,8 +9892,8 @@ export namespace Prisma {
    */
   export interface Prisma__TeamMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10555,8 +10555,8 @@ export namespace Prisma {
     metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    company?: boolean | CompanyDefaultArgs<ExtArgs>
     posts?: boolean | SocialAccount$postsArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     _count?: boolean | SocialAccountCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["socialAccount"]>
 
@@ -10606,8 +10606,8 @@ export namespace Prisma {
 
   export type SocialAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "platform" | "platformId" | "name" | "accessToken" | "refreshToken" | "expiresAt" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["socialAccount"]>
   export type SocialAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    company?: boolean | CompanyDefaultArgs<ExtArgs>
     posts?: boolean | SocialAccount$postsArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     _count?: boolean | SocialAccountCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SocialAccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10620,8 +10620,8 @@ export namespace Prisma {
   export type $SocialAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SocialAccount"
     objects: {
-      company: Prisma.$CompanyPayload<ExtArgs>
       posts: Prisma.$PostPayload<ExtArgs>[]
+      company: Prisma.$CompanyPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11029,8 +11029,8 @@ export namespace Prisma {
    */
   export interface Prisma__SocialAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     posts<T extends SocialAccount$postsArgs<ExtArgs> = {}>(args?: Subset<T, SocialAccount$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12899,9 +12899,9 @@ export namespace Prisma {
     platformOptimized?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    analytics?: boolean | Post$analyticsArgs<ExtArgs>
     calendar?: boolean | CalendarDefaultArgs<ExtArgs>
     socialAccount?: boolean | Post$socialAccountArgs<ExtArgs>
-    analytics?: boolean | Post$analyticsArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12958,9 +12958,9 @@ export namespace Prisma {
 
   export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "calendarId" | "socialAccountId" | "day" | "scheduledAt" | "status" | "type" | "caption" | "hashtags" | "mediaUrls" | "platformOptimized" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    analytics?: boolean | Post$analyticsArgs<ExtArgs>
     calendar?: boolean | CalendarDefaultArgs<ExtArgs>
     socialAccount?: boolean | Post$socialAccountArgs<ExtArgs>
-    analytics?: boolean | Post$analyticsArgs<ExtArgs>
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     calendar?: boolean | CalendarDefaultArgs<ExtArgs>
@@ -12974,9 +12974,9 @@ export namespace Prisma {
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
     objects: {
+      analytics: Prisma.$AnalyticsPayload<ExtArgs> | null
       calendar: Prisma.$CalendarPayload<ExtArgs>
       socialAccount: Prisma.$SocialAccountPayload<ExtArgs> | null
-      analytics: Prisma.$AnalyticsPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13386,9 +13386,9 @@ export namespace Prisma {
    */
   export interface Prisma__PostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    analytics<T extends Post$analyticsArgs<ExtArgs> = {}>(args?: Subset<T, Post$analyticsArgs<ExtArgs>>): Prisma__AnalyticsClient<$Result.GetResult<Prisma.$AnalyticsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     calendar<T extends CalendarDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CalendarDefaultArgs<ExtArgs>>): Prisma__CalendarClient<$Result.GetResult<Prisma.$CalendarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     socialAccount<T extends Post$socialAccountArgs<ExtArgs> = {}>(args?: Subset<T, Post$socialAccountArgs<ExtArgs>>): Prisma__SocialAccountClient<$Result.GetResult<Prisma.$SocialAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    analytics<T extends Post$analyticsArgs<ExtArgs> = {}>(args?: Subset<T, Post$analyticsArgs<ExtArgs>>): Prisma__AnalyticsClient<$Result.GetResult<Prisma.$AnalyticsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13832,25 +13832,6 @@ export namespace Prisma {
   }
 
   /**
-   * Post.socialAccount
-   */
-  export type Post$socialAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SocialAccount
-     */
-    select?: SocialAccountSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the SocialAccount
-     */
-    omit?: SocialAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SocialAccountInclude<ExtArgs> | null
-    where?: SocialAccountWhereInput
-  }
-
-  /**
    * Post.analytics
    */
   export type Post$analyticsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13867,6 +13848,25 @@ export namespace Prisma {
      */
     include?: AnalyticsInclude<ExtArgs> | null
     where?: AnalyticsWhereInput
+  }
+
+  /**
+   * Post.socialAccount
+   */
+  export type Post$socialAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialAccount
+     */
+    select?: SocialAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialAccount
+     */
+    omit?: SocialAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialAccountInclude<ExtArgs> | null
+    where?: SocialAccountWhereInput
   }
 
   /**
@@ -20631,10 +20631,10 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     image: 'image',
     password: 'password',
-    twoFactorEnabled: 'twoFactorEnabled',
-    twoFactorSecret: 'twoFactorSecret',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    twoFactorEnabled: 'twoFactorEnabled',
+    twoFactorSecret: 'twoFactorSecret'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -20697,9 +20697,9 @@ export namespace Prisma {
     logo: 'logo',
     primaryColor: 'primaryColor',
     secondaryColor: 'secondaryColor',
-    brandFont: 'brandFont',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    brandFont: 'brandFont'
   };
 
   export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
@@ -21036,14 +21036,14 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
-    twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    companies?: TeamMemberListRelationFilter
+    twoFactorEnabled?: BoolFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
-    sessions?: SessionListRelationFilter
     activityLogs?: ActivityLogListRelationFilter
+    sessions?: SessionListRelationFilter
+    companies?: TeamMemberListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -21053,14 +21053,14 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    companies?: TeamMemberOrderByRelationAggregateInput
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
-    sessions?: SessionOrderByRelationAggregateInput
     activityLogs?: ActivityLogOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
+    companies?: TeamMemberOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -21073,14 +21073,14 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
-    twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    companies?: TeamMemberListRelationFilter
+    twoFactorEnabled?: BoolFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
-    sessions?: SessionListRelationFilter
     activityLogs?: ActivityLogListRelationFilter
+    sessions?: SessionListRelationFilter
+    companies?: TeamMemberListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -21090,10 +21090,10 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -21109,10 +21109,10 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
-    twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type VerificationTokenWhereInput = {
@@ -21362,17 +21362,17 @@ export namespace Prisma {
     logo?: StringNullableFilter<"Company"> | string | null
     primaryColor?: StringNullableFilter<"Company"> | string | null
     secondaryColor?: StringNullableFilter<"Company"> | string | null
-    brandFont?: StringNullableFilter<"Company"> | string | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
-    members?: TeamMemberListRelationFilter
-    socialAccounts?: SocialAccountListRelationFilter
+    brandFont?: StringNullableFilter<"Company"> | string | null
+    activityLogs?: ActivityLogListRelationFilter
     calendars?: CalendarListRelationFilter
     campaigns?: CampaignListRelationFilter
-    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
-    invoices?: InvoiceListRelationFilter
     invitations?: InvitationListRelationFilter
-    activityLogs?: ActivityLogListRelationFilter
+    invoices?: InvoiceListRelationFilter
+    socialAccounts?: SocialAccountListRelationFilter
+    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+    members?: TeamMemberListRelationFilter
   }
 
   export type CompanyOrderByWithRelationInput = {
@@ -21385,17 +21385,17 @@ export namespace Prisma {
     logo?: SortOrderInput | SortOrder
     primaryColor?: SortOrderInput | SortOrder
     secondaryColor?: SortOrderInput | SortOrder
-    brandFont?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    members?: TeamMemberOrderByRelationAggregateInput
-    socialAccounts?: SocialAccountOrderByRelationAggregateInput
+    brandFont?: SortOrderInput | SortOrder
+    activityLogs?: ActivityLogOrderByRelationAggregateInput
     calendars?: CalendarOrderByRelationAggregateInput
     campaigns?: CampaignOrderByRelationAggregateInput
-    subscription?: SubscriptionOrderByWithRelationInput
-    invoices?: InvoiceOrderByRelationAggregateInput
     invitations?: InvitationOrderByRelationAggregateInput
-    activityLogs?: ActivityLogOrderByRelationAggregateInput
+    invoices?: InvoiceOrderByRelationAggregateInput
+    socialAccounts?: SocialAccountOrderByRelationAggregateInput
+    subscription?: SubscriptionOrderByWithRelationInput
+    members?: TeamMemberOrderByRelationAggregateInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -21411,17 +21411,17 @@ export namespace Prisma {
     logo?: StringNullableFilter<"Company"> | string | null
     primaryColor?: StringNullableFilter<"Company"> | string | null
     secondaryColor?: StringNullableFilter<"Company"> | string | null
-    brandFont?: StringNullableFilter<"Company"> | string | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
-    members?: TeamMemberListRelationFilter
-    socialAccounts?: SocialAccountListRelationFilter
+    brandFont?: StringNullableFilter<"Company"> | string | null
+    activityLogs?: ActivityLogListRelationFilter
     calendars?: CalendarListRelationFilter
     campaigns?: CampaignListRelationFilter
-    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
-    invoices?: InvoiceListRelationFilter
     invitations?: InvitationListRelationFilter
-    activityLogs?: ActivityLogListRelationFilter
+    invoices?: InvoiceListRelationFilter
+    socialAccounts?: SocialAccountListRelationFilter
+    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+    members?: TeamMemberListRelationFilter
   }, "id">
 
   export type CompanyOrderByWithAggregationInput = {
@@ -21434,9 +21434,9 @@ export namespace Prisma {
     logo?: SortOrderInput | SortOrder
     primaryColor?: SortOrderInput | SortOrder
     secondaryColor?: SortOrderInput | SortOrder
-    brandFont?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    brandFont?: SortOrderInput | SortOrder
     _count?: CompanyCountOrderByAggregateInput
     _max?: CompanyMaxOrderByAggregateInput
     _min?: CompanyMinOrderByAggregateInput
@@ -21455,9 +21455,9 @@ export namespace Prisma {
     logo?: StringNullableWithAggregatesFilter<"Company"> | string | null
     primaryColor?: StringNullableWithAggregatesFilter<"Company"> | string | null
     secondaryColor?: StringNullableWithAggregatesFilter<"Company"> | string | null
-    brandFont?: StringNullableWithAggregatesFilter<"Company"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
+    brandFont?: StringNullableWithAggregatesFilter<"Company"> | string | null
   }
 
   export type TeamMemberWhereInput = {
@@ -21469,8 +21469,8 @@ export namespace Prisma {
     companyId?: StringFilter<"TeamMember"> | string
     role?: EnumRoleFilter<"TeamMember"> | $Enums.Role
     createdAt?: DateTimeFilter<"TeamMember"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type TeamMemberOrderByWithRelationInput = {
@@ -21479,8 +21479,8 @@ export namespace Prisma {
     companyId?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     company?: CompanyOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type TeamMemberWhereUniqueInput = Prisma.AtLeast<{
@@ -21493,8 +21493,8 @@ export namespace Prisma {
     companyId?: StringFilter<"TeamMember"> | string
     role?: EnumRoleFilter<"TeamMember"> | $Enums.Role
     createdAt?: DateTimeFilter<"TeamMember"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_companyId">
 
   export type TeamMemberOrderByWithAggregationInput = {
@@ -21534,8 +21534,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"SocialAccount">
     createdAt?: DateTimeFilter<"SocialAccount"> | Date | string
     updatedAt?: DateTimeFilter<"SocialAccount"> | Date | string
-    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     posts?: PostListRelationFilter
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
   }
 
   export type SocialAccountOrderByWithRelationInput = {
@@ -21550,8 +21550,8 @@ export namespace Prisma {
     metadata?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    company?: CompanyOrderByWithRelationInput
     posts?: PostOrderByRelationAggregateInput
+    company?: CompanyOrderByWithRelationInput
   }
 
   export type SocialAccountWhereUniqueInput = Prisma.AtLeast<{
@@ -21570,8 +21570,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"SocialAccount">
     createdAt?: DateTimeFilter<"SocialAccount"> | Date | string
     updatedAt?: DateTimeFilter<"SocialAccount"> | Date | string
-    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     posts?: PostListRelationFilter
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
   }, "id" | "companyId_platform_platformId">
 
   export type SocialAccountOrderByWithAggregationInput = {
@@ -21686,9 +21686,9 @@ export namespace Prisma {
     platformOptimized?: JsonNullableFilter<"Post">
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
+    analytics?: XOR<AnalyticsNullableScalarRelationFilter, AnalyticsWhereInput> | null
     calendar?: XOR<CalendarScalarRelationFilter, CalendarWhereInput>
     socialAccount?: XOR<SocialAccountNullableScalarRelationFilter, SocialAccountWhereInput> | null
-    analytics?: XOR<AnalyticsNullableScalarRelationFilter, AnalyticsWhereInput> | null
   }
 
   export type PostOrderByWithRelationInput = {
@@ -21705,9 +21705,9 @@ export namespace Prisma {
     platformOptimized?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    analytics?: AnalyticsOrderByWithRelationInput
     calendar?: CalendarOrderByWithRelationInput
     socialAccount?: SocialAccountOrderByWithRelationInput
-    analytics?: AnalyticsOrderByWithRelationInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -21727,9 +21727,9 @@ export namespace Prisma {
     platformOptimized?: JsonNullableFilter<"Post">
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
+    analytics?: XOR<AnalyticsNullableScalarRelationFilter, AnalyticsWhereInput> | null
     calendar?: XOR<CalendarScalarRelationFilter, CalendarWhereInput>
     socialAccount?: XOR<SocialAccountNullableScalarRelationFilter, SocialAccountWhereInput> | null
-    analytics?: XOR<AnalyticsNullableScalarRelationFilter, AnalyticsWhereInput> | null
   }, "id">
 
   export type PostOrderByWithAggregationInput = {
@@ -22194,14 +22194,14 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
     activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    companies?: TeamMemberCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -22211,14 +22211,14 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -22228,14 +22228,14 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    companies?: TeamMemberUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -22245,14 +22245,14 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -22262,10 +22262,10 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -22275,10 +22275,10 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -22288,10 +22288,10 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VerificationTokenCreateInput = {
@@ -22547,17 +22547,17 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
     calendars?: CalendarCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     invitations?: InvitationCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
@@ -22570,17 +22570,17 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
     calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
@@ -22593,17 +22593,17 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
@@ -22616,17 +22616,17 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
@@ -22639,9 +22639,9 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    brandFont?: string | null
   }
 
   export type CompanyUpdateManyMutationInput = {
@@ -22654,9 +22654,9 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CompanyUncheckedUpdateManyInput = {
@@ -22669,17 +22669,17 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TeamMemberCreateInput = {
     id?: string
     role?: $Enums.Role
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutCompaniesInput
     company: CompanyCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutCompaniesInput
   }
 
   export type TeamMemberUncheckedCreateInput = {
@@ -22694,8 +22694,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCompaniesNestedInput
     company?: CompanyUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutCompaniesNestedInput
   }
 
   export type TeamMemberUncheckedUpdateInput = {
@@ -22739,8 +22739,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    company: CompanyCreateNestedOneWithoutSocialAccountsInput
     posts?: PostCreateNestedManyWithoutSocialAccountInput
+    company: CompanyCreateNestedOneWithoutSocialAccountsInput
   }
 
   export type SocialAccountUncheckedCreateInput = {
@@ -22769,8 +22769,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    company?: CompanyUpdateOneRequiredWithoutSocialAccountsNestedInput
     posts?: PostUpdateManyWithoutSocialAccountNestedInput
+    company?: CompanyUpdateOneRequiredWithoutSocialAccountsNestedInput
   }
 
   export type SocialAccountUncheckedUpdateInput = {
@@ -22900,9 +22900,9 @@ export namespace Prisma {
     platformOptimized?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    analytics?: AnalyticsCreateNestedOneWithoutPostInput
     calendar: CalendarCreateNestedOneWithoutPostsInput
     socialAccount?: SocialAccountCreateNestedOneWithoutPostsInput
-    analytics?: AnalyticsCreateNestedOneWithoutPostInput
   }
 
   export type PostUncheckedCreateInput = {
@@ -22934,9 +22934,9 @@ export namespace Prisma {
     platformOptimized?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    analytics?: AnalyticsUpdateOneWithoutPostNestedInput
     calendar?: CalendarUpdateOneRequiredWithoutPostsNestedInput
     socialAccount?: SocialAccountUpdateOneWithoutPostsNestedInput
-    analytics?: AnalyticsUpdateOneWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
@@ -23477,11 +23477,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -23493,10 +23488,9 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type TeamMemberListRelationFilter = {
-    every?: TeamMemberWhereInput
-    some?: TeamMemberWhereInput
-    none?: TeamMemberWhereInput
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type AccountListRelationFilter = {
@@ -23505,16 +23499,22 @@ export namespace Prisma {
     none?: AccountWhereInput
   }
 
+  export type ActivityLogListRelationFilter = {
+    every?: ActivityLogWhereInput
+    some?: ActivityLogWhereInput
+    none?: ActivityLogWhereInput
+  }
+
   export type SessionListRelationFilter = {
     every?: SessionWhereInput
     some?: SessionWhereInput
     none?: SessionWhereInput
   }
 
-  export type ActivityLogListRelationFilter = {
-    every?: ActivityLogWhereInput
-    some?: ActivityLogWhereInput
-    none?: ActivityLogWhereInput
+  export type TeamMemberListRelationFilter = {
+    every?: TeamMemberWhereInput
+    some?: TeamMemberWhereInput
+    none?: TeamMemberWhereInput
   }
 
   export type SortOrderInput = {
@@ -23522,11 +23522,11 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type TeamMemberOrderByRelationAggregateInput = {
+  export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type AccountOrderByRelationAggregateInput = {
+  export type ActivityLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23534,7 +23534,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ActivityLogOrderByRelationAggregateInput = {
+  export type TeamMemberOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23545,10 +23545,10 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     password?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -23558,10 +23558,10 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     password?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -23571,10 +23571,10 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     password?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -23627,14 +23627,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -23647,6 +23639,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type VerificationTokenIdentifierTokenCompoundUniqueInput = {
@@ -23809,12 +23809,6 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
-  export type SocialAccountListRelationFilter = {
-    every?: SocialAccountWhereInput
-    some?: SocialAccountWhereInput
-    none?: SocialAccountWhereInput
-  }
-
   export type CalendarListRelationFilter = {
     every?: CalendarWhereInput
     some?: CalendarWhereInput
@@ -23827,9 +23821,10 @@ export namespace Prisma {
     none?: CampaignWhereInput
   }
 
-  export type SubscriptionNullableScalarRelationFilter = {
-    is?: SubscriptionWhereInput | null
-    isNot?: SubscriptionWhereInput | null
+  export type InvitationListRelationFilter = {
+    every?: InvitationWhereInput
+    some?: InvitationWhereInput
+    none?: InvitationWhereInput
   }
 
   export type InvoiceListRelationFilter = {
@@ -23838,14 +23833,15 @@ export namespace Prisma {
     none?: InvoiceWhereInput
   }
 
-  export type InvitationListRelationFilter = {
-    every?: InvitationWhereInput
-    some?: InvitationWhereInput
-    none?: InvitationWhereInput
+  export type SocialAccountListRelationFilter = {
+    every?: SocialAccountWhereInput
+    some?: SocialAccountWhereInput
+    none?: SocialAccountWhereInput
   }
 
-  export type SocialAccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type SubscriptionNullableScalarRelationFilter = {
+    is?: SubscriptionWhereInput | null
+    isNot?: SubscriptionWhereInput | null
   }
 
   export type CalendarOrderByRelationAggregateInput = {
@@ -23856,11 +23852,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type InvitationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type InvoiceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type InvitationOrderByRelationAggregateInput = {
+  export type SocialAccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23874,9 +23874,9 @@ export namespace Prisma {
     logo?: SortOrder
     primaryColor?: SortOrder
     secondaryColor?: SortOrder
-    brandFont?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    brandFont?: SortOrder
   }
 
   export type CompanyMaxOrderByAggregateInput = {
@@ -23889,9 +23889,9 @@ export namespace Prisma {
     logo?: SortOrder
     primaryColor?: SortOrder
     secondaryColor?: SortOrder
-    brandFont?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    brandFont?: SortOrder
   }
 
   export type CompanyMinOrderByAggregateInput = {
@@ -23904,9 +23904,9 @@ export namespace Prisma {
     logo?: SortOrder
     primaryColor?: SortOrder
     secondaryColor?: SortOrder
-    brandFont?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    brandFont?: SortOrder
   }
 
   export type EnumRoleFilter<$PrismaModel = never> = {
@@ -24147,6 +24147,11 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type AnalyticsNullableScalarRelationFilter = {
+    is?: AnalyticsWhereInput | null
+    isNot?: AnalyticsWhereInput | null
+  }
+
   export type CalendarScalarRelationFilter = {
     is?: CalendarWhereInput
     isNot?: CalendarWhereInput
@@ -24155,11 +24160,6 @@ export namespace Prisma {
   export type SocialAccountNullableScalarRelationFilter = {
     is?: SocialAccountWhereInput | null
     isNot?: SocialAccountWhereInput | null
-  }
-
-  export type AnalyticsNullableScalarRelationFilter = {
-    is?: AnalyticsWhereInput | null
-    isNot?: AnalyticsWhereInput | null
   }
 
   export type PostCountOrderByAggregateInput = {
@@ -24523,25 +24523,11 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
-  export type TeamMemberCreateNestedManyWithoutUserInput = {
-    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
-    createMany?: TeamMemberCreateManyUserInputEnvelope
-    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-  }
-
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
     createMany?: AccountCreateManyUserInputEnvelope
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-  }
-
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type ActivityLogCreateNestedManyWithoutUserInput = {
@@ -24551,7 +24537,14 @@ export namespace Prisma {
     connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
   }
 
-  export type TeamMemberUncheckedCreateNestedManyWithoutUserInput = {
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type TeamMemberCreateNestedManyWithoutUserInput = {
     create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
     createMany?: TeamMemberCreateManyUserInputEnvelope
@@ -24565,6 +24558,13 @@ export namespace Prisma {
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
+  export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
+    createMany?: ActivityLogCreateManyUserInputEnvelope
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -24572,11 +24572,11 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
-    createMany?: ActivityLogCreateManyUserInputEnvelope
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+  export type TeamMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
+    createMany?: TeamMemberCreateManyUserInputEnvelope
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -24591,26 +24591,12 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
 
-  export type TeamMemberUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
-    upsert?: TeamMemberUpsertWithWhereUniqueWithoutUserInput | TeamMemberUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TeamMemberCreateManyUserInputEnvelope
-    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    update?: TeamMemberUpdateWithWhereUniqueWithoutUserInput | TeamMemberUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TeamMemberUpdateManyWithWhereWithoutUserInput | TeamMemberUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -24627,20 +24613,6 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
   export type ActivityLogUpdateManyWithoutUserNestedInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -24655,7 +24627,21 @@ export namespace Prisma {
     deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
   }
 
-  export type TeamMemberUncheckedUpdateManyWithoutUserNestedInput = {
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type TeamMemberUpdateManyWithoutUserNestedInput = {
     create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
     upsert?: TeamMemberUpsertWithWhereUniqueWithoutUserInput | TeamMemberUpsertWithWhereUniqueWithoutUserInput[]
@@ -24683,6 +24669,20 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
+  export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
+    upsert?: ActivityLogUpsertWithWhereUniqueWithoutUserInput | ActivityLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ActivityLogCreateManyUserInputEnvelope
+    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    update?: ActivityLogUpdateWithWhereUniqueWithoutUserInput | ActivityLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ActivityLogUpdateManyWithWhereWithoutUserInput | ActivityLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -24697,18 +24697,18 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
-  export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
-    upsert?: ActivityLogUpsertWithWhereUniqueWithoutUserInput | ActivityLogUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ActivityLogCreateManyUserInputEnvelope
-    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    update?: ActivityLogUpdateWithWhereUniqueWithoutUserInput | ActivityLogUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ActivityLogUpdateManyWithWhereWithoutUserInput | ActivityLogUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+  export type TeamMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
+    upsert?: TeamMemberUpsertWithWhereUniqueWithoutUserInput | TeamMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TeamMemberCreateManyUserInputEnvelope
+    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    update?: TeamMemberUpdateWithWhereUniqueWithoutUserInput | TeamMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TeamMemberUpdateManyWithWhereWithoutUserInput | TeamMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -24747,18 +24747,11 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
-  export type TeamMemberCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput> | TeamMemberCreateWithoutCompanyInput[] | TeamMemberUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: TeamMemberCreateOrConnectWithoutCompanyInput | TeamMemberCreateOrConnectWithoutCompanyInput[]
-    createMany?: TeamMemberCreateManyCompanyInputEnvelope
-    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-  }
-
-  export type SocialAccountCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput> | SocialAccountCreateWithoutCompanyInput[] | SocialAccountUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: SocialAccountCreateOrConnectWithoutCompanyInput | SocialAccountCreateOrConnectWithoutCompanyInput[]
-    createMany?: SocialAccountCreateManyCompanyInputEnvelope
-    connect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+  export type ActivityLogCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
+    createMany?: ActivityLogCreateManyCompanyInputEnvelope
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
   }
 
   export type CalendarCreateNestedManyWithoutCompanyInput = {
@@ -24775,10 +24768,11 @@ export namespace Prisma {
     connect?: CampaignWhereUniqueInput | CampaignWhereUniqueInput[]
   }
 
-  export type SubscriptionCreateNestedOneWithoutCompanyInput = {
-    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
-    connect?: SubscriptionWhereUniqueInput
+  export type InvitationCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
+    createMany?: InvitationCreateManyCompanyInputEnvelope
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
   }
 
   export type InvoiceCreateNestedManyWithoutCompanyInput = {
@@ -24788,32 +24782,31 @@ export namespace Prisma {
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
   }
 
-  export type InvitationCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
-    createMany?: InvitationCreateManyCompanyInputEnvelope
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+  export type SocialAccountCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput> | SocialAccountCreateWithoutCompanyInput[] | SocialAccountUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: SocialAccountCreateOrConnectWithoutCompanyInput | SocialAccountCreateOrConnectWithoutCompanyInput[]
+    createMany?: SocialAccountCreateManyCompanyInputEnvelope
+    connect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
   }
 
-  export type ActivityLogCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
-    createMany?: ActivityLogCreateManyCompanyInputEnvelope
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+  export type SubscriptionCreateNestedOneWithoutCompanyInput = {
+    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
+    connect?: SubscriptionWhereUniqueInput
   }
 
-  export type TeamMemberUncheckedCreateNestedManyWithoutCompanyInput = {
+  export type TeamMemberCreateNestedManyWithoutCompanyInput = {
     create?: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput> | TeamMemberCreateWithoutCompanyInput[] | TeamMemberUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: TeamMemberCreateOrConnectWithoutCompanyInput | TeamMemberCreateOrConnectWithoutCompanyInput[]
     createMany?: TeamMemberCreateManyCompanyInputEnvelope
     connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
   }
 
-  export type SocialAccountUncheckedCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput> | SocialAccountCreateWithoutCompanyInput[] | SocialAccountUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: SocialAccountCreateOrConnectWithoutCompanyInput | SocialAccountCreateOrConnectWithoutCompanyInput[]
-    createMany?: SocialAccountCreateManyCompanyInputEnvelope
-    connect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+  export type ActivityLogUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
+    createMany?: ActivityLogCreateManyCompanyInputEnvelope
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
   }
 
   export type CalendarUncheckedCreateNestedManyWithoutCompanyInput = {
@@ -24830,10 +24823,11 @@ export namespace Prisma {
     connect?: CampaignWhereUniqueInput | CampaignWhereUniqueInput[]
   }
 
-  export type SubscriptionUncheckedCreateNestedOneWithoutCompanyInput = {
-    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
-    connect?: SubscriptionWhereUniqueInput
+  export type InvitationUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
+    createMany?: InvitationCreateManyCompanyInputEnvelope
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
   }
 
   export type InvoiceUncheckedCreateNestedManyWithoutCompanyInput = {
@@ -24843,46 +24837,38 @@ export namespace Prisma {
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
   }
 
-  export type InvitationUncheckedCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
-    createMany?: InvitationCreateManyCompanyInputEnvelope
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-  }
-
-  export type ActivityLogUncheckedCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
-    createMany?: ActivityLogCreateManyCompanyInputEnvelope
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-  }
-
-  export type TeamMemberUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput> | TeamMemberCreateWithoutCompanyInput[] | TeamMemberUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: TeamMemberCreateOrConnectWithoutCompanyInput | TeamMemberCreateOrConnectWithoutCompanyInput[]
-    upsert?: TeamMemberUpsertWithWhereUniqueWithoutCompanyInput | TeamMemberUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: TeamMemberCreateManyCompanyInputEnvelope
-    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
-    update?: TeamMemberUpdateWithWhereUniqueWithoutCompanyInput | TeamMemberUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: TeamMemberUpdateManyWithWhereWithoutCompanyInput | TeamMemberUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
-  }
-
-  export type SocialAccountUpdateManyWithoutCompanyNestedInput = {
+  export type SocialAccountUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput> | SocialAccountCreateWithoutCompanyInput[] | SocialAccountUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: SocialAccountCreateOrConnectWithoutCompanyInput | SocialAccountCreateOrConnectWithoutCompanyInput[]
-    upsert?: SocialAccountUpsertWithWhereUniqueWithoutCompanyInput | SocialAccountUpsertWithWhereUniqueWithoutCompanyInput[]
     createMany?: SocialAccountCreateManyCompanyInputEnvelope
-    set?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
-    disconnect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
-    delete?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
     connect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
-    update?: SocialAccountUpdateWithWhereUniqueWithoutCompanyInput | SocialAccountUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: SocialAccountUpdateManyWithWhereWithoutCompanyInput | SocialAccountUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
+  }
+
+  export type SubscriptionUncheckedCreateNestedOneWithoutCompanyInput = {
+    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
+    connect?: SubscriptionWhereUniqueInput
+  }
+
+  export type TeamMemberUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput> | TeamMemberCreateWithoutCompanyInput[] | TeamMemberUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutCompanyInput | TeamMemberCreateOrConnectWithoutCompanyInput[]
+    createMany?: TeamMemberCreateManyCompanyInputEnvelope
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+  }
+
+  export type ActivityLogUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
+    upsert?: ActivityLogUpsertWithWhereUniqueWithoutCompanyInput | ActivityLogUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: ActivityLogCreateManyCompanyInputEnvelope
+    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    update?: ActivityLogUpdateWithWhereUniqueWithoutCompanyInput | ActivityLogUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: ActivityLogUpdateManyWithWhereWithoutCompanyInput | ActivityLogUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
   }
 
   export type CalendarUpdateManyWithoutCompanyNestedInput = {
@@ -24913,14 +24899,18 @@ export namespace Prisma {
     deleteMany?: CampaignScalarWhereInput | CampaignScalarWhereInput[]
   }
 
-  export type SubscriptionUpdateOneWithoutCompanyNestedInput = {
-    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
-    upsert?: SubscriptionUpsertWithoutCompanyInput
-    disconnect?: SubscriptionWhereInput | boolean
-    delete?: SubscriptionWhereInput | boolean
-    connect?: SubscriptionWhereUniqueInput
-    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutCompanyInput, SubscriptionUpdateWithoutCompanyInput>, SubscriptionUncheckedUpdateWithoutCompanyInput>
+  export type InvitationUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
+    upsert?: InvitationUpsertWithWhereUniqueWithoutCompanyInput | InvitationUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: InvitationCreateManyCompanyInputEnvelope
+    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    update?: InvitationUpdateWithWhereUniqueWithoutCompanyInput | InvitationUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: InvitationUpdateManyWithWhereWithoutCompanyInput | InvitationUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
   }
 
   export type InvoiceUpdateManyWithoutCompanyNestedInput = {
@@ -24937,35 +24927,31 @@ export namespace Prisma {
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
   }
 
-  export type InvitationUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
-    upsert?: InvitationUpsertWithWhereUniqueWithoutCompanyInput | InvitationUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: InvitationCreateManyCompanyInputEnvelope
-    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    update?: InvitationUpdateWithWhereUniqueWithoutCompanyInput | InvitationUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: InvitationUpdateManyWithWhereWithoutCompanyInput | InvitationUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+  export type SocialAccountUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput> | SocialAccountCreateWithoutCompanyInput[] | SocialAccountUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: SocialAccountCreateOrConnectWithoutCompanyInput | SocialAccountCreateOrConnectWithoutCompanyInput[]
+    upsert?: SocialAccountUpsertWithWhereUniqueWithoutCompanyInput | SocialAccountUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: SocialAccountCreateManyCompanyInputEnvelope
+    set?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    disconnect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    delete?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    connect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    update?: SocialAccountUpdateWithWhereUniqueWithoutCompanyInput | SocialAccountUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: SocialAccountUpdateManyWithWhereWithoutCompanyInput | SocialAccountUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
   }
 
-  export type ActivityLogUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
-    upsert?: ActivityLogUpsertWithWhereUniqueWithoutCompanyInput | ActivityLogUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: ActivityLogCreateManyCompanyInputEnvelope
-    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    update?: ActivityLogUpdateWithWhereUniqueWithoutCompanyInput | ActivityLogUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: ActivityLogUpdateManyWithWhereWithoutCompanyInput | ActivityLogUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+  export type SubscriptionUpdateOneWithoutCompanyNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
+    upsert?: SubscriptionUpsertWithoutCompanyInput
+    disconnect?: SubscriptionWhereInput | boolean
+    delete?: SubscriptionWhereInput | boolean
+    connect?: SubscriptionWhereUniqueInput
+    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutCompanyInput, SubscriptionUpdateWithoutCompanyInput>, SubscriptionUncheckedUpdateWithoutCompanyInput>
   }
 
-  export type TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput = {
+  export type TeamMemberUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput> | TeamMemberCreateWithoutCompanyInput[] | TeamMemberUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: TeamMemberCreateOrConnectWithoutCompanyInput | TeamMemberCreateOrConnectWithoutCompanyInput[]
     upsert?: TeamMemberUpsertWithWhereUniqueWithoutCompanyInput | TeamMemberUpsertWithWhereUniqueWithoutCompanyInput[]
@@ -24979,18 +24965,18 @@ export namespace Prisma {
     deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
   }
 
-  export type SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput> | SocialAccountCreateWithoutCompanyInput[] | SocialAccountUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: SocialAccountCreateOrConnectWithoutCompanyInput | SocialAccountCreateOrConnectWithoutCompanyInput[]
-    upsert?: SocialAccountUpsertWithWhereUniqueWithoutCompanyInput | SocialAccountUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: SocialAccountCreateManyCompanyInputEnvelope
-    set?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
-    disconnect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
-    delete?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
-    connect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
-    update?: SocialAccountUpdateWithWhereUniqueWithoutCompanyInput | SocialAccountUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: SocialAccountUpdateManyWithWhereWithoutCompanyInput | SocialAccountUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
+  export type ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
+    upsert?: ActivityLogUpsertWithWhereUniqueWithoutCompanyInput | ActivityLogUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: ActivityLogCreateManyCompanyInputEnvelope
+    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    update?: ActivityLogUpdateWithWhereUniqueWithoutCompanyInput | ActivityLogUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: ActivityLogUpdateManyWithWhereWithoutCompanyInput | ActivityLogUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
   }
 
   export type CalendarUncheckedUpdateManyWithoutCompanyNestedInput = {
@@ -25021,14 +25007,18 @@ export namespace Prisma {
     deleteMany?: CampaignScalarWhereInput | CampaignScalarWhereInput[]
   }
 
-  export type SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput = {
-    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
-    upsert?: SubscriptionUpsertWithoutCompanyInput
-    disconnect?: SubscriptionWhereInput | boolean
-    delete?: SubscriptionWhereInput | boolean
-    connect?: SubscriptionWhereUniqueInput
-    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutCompanyInput, SubscriptionUpdateWithoutCompanyInput>, SubscriptionUncheckedUpdateWithoutCompanyInput>
+  export type InvitationUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
+    upsert?: InvitationUpsertWithWhereUniqueWithoutCompanyInput | InvitationUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: InvitationCreateManyCompanyInputEnvelope
+    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    update?: InvitationUpdateWithWhereUniqueWithoutCompanyInput | InvitationUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: InvitationUpdateManyWithWhereWithoutCompanyInput | InvitationUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
   }
 
   export type InvoiceUncheckedUpdateManyWithoutCompanyNestedInput = {
@@ -25045,38 +25035,42 @@ export namespace Prisma {
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
   }
 
-  export type InvitationUncheckedUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput> | InvitationCreateWithoutCompanyInput[] | InvitationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutCompanyInput | InvitationCreateOrConnectWithoutCompanyInput[]
-    upsert?: InvitationUpsertWithWhereUniqueWithoutCompanyInput | InvitationUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: InvitationCreateManyCompanyInputEnvelope
-    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    update?: InvitationUpdateWithWhereUniqueWithoutCompanyInput | InvitationUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: InvitationUpdateManyWithWhereWithoutCompanyInput | InvitationUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+  export type SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput> | SocialAccountCreateWithoutCompanyInput[] | SocialAccountUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: SocialAccountCreateOrConnectWithoutCompanyInput | SocialAccountCreateOrConnectWithoutCompanyInput[]
+    upsert?: SocialAccountUpsertWithWhereUniqueWithoutCompanyInput | SocialAccountUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: SocialAccountCreateManyCompanyInputEnvelope
+    set?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    disconnect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    delete?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    connect?: SocialAccountWhereUniqueInput | SocialAccountWhereUniqueInput[]
+    update?: SocialAccountUpdateWithWhereUniqueWithoutCompanyInput | SocialAccountUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: SocialAccountUpdateManyWithWhereWithoutCompanyInput | SocialAccountUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
   }
 
-  export type ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
-    upsert?: ActivityLogUpsertWithWhereUniqueWithoutCompanyInput | ActivityLogUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: ActivityLogCreateManyCompanyInputEnvelope
-    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    update?: ActivityLogUpdateWithWhereUniqueWithoutCompanyInput | ActivityLogUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: ActivityLogUpdateManyWithWhereWithoutCompanyInput | ActivityLogUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+  export type SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutCompanyInput
+    upsert?: SubscriptionUpsertWithoutCompanyInput
+    disconnect?: SubscriptionWhereInput | boolean
+    delete?: SubscriptionWhereInput | boolean
+    connect?: SubscriptionWhereUniqueInput
+    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutCompanyInput, SubscriptionUpdateWithoutCompanyInput>, SubscriptionUncheckedUpdateWithoutCompanyInput>
   }
 
-  export type UserCreateNestedOneWithoutCompaniesInput = {
-    create?: XOR<UserCreateWithoutCompaniesInput, UserUncheckedCreateWithoutCompaniesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCompaniesInput
-    connect?: UserWhereUniqueInput
+  export type TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput> | TeamMemberCreateWithoutCompanyInput[] | TeamMemberUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutCompanyInput | TeamMemberCreateOrConnectWithoutCompanyInput[]
+    upsert?: TeamMemberUpsertWithWhereUniqueWithoutCompanyInput | TeamMemberUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TeamMemberCreateManyCompanyInputEnvelope
+    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    update?: TeamMemberUpdateWithWhereUniqueWithoutCompanyInput | TeamMemberUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TeamMemberUpdateManyWithWhereWithoutCompanyInput | TeamMemberUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
   }
 
   export type CompanyCreateNestedOneWithoutMembersInput = {
@@ -25085,16 +25079,14 @@ export namespace Prisma {
     connect?: CompanyWhereUniqueInput
   }
 
-  export type EnumRoleFieldUpdateOperationsInput = {
-    set?: $Enums.Role
-  }
-
-  export type UserUpdateOneRequiredWithoutCompaniesNestedInput = {
+  export type UserCreateNestedOneWithoutCompaniesInput = {
     create?: XOR<UserCreateWithoutCompaniesInput, UserUncheckedCreateWithoutCompaniesInput>
     connectOrCreate?: UserCreateOrConnectWithoutCompaniesInput
-    upsert?: UserUpsertWithoutCompaniesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCompaniesInput, UserUpdateWithoutCompaniesInput>, UserUncheckedUpdateWithoutCompaniesInput>
+  }
+
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type CompanyUpdateOneRequiredWithoutMembersNestedInput = {
@@ -25105,10 +25097,12 @@ export namespace Prisma {
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutMembersInput, CompanyUpdateWithoutMembersInput>, CompanyUncheckedUpdateWithoutMembersInput>
   }
 
-  export type CompanyCreateNestedOneWithoutSocialAccountsInput = {
-    create?: XOR<CompanyCreateWithoutSocialAccountsInput, CompanyUncheckedCreateWithoutSocialAccountsInput>
-    connectOrCreate?: CompanyCreateOrConnectWithoutSocialAccountsInput
-    connect?: CompanyWhereUniqueInput
+  export type UserUpdateOneRequiredWithoutCompaniesNestedInput = {
+    create?: XOR<UserCreateWithoutCompaniesInput, UserUncheckedCreateWithoutCompaniesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCompaniesInput
+    upsert?: UserUpsertWithoutCompaniesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCompaniesInput, UserUpdateWithoutCompaniesInput>, UserUncheckedUpdateWithoutCompaniesInput>
   }
 
   export type PostCreateNestedManyWithoutSocialAccountInput = {
@@ -25118,19 +25112,17 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
+  export type CompanyCreateNestedOneWithoutSocialAccountsInput = {
+    create?: XOR<CompanyCreateWithoutSocialAccountsInput, CompanyUncheckedCreateWithoutSocialAccountsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutSocialAccountsInput
+    connect?: CompanyWhereUniqueInput
+  }
+
   export type PostUncheckedCreateNestedManyWithoutSocialAccountInput = {
     create?: XOR<PostCreateWithoutSocialAccountInput, PostUncheckedCreateWithoutSocialAccountInput> | PostCreateWithoutSocialAccountInput[] | PostUncheckedCreateWithoutSocialAccountInput[]
     connectOrCreate?: PostCreateOrConnectWithoutSocialAccountInput | PostCreateOrConnectWithoutSocialAccountInput[]
     createMany?: PostCreateManySocialAccountInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
-  }
-
-  export type CompanyUpdateOneRequiredWithoutSocialAccountsNestedInput = {
-    create?: XOR<CompanyCreateWithoutSocialAccountsInput, CompanyUncheckedCreateWithoutSocialAccountsInput>
-    connectOrCreate?: CompanyCreateOrConnectWithoutSocialAccountsInput
-    upsert?: CompanyUpsertWithoutSocialAccountsInput
-    connect?: CompanyWhereUniqueInput
-    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutSocialAccountsInput, CompanyUpdateWithoutSocialAccountsInput>, CompanyUncheckedUpdateWithoutSocialAccountsInput>
   }
 
   export type PostUpdateManyWithoutSocialAccountNestedInput = {
@@ -25145,6 +25137,14 @@ export namespace Prisma {
     update?: PostUpdateWithWhereUniqueWithoutSocialAccountInput | PostUpdateWithWhereUniqueWithoutSocialAccountInput[]
     updateMany?: PostUpdateManyWithWhereWithoutSocialAccountInput | PostUpdateManyWithWhereWithoutSocialAccountInput[]
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type CompanyUpdateOneRequiredWithoutSocialAccountsNestedInput = {
+    create?: XOR<CompanyCreateWithoutSocialAccountsInput, CompanyUncheckedCreateWithoutSocialAccountsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutSocialAccountsInput
+    upsert?: CompanyUpsertWithoutSocialAccountsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutSocialAccountsInput, CompanyUpdateWithoutSocialAccountsInput>, CompanyUncheckedUpdateWithoutSocialAccountsInput>
   }
 
   export type PostUncheckedUpdateManyWithoutSocialAccountNestedInput = {
@@ -25229,6 +25229,12 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type AnalyticsCreateNestedOneWithoutPostInput = {
+    create?: XOR<AnalyticsCreateWithoutPostInput, AnalyticsUncheckedCreateWithoutPostInput>
+    connectOrCreate?: AnalyticsCreateOrConnectWithoutPostInput
+    connect?: AnalyticsWhereUniqueInput
+  }
+
   export type CalendarCreateNestedOneWithoutPostsInput = {
     create?: XOR<CalendarCreateWithoutPostsInput, CalendarUncheckedCreateWithoutPostsInput>
     connectOrCreate?: CalendarCreateOrConnectWithoutPostsInput
@@ -25239,12 +25245,6 @@ export namespace Prisma {
     create?: XOR<SocialAccountCreateWithoutPostsInput, SocialAccountUncheckedCreateWithoutPostsInput>
     connectOrCreate?: SocialAccountCreateOrConnectWithoutPostsInput
     connect?: SocialAccountWhereUniqueInput
-  }
-
-  export type AnalyticsCreateNestedOneWithoutPostInput = {
-    create?: XOR<AnalyticsCreateWithoutPostInput, AnalyticsUncheckedCreateWithoutPostInput>
-    connectOrCreate?: AnalyticsCreateOrConnectWithoutPostInput
-    connect?: AnalyticsWhereUniqueInput
   }
 
   export type AnalyticsUncheckedCreateNestedOneWithoutPostInput = {
@@ -25260,6 +25260,16 @@ export namespace Prisma {
   export type PostUpdatemediaUrlsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type AnalyticsUpdateOneWithoutPostNestedInput = {
+    create?: XOR<AnalyticsCreateWithoutPostInput, AnalyticsUncheckedCreateWithoutPostInput>
+    connectOrCreate?: AnalyticsCreateOrConnectWithoutPostInput
+    upsert?: AnalyticsUpsertWithoutPostInput
+    disconnect?: AnalyticsWhereInput | boolean
+    delete?: AnalyticsWhereInput | boolean
+    connect?: AnalyticsWhereUniqueInput
+    update?: XOR<XOR<AnalyticsUpdateToOneWithWhereWithoutPostInput, AnalyticsUpdateWithoutPostInput>, AnalyticsUncheckedUpdateWithoutPostInput>
   }
 
   export type CalendarUpdateOneRequiredWithoutPostsNestedInput = {
@@ -25278,16 +25288,6 @@ export namespace Prisma {
     delete?: SocialAccountWhereInput | boolean
     connect?: SocialAccountWhereUniqueInput
     update?: XOR<XOR<SocialAccountUpdateToOneWithWhereWithoutPostsInput, SocialAccountUpdateWithoutPostsInput>, SocialAccountUncheckedUpdateWithoutPostsInput>
-  }
-
-  export type AnalyticsUpdateOneWithoutPostNestedInput = {
-    create?: XOR<AnalyticsCreateWithoutPostInput, AnalyticsUncheckedCreateWithoutPostInput>
-    connectOrCreate?: AnalyticsCreateOrConnectWithoutPostInput
-    upsert?: AnalyticsUpsertWithoutPostInput
-    disconnect?: AnalyticsWhereInput | boolean
-    delete?: AnalyticsWhereInput | boolean
-    connect?: AnalyticsWhereUniqueInput
-    update?: XOR<XOR<AnalyticsUpdateToOneWithWhereWithoutPostInput, AnalyticsUpdateWithoutPostInput>, AnalyticsUncheckedUpdateWithoutPostInput>
   }
 
   export type AnalyticsUncheckedUpdateOneWithoutPostNestedInput = {
@@ -25455,11 +25455,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -25469,6 +25464,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -25541,14 +25541,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -25561,6 +25553,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -25724,30 +25724,6 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type TeamMemberCreateWithoutUserInput = {
-    id?: string
-    role?: $Enums.Role
-    createdAt?: Date | string
-    company: CompanyCreateNestedOneWithoutMembersInput
-  }
-
-  export type TeamMemberUncheckedCreateWithoutUserInput = {
-    id?: string
-    companyId: string
-    role?: $Enums.Role
-    createdAt?: Date | string
-  }
-
-  export type TeamMemberCreateOrConnectWithoutUserInput = {
-    where: TeamMemberWhereUniqueInput
-    create: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput>
-  }
-
-  export type TeamMemberCreateManyUserInputEnvelope = {
-    data: TeamMemberCreateManyUserInput | TeamMemberCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -25786,28 +25762,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SessionCreateWithoutUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type ActivityLogCreateWithoutUserInput = {
     id?: string
     action: string
@@ -25834,31 +25788,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type TeamMemberUpsertWithWhereUniqueWithoutUserInput = {
+  export type SessionCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TeamMemberCreateWithoutUserInput = {
+    id?: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    company: CompanyCreateNestedOneWithoutMembersInput
+  }
+
+  export type TeamMemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    companyId: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+  }
+
+  export type TeamMemberCreateOrConnectWithoutUserInput = {
     where: TeamMemberWhereUniqueInput
-    update: XOR<TeamMemberUpdateWithoutUserInput, TeamMemberUncheckedUpdateWithoutUserInput>
     create: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput>
   }
 
-  export type TeamMemberUpdateWithWhereUniqueWithoutUserInput = {
-    where: TeamMemberWhereUniqueInput
-    data: XOR<TeamMemberUpdateWithoutUserInput, TeamMemberUncheckedUpdateWithoutUserInput>
-  }
-
-  export type TeamMemberUpdateManyWithWhereWithoutUserInput = {
-    where: TeamMemberScalarWhereInput
-    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type TeamMemberScalarWhereInput = {
-    AND?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
-    OR?: TeamMemberScalarWhereInput[]
-    NOT?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
-    id?: StringFilter<"TeamMember"> | string
-    userId?: StringFilter<"TeamMember"> | string
-    companyId?: StringFilter<"TeamMember"> | string
-    role?: EnumRoleFilter<"TeamMember"> | $Enums.Role
-    createdAt?: DateTimeFilter<"TeamMember"> | Date | string
+  export type TeamMemberCreateManyUserInputEnvelope = {
+    data: TeamMemberCreateManyUserInput | TeamMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -25895,32 +25868,6 @@ export namespace Prisma {
     session_state?: StringNullableFilter<"Account"> | string | null
   }
 
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    sessionToken?: StringFilter<"Session"> | string
-    userId?: StringFilter<"Session"> | string
-    expires?: DateTimeFilter<"Session"> | Date | string
-  }
-
   export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityLogWhereUniqueInput
     update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
@@ -25949,6 +25896,59 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ActivityLog"> | Date | string
   }
 
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    expires?: DateTimeFilter<"Session"> | Date | string
+  }
+
+  export type TeamMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: TeamMemberWhereUniqueInput
+    update: XOR<TeamMemberUpdateWithoutUserInput, TeamMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type TeamMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: TeamMemberWhereUniqueInput
+    data: XOR<TeamMemberUpdateWithoutUserInput, TeamMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TeamMemberUpdateManyWithWhereWithoutUserInput = {
+    where: TeamMemberScalarWhereInput
+    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TeamMemberScalarWhereInput = {
+    AND?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+    OR?: TeamMemberScalarWhereInput[]
+    NOT?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+    id?: StringFilter<"TeamMember"> | string
+    userId?: StringFilter<"TeamMember"> | string
+    companyId?: StringFilter<"TeamMember"> | string
+    role?: EnumRoleFilter<"TeamMember"> | $Enums.Role
+    createdAt?: DateTimeFilter<"TeamMember"> | Date | string
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -25956,13 +25956,13 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    companies?: TeamMemberCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -25972,13 +25972,13 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -26004,13 +26004,13 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    companies?: TeamMemberUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -26020,13 +26020,13 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -26036,13 +26036,13 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    companies?: TeamMemberCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -26052,13 +26052,13 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -26084,13 +26084,13 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    companies?: TeamMemberUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -26100,74 +26100,38 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type TeamMemberCreateWithoutCompanyInput = {
+  export type ActivityLogCreateWithoutCompanyInput = {
     id?: string
-    role?: $Enums.Role
+    action: string
+    details?: string | null
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutCompaniesInput
+    user?: UserCreateNestedOneWithoutActivityLogsInput
   }
 
-  export type TeamMemberUncheckedCreateWithoutCompanyInput = {
+  export type ActivityLogUncheckedCreateWithoutCompanyInput = {
     id?: string
-    userId: string
-    role?: $Enums.Role
+    userId?: string | null
+    action: string
+    details?: string | null
     createdAt?: Date | string
   }
 
-  export type TeamMemberCreateOrConnectWithoutCompanyInput = {
-    where: TeamMemberWhereUniqueInput
-    create: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput>
+  export type ActivityLogCreateOrConnectWithoutCompanyInput = {
+    where: ActivityLogWhereUniqueInput
+    create: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput>
   }
 
-  export type TeamMemberCreateManyCompanyInputEnvelope = {
-    data: TeamMemberCreateManyCompanyInput | TeamMemberCreateManyCompanyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type SocialAccountCreateWithoutCompanyInput = {
-    id?: string
-    platform: string
-    platformId: string
-    name: string
-    accessToken: string
-    refreshToken?: string | null
-    expiresAt?: Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    posts?: PostCreateNestedManyWithoutSocialAccountInput
-  }
-
-  export type SocialAccountUncheckedCreateWithoutCompanyInput = {
-    id?: string
-    platform: string
-    platformId: string
-    name: string
-    accessToken: string
-    refreshToken?: string | null
-    expiresAt?: Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    posts?: PostUncheckedCreateNestedManyWithoutSocialAccountInput
-  }
-
-  export type SocialAccountCreateOrConnectWithoutCompanyInput = {
-    where: SocialAccountWhereUniqueInput
-    create: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type SocialAccountCreateManyCompanyInputEnvelope = {
-    data: SocialAccountCreateManyCompanyInput | SocialAccountCreateManyCompanyInput[]
+  export type ActivityLogCreateManyCompanyInputEnvelope = {
+    data: ActivityLogCreateManyCompanyInput | ActivityLogCreateManyCompanyInput[]
     skipDuplicates?: boolean
   }
 
@@ -26227,29 +26191,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SubscriptionCreateWithoutCompanyInput = {
+  export type InvitationCreateWithoutCompanyInput = {
     id?: string
-    plan?: $Enums.SubscriptionPlan
-    status?: $Enums.SubscriptionStatus
-    currentPeriodEnd?: Date | string | null
-    usageCount?: number
+    email: string
+    role?: $Enums.Role
+    token: string
+    expires: Date | string
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type SubscriptionUncheckedCreateWithoutCompanyInput = {
+  export type InvitationUncheckedCreateWithoutCompanyInput = {
     id?: string
-    plan?: $Enums.SubscriptionPlan
-    status?: $Enums.SubscriptionStatus
-    currentPeriodEnd?: Date | string | null
-    usageCount?: number
+    email: string
+    role?: $Enums.Role
+    token: string
+    expires: Date | string
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type SubscriptionCreateOrConnectWithoutCompanyInput = {
-    where: SubscriptionWhereUniqueInput
-    create: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
+  export type InvitationCreateOrConnectWithoutCompanyInput = {
+    where: InvitationWhereUniqueInput
+    create: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type InvitationCreateManyCompanyInputEnvelope = {
+    data: InvitationCreateManyCompanyInput | InvitationCreateManyCompanyInput[]
+    skipDuplicates?: boolean
   }
 
   export type InvoiceCreateWithoutCompanyInput = {
@@ -26280,107 +26247,107 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type InvitationCreateWithoutCompanyInput = {
+  export type SocialAccountCreateWithoutCompanyInput = {
     id?: string
-    email: string
-    role?: $Enums.Role
-    token: string
-    expires: Date | string
+    platform: string
+    platformId: string
+    name: string
+    accessToken: string
+    refreshToken?: string | null
+    expiresAt?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
+    updatedAt?: Date | string
+    posts?: PostCreateNestedManyWithoutSocialAccountInput
   }
 
-  export type InvitationUncheckedCreateWithoutCompanyInput = {
+  export type SocialAccountUncheckedCreateWithoutCompanyInput = {
     id?: string
-    email: string
-    role?: $Enums.Role
-    token: string
-    expires: Date | string
+    platform: string
+    platformId: string
+    name: string
+    accessToken: string
+    refreshToken?: string | null
+    expiresAt?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
+    updatedAt?: Date | string
+    posts?: PostUncheckedCreateNestedManyWithoutSocialAccountInput
   }
 
-  export type InvitationCreateOrConnectWithoutCompanyInput = {
-    where: InvitationWhereUniqueInput
-    create: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type InvitationCreateManyCompanyInputEnvelope = {
-    data: InvitationCreateManyCompanyInput | InvitationCreateManyCompanyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ActivityLogCreateWithoutCompanyInput = {
-    id?: string
-    action: string
-    details?: string | null
-    createdAt?: Date | string
-    user?: UserCreateNestedOneWithoutActivityLogsInput
-  }
-
-  export type ActivityLogUncheckedCreateWithoutCompanyInput = {
-    id?: string
-    userId?: string | null
-    action: string
-    details?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ActivityLogCreateOrConnectWithoutCompanyInput = {
-    where: ActivityLogWhereUniqueInput
-    create: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type ActivityLogCreateManyCompanyInputEnvelope = {
-    data: ActivityLogCreateManyCompanyInput | ActivityLogCreateManyCompanyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TeamMemberUpsertWithWhereUniqueWithoutCompanyInput = {
-    where: TeamMemberWhereUniqueInput
-    update: XOR<TeamMemberUpdateWithoutCompanyInput, TeamMemberUncheckedUpdateWithoutCompanyInput>
-    create: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type TeamMemberUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: TeamMemberWhereUniqueInput
-    data: XOR<TeamMemberUpdateWithoutCompanyInput, TeamMemberUncheckedUpdateWithoutCompanyInput>
-  }
-
-  export type TeamMemberUpdateManyWithWhereWithoutCompanyInput = {
-    where: TeamMemberScalarWhereInput
-    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyWithoutCompanyInput>
-  }
-
-  export type SocialAccountUpsertWithWhereUniqueWithoutCompanyInput = {
+  export type SocialAccountCreateOrConnectWithoutCompanyInput = {
     where: SocialAccountWhereUniqueInput
-    update: XOR<SocialAccountUpdateWithoutCompanyInput, SocialAccountUncheckedUpdateWithoutCompanyInput>
     create: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput>
   }
 
-  export type SocialAccountUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: SocialAccountWhereUniqueInput
-    data: XOR<SocialAccountUpdateWithoutCompanyInput, SocialAccountUncheckedUpdateWithoutCompanyInput>
+  export type SocialAccountCreateManyCompanyInputEnvelope = {
+    data: SocialAccountCreateManyCompanyInput | SocialAccountCreateManyCompanyInput[]
+    skipDuplicates?: boolean
   }
 
-  export type SocialAccountUpdateManyWithWhereWithoutCompanyInput = {
-    where: SocialAccountScalarWhereInput
-    data: XOR<SocialAccountUpdateManyMutationInput, SocialAccountUncheckedUpdateManyWithoutCompanyInput>
+  export type SubscriptionCreateWithoutCompanyInput = {
+    id?: string
+    plan?: $Enums.SubscriptionPlan
+    status?: $Enums.SubscriptionStatus
+    currentPeriodEnd?: Date | string | null
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SocialAccountScalarWhereInput = {
-    AND?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
-    OR?: SocialAccountScalarWhereInput[]
-    NOT?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
-    id?: StringFilter<"SocialAccount"> | string
-    companyId?: StringFilter<"SocialAccount"> | string
-    platform?: StringFilter<"SocialAccount"> | string
-    platformId?: StringFilter<"SocialAccount"> | string
-    name?: StringFilter<"SocialAccount"> | string
-    accessToken?: StringFilter<"SocialAccount"> | string
-    refreshToken?: StringNullableFilter<"SocialAccount"> | string | null
-    expiresAt?: DateTimeNullableFilter<"SocialAccount"> | Date | string | null
-    metadata?: JsonNullableFilter<"SocialAccount">
-    createdAt?: DateTimeFilter<"SocialAccount"> | Date | string
-    updatedAt?: DateTimeFilter<"SocialAccount"> | Date | string
+  export type SubscriptionUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    plan?: $Enums.SubscriptionPlan
+    status?: $Enums.SubscriptionStatus
+    currentPeriodEnd?: Date | string | null
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionCreateOrConnectWithoutCompanyInput = {
+    where: SubscriptionWhereUniqueInput
+    create: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TeamMemberCreateWithoutCompanyInput = {
+    id?: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutCompaniesInput
+  }
+
+  export type TeamMemberUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    userId: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+  }
+
+  export type TeamMemberCreateOrConnectWithoutCompanyInput = {
+    where: TeamMemberWhereUniqueInput
+    create: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TeamMemberCreateManyCompanyInputEnvelope = {
+    data: TeamMemberCreateManyCompanyInput | TeamMemberCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ActivityLogUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: ActivityLogWhereUniqueInput
+    update: XOR<ActivityLogUpdateWithoutCompanyInput, ActivityLogUncheckedUpdateWithoutCompanyInput>
+    create: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type ActivityLogUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: ActivityLogWhereUniqueInput
+    data: XOR<ActivityLogUpdateWithoutCompanyInput, ActivityLogUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type ActivityLogUpdateManyWithWhereWithoutCompanyInput = {
+    where: ActivityLogScalarWhereInput
+    data: XOR<ActivityLogUpdateManyMutationInput, ActivityLogUncheckedUpdateManyWithoutCompanyInput>
   }
 
   export type CalendarUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -26440,35 +26407,33 @@ export namespace Prisma {
     status?: StringFilter<"Campaign"> | string
   }
 
-  export type SubscriptionUpsertWithoutCompanyInput = {
-    update: XOR<SubscriptionUpdateWithoutCompanyInput, SubscriptionUncheckedUpdateWithoutCompanyInput>
-    create: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
-    where?: SubscriptionWhereInput
+  export type InvitationUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: InvitationWhereUniqueInput
+    update: XOR<InvitationUpdateWithoutCompanyInput, InvitationUncheckedUpdateWithoutCompanyInput>
+    create: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput>
   }
 
-  export type SubscriptionUpdateToOneWithWhereWithoutCompanyInput = {
-    where?: SubscriptionWhereInput
-    data: XOR<SubscriptionUpdateWithoutCompanyInput, SubscriptionUncheckedUpdateWithoutCompanyInput>
+  export type InvitationUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: InvitationWhereUniqueInput
+    data: XOR<InvitationUpdateWithoutCompanyInput, InvitationUncheckedUpdateWithoutCompanyInput>
   }
 
-  export type SubscriptionUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    plan?: EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
-    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    usageCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type InvitationUpdateManyWithWhereWithoutCompanyInput = {
+    where: InvitationScalarWhereInput
+    data: XOR<InvitationUpdateManyMutationInput, InvitationUncheckedUpdateManyWithoutCompanyInput>
   }
 
-  export type SubscriptionUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    plan?: EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
-    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    usageCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type InvitationScalarWhereInput = {
+    AND?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+    OR?: InvitationScalarWhereInput[]
+    NOT?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+    id?: StringFilter<"Invitation"> | string
+    email?: StringFilter<"Invitation"> | string
+    companyId?: StringFilter<"Invitation"> | string
+    role?: EnumRoleFilter<"Invitation"> | $Enums.Role
+    token?: StringFilter<"Invitation"> | string
+    expires?: DateTimeFilter<"Invitation"> | Date | string
+    createdAt?: DateTimeFilter<"Invitation"> | Date | string
   }
 
   export type InvoiceUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -26500,86 +26465,84 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Invoice"> | Date | string
   }
 
-  export type InvitationUpsertWithWhereUniqueWithoutCompanyInput = {
-    where: InvitationWhereUniqueInput
-    update: XOR<InvitationUpdateWithoutCompanyInput, InvitationUncheckedUpdateWithoutCompanyInput>
-    create: XOR<InvitationCreateWithoutCompanyInput, InvitationUncheckedCreateWithoutCompanyInput>
+  export type SocialAccountUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: SocialAccountWhereUniqueInput
+    update: XOR<SocialAccountUpdateWithoutCompanyInput, SocialAccountUncheckedUpdateWithoutCompanyInput>
+    create: XOR<SocialAccountCreateWithoutCompanyInput, SocialAccountUncheckedCreateWithoutCompanyInput>
   }
 
-  export type InvitationUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: InvitationWhereUniqueInput
-    data: XOR<InvitationUpdateWithoutCompanyInput, InvitationUncheckedUpdateWithoutCompanyInput>
+  export type SocialAccountUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: SocialAccountWhereUniqueInput
+    data: XOR<SocialAccountUpdateWithoutCompanyInput, SocialAccountUncheckedUpdateWithoutCompanyInput>
   }
 
-  export type InvitationUpdateManyWithWhereWithoutCompanyInput = {
-    where: InvitationScalarWhereInput
-    data: XOR<InvitationUpdateManyMutationInput, InvitationUncheckedUpdateManyWithoutCompanyInput>
+  export type SocialAccountUpdateManyWithWhereWithoutCompanyInput = {
+    where: SocialAccountScalarWhereInput
+    data: XOR<SocialAccountUpdateManyMutationInput, SocialAccountUncheckedUpdateManyWithoutCompanyInput>
   }
 
-  export type InvitationScalarWhereInput = {
-    AND?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
-    OR?: InvitationScalarWhereInput[]
-    NOT?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
-    id?: StringFilter<"Invitation"> | string
-    email?: StringFilter<"Invitation"> | string
-    companyId?: StringFilter<"Invitation"> | string
-    role?: EnumRoleFilter<"Invitation"> | $Enums.Role
-    token?: StringFilter<"Invitation"> | string
-    expires?: DateTimeFilter<"Invitation"> | Date | string
-    createdAt?: DateTimeFilter<"Invitation"> | Date | string
+  export type SocialAccountScalarWhereInput = {
+    AND?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
+    OR?: SocialAccountScalarWhereInput[]
+    NOT?: SocialAccountScalarWhereInput | SocialAccountScalarWhereInput[]
+    id?: StringFilter<"SocialAccount"> | string
+    companyId?: StringFilter<"SocialAccount"> | string
+    platform?: StringFilter<"SocialAccount"> | string
+    platformId?: StringFilter<"SocialAccount"> | string
+    name?: StringFilter<"SocialAccount"> | string
+    accessToken?: StringFilter<"SocialAccount"> | string
+    refreshToken?: StringNullableFilter<"SocialAccount"> | string | null
+    expiresAt?: DateTimeNullableFilter<"SocialAccount"> | Date | string | null
+    metadata?: JsonNullableFilter<"SocialAccount">
+    createdAt?: DateTimeFilter<"SocialAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"SocialAccount"> | Date | string
   }
 
-  export type ActivityLogUpsertWithWhereUniqueWithoutCompanyInput = {
-    where: ActivityLogWhereUniqueInput
-    update: XOR<ActivityLogUpdateWithoutCompanyInput, ActivityLogUncheckedUpdateWithoutCompanyInput>
-    create: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput>
+  export type SubscriptionUpsertWithoutCompanyInput = {
+    update: XOR<SubscriptionUpdateWithoutCompanyInput, SubscriptionUncheckedUpdateWithoutCompanyInput>
+    create: XOR<SubscriptionCreateWithoutCompanyInput, SubscriptionUncheckedCreateWithoutCompanyInput>
+    where?: SubscriptionWhereInput
   }
 
-  export type ActivityLogUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: ActivityLogWhereUniqueInput
-    data: XOR<ActivityLogUpdateWithoutCompanyInput, ActivityLogUncheckedUpdateWithoutCompanyInput>
+  export type SubscriptionUpdateToOneWithWhereWithoutCompanyInput = {
+    where?: SubscriptionWhereInput
+    data: XOR<SubscriptionUpdateWithoutCompanyInput, SubscriptionUncheckedUpdateWithoutCompanyInput>
   }
 
-  export type ActivityLogUpdateManyWithWhereWithoutCompanyInput = {
-    where: ActivityLogScalarWhereInput
-    data: XOR<ActivityLogUpdateManyMutationInput, ActivityLogUncheckedUpdateManyWithoutCompanyInput>
+  export type SubscriptionUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCreateWithoutCompaniesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+  export type SubscriptionUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserUncheckedCreateWithoutCompaniesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  export type TeamMemberUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: TeamMemberWhereUniqueInput
+    update: XOR<TeamMemberUpdateWithoutCompanyInput, TeamMemberUncheckedUpdateWithoutCompanyInput>
+    create: XOR<TeamMemberCreateWithoutCompanyInput, TeamMemberUncheckedCreateWithoutCompanyInput>
   }
 
-  export type UserCreateOrConnectWithoutCompaniesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCompaniesInput, UserUncheckedCreateWithoutCompaniesInput>
+  export type TeamMemberUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: TeamMemberWhereUniqueInput
+    data: XOR<TeamMemberUpdateWithoutCompanyInput, TeamMemberUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type TeamMemberUpdateManyWithWhereWithoutCompanyInput = {
+    where: TeamMemberScalarWhereInput
+    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyWithoutCompanyInput>
   }
 
   export type CompanyCreateWithoutMembersInput = {
@@ -26592,16 +26555,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
     calendars?: CalendarCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     invitations?: InvitationCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutMembersInput = {
@@ -26614,16 +26577,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
     calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutMembersInput = {
@@ -26631,47 +26594,41 @@ export namespace Prisma {
     create: XOR<CompanyCreateWithoutMembersInput, CompanyUncheckedCreateWithoutMembersInput>
   }
 
-  export type UserUpsertWithoutCompaniesInput = {
-    update: XOR<UserUpdateWithoutCompaniesInput, UserUncheckedUpdateWithoutCompaniesInput>
+  export type UserCreateWithoutCompaniesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCompaniesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCompaniesInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutCompaniesInput, UserUncheckedCreateWithoutCompaniesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCompaniesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCompaniesInput, UserUncheckedUpdateWithoutCompaniesInput>
-  }
-
-  export type UserUpdateWithoutCompaniesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCompaniesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CompanyUpsertWithoutMembersInput = {
@@ -26695,16 +26652,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutMembersInput = {
@@ -26717,65 +26674,59 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
-  export type CompanyCreateWithoutSocialAccountsInput = {
-    id?: string
-    name: string
-    niche?: string | null
-    brandVoice?: string | null
-    targetAudience?: string | null
-    businessGoals?: string | null
-    logo?: string | null
-    primaryColor?: string | null
-    secondaryColor?: string | null
-    brandFont?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    calendars?: CalendarCreateNestedManyWithoutCompanyInput
-    campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
-    invitations?: InvitationCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+  export type UserUpsertWithoutCompaniesInput = {
+    update: XOR<UserUpdateWithoutCompaniesInput, UserUncheckedUpdateWithoutCompaniesInput>
+    create: XOR<UserCreateWithoutCompaniesInput, UserUncheckedCreateWithoutCompaniesInput>
+    where?: UserWhereInput
   }
 
-  export type CompanyUncheckedCreateWithoutSocialAccountsInput = {
-    id?: string
-    name: string
-    niche?: string | null
-    brandVoice?: string | null
-    targetAudience?: string | null
-    businessGoals?: string | null
-    logo?: string | null
-    primaryColor?: string | null
-    secondaryColor?: string | null
-    brandFont?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
-    campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+  export type UserUpdateToOneWithWhereWithoutCompaniesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCompaniesInput, UserUncheckedUpdateWithoutCompaniesInput>
   }
 
-  export type CompanyCreateOrConnectWithoutSocialAccountsInput = {
-    where: CompanyWhereUniqueInput
-    create: XOR<CompanyCreateWithoutSocialAccountsInput, CompanyUncheckedCreateWithoutSocialAccountsInput>
+  export type UserUpdateWithoutCompaniesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCompaniesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostCreateWithoutSocialAccountInput = {
@@ -26790,8 +26741,8 @@ export namespace Prisma {
     platformOptimized?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    calendar: CalendarCreateNestedOneWithoutPostsInput
     analytics?: AnalyticsCreateNestedOneWithoutPostInput
+    calendar: CalendarCreateNestedOneWithoutPostsInput
   }
 
   export type PostUncheckedCreateWithoutSocialAccountInput = {
@@ -26820,59 +26771,53 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CompanyUpsertWithoutSocialAccountsInput = {
-    update: XOR<CompanyUpdateWithoutSocialAccountsInput, CompanyUncheckedUpdateWithoutSocialAccountsInput>
+  export type CompanyCreateWithoutSocialAccountsInput = {
+    id?: string
+    name: string
+    niche?: string | null
+    brandVoice?: string | null
+    targetAudience?: string | null
+    businessGoals?: string | null
+    logo?: string | null
+    primaryColor?: string | null
+    secondaryColor?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    brandFont?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    calendars?: CalendarCreateNestedManyWithoutCompanyInput
+    campaigns?: CampaignCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutSocialAccountsInput = {
+    id?: string
+    name: string
+    niche?: string | null
+    brandVoice?: string | null
+    targetAudience?: string | null
+    businessGoals?: string | null
+    logo?: string | null
+    primaryColor?: string | null
+    secondaryColor?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    brandFont?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
+    campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutSocialAccountsInput = {
+    where: CompanyWhereUniqueInput
     create: XOR<CompanyCreateWithoutSocialAccountsInput, CompanyUncheckedCreateWithoutSocialAccountsInput>
-    where?: CompanyWhereInput
-  }
-
-  export type CompanyUpdateToOneWithWhereWithoutSocialAccountsInput = {
-    where?: CompanyWhereInput
-    data: XOR<CompanyUpdateWithoutSocialAccountsInput, CompanyUncheckedUpdateWithoutSocialAccountsInput>
-  }
-
-  export type CompanyUpdateWithoutSocialAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    niche?: NullableStringFieldUpdateOperationsInput | string | null
-    brandVoice?: NullableStringFieldUpdateOperationsInput | string | null
-    targetAudience?: NullableStringFieldUpdateOperationsInput | string | null
-    businessGoals?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    calendars?: CalendarUpdateManyWithoutCompanyNestedInput
-    campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
-    invitations?: InvitationUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
-  }
-
-  export type CompanyUncheckedUpdateWithoutSocialAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    niche?: NullableStringFieldUpdateOperationsInput | string | null
-    brandVoice?: NullableStringFieldUpdateOperationsInput | string | null
-    targetAudience?: NullableStringFieldUpdateOperationsInput | string | null
-    businessGoals?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
-    campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutSocialAccountInput = {
@@ -26910,6 +26855,61 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Post"> | Date | string
   }
 
+  export type CompanyUpsertWithoutSocialAccountsInput = {
+    update: XOR<CompanyUpdateWithoutSocialAccountsInput, CompanyUncheckedUpdateWithoutSocialAccountsInput>
+    create: XOR<CompanyCreateWithoutSocialAccountsInput, CompanyUncheckedCreateWithoutSocialAccountsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutSocialAccountsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutSocialAccountsInput, CompanyUncheckedUpdateWithoutSocialAccountsInput>
+  }
+
+  export type CompanyUpdateWithoutSocialAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    niche?: NullableStringFieldUpdateOperationsInput | string | null
+    brandVoice?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAudience?: NullableStringFieldUpdateOperationsInput | string | null
+    businessGoals?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    calendars?: CalendarUpdateManyWithoutCompanyNestedInput
+    campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutSocialAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    niche?: NullableStringFieldUpdateOperationsInput | string | null
+    brandVoice?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAudience?: NullableStringFieldUpdateOperationsInput | string | null
+    businessGoals?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
+    campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
   export type CompanyCreateWithoutCalendarsInput = {
     id?: string
     name: string
@@ -26920,16 +26920,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
-    campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
-    invitations?: InvitationCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
     activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    campaigns?: CampaignCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutCalendarsInput = {
@@ -26942,16 +26942,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
-    campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
     activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutCalendarsInput = {
@@ -26971,8 +26971,8 @@ export namespace Prisma {
     platformOptimized?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    socialAccount?: SocialAccountCreateNestedOneWithoutPostsInput
     analytics?: AnalyticsCreateNestedOneWithoutPostInput
+    socialAccount?: SocialAccountCreateNestedOneWithoutPostsInput
   }
 
   export type PostUncheckedCreateWithoutCalendarInput = {
@@ -27022,16 +27022,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
-    campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
-    invitations?: InvitationUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutCalendarsInput = {
@@ -27044,16 +27044,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
-    campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutCalendarInput = {
@@ -27070,6 +27070,33 @@ export namespace Prisma {
   export type PostUpdateManyWithWhereWithoutCalendarInput = {
     where: PostScalarWhereInput
     data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutCalendarInput>
+  }
+
+  export type AnalyticsCreateWithoutPostInput = {
+    id?: string
+    impressions?: number
+    reach?: number
+    engagement?: number
+    likes?: number
+    shares?: number
+    comments?: number
+    updatedAt?: Date | string
+  }
+
+  export type AnalyticsUncheckedCreateWithoutPostInput = {
+    id?: string
+    impressions?: number
+    reach?: number
+    engagement?: number
+    likes?: number
+    shares?: number
+    comments?: number
+    updatedAt?: Date | string
+  }
+
+  export type AnalyticsCreateOrConnectWithoutPostInput = {
+    where: AnalyticsWhereUniqueInput
+    create: XOR<AnalyticsCreateWithoutPostInput, AnalyticsUncheckedCreateWithoutPostInput>
   }
 
   export type CalendarCreateWithoutPostsInput = {
@@ -27126,31 +27153,37 @@ export namespace Prisma {
     create: XOR<SocialAccountCreateWithoutPostsInput, SocialAccountUncheckedCreateWithoutPostsInput>
   }
 
-  export type AnalyticsCreateWithoutPostInput = {
-    id?: string
-    impressions?: number
-    reach?: number
-    engagement?: number
-    likes?: number
-    shares?: number
-    comments?: number
-    updatedAt?: Date | string
-  }
-
-  export type AnalyticsUncheckedCreateWithoutPostInput = {
-    id?: string
-    impressions?: number
-    reach?: number
-    engagement?: number
-    likes?: number
-    shares?: number
-    comments?: number
-    updatedAt?: Date | string
-  }
-
-  export type AnalyticsCreateOrConnectWithoutPostInput = {
-    where: AnalyticsWhereUniqueInput
+  export type AnalyticsUpsertWithoutPostInput = {
+    update: XOR<AnalyticsUpdateWithoutPostInput, AnalyticsUncheckedUpdateWithoutPostInput>
     create: XOR<AnalyticsCreateWithoutPostInput, AnalyticsUncheckedCreateWithoutPostInput>
+    where?: AnalyticsWhereInput
+  }
+
+  export type AnalyticsUpdateToOneWithWhereWithoutPostInput = {
+    where?: AnalyticsWhereInput
+    data: XOR<AnalyticsUpdateWithoutPostInput, AnalyticsUncheckedUpdateWithoutPostInput>
+  }
+
+  export type AnalyticsUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    reach?: IntFieldUpdateOperationsInput | number
+    engagement?: IntFieldUpdateOperationsInput | number
+    likes?: IntFieldUpdateOperationsInput | number
+    shares?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnalyticsUncheckedUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    reach?: IntFieldUpdateOperationsInput | number
+    engagement?: IntFieldUpdateOperationsInput | number
+    likes?: IntFieldUpdateOperationsInput | number
+    shares?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CalendarUpsertWithoutPostsInput = {
@@ -27216,39 +27249,6 @@ export namespace Prisma {
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AnalyticsUpsertWithoutPostInput = {
-    update: XOR<AnalyticsUpdateWithoutPostInput, AnalyticsUncheckedUpdateWithoutPostInput>
-    create: XOR<AnalyticsCreateWithoutPostInput, AnalyticsUncheckedCreateWithoutPostInput>
-    where?: AnalyticsWhereInput
-  }
-
-  export type AnalyticsUpdateToOneWithWhereWithoutPostInput = {
-    where?: AnalyticsWhereInput
-    data: XOR<AnalyticsUpdateWithoutPostInput, AnalyticsUncheckedUpdateWithoutPostInput>
-  }
-
-  export type AnalyticsUpdateWithoutPostInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    impressions?: IntFieldUpdateOperationsInput | number
-    reach?: IntFieldUpdateOperationsInput | number
-    engagement?: IntFieldUpdateOperationsInput | number
-    likes?: IntFieldUpdateOperationsInput | number
-    shares?: IntFieldUpdateOperationsInput | number
-    comments?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AnalyticsUncheckedUpdateWithoutPostInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    impressions?: IntFieldUpdateOperationsInput | number
-    reach?: IntFieldUpdateOperationsInput | number
-    engagement?: IntFieldUpdateOperationsInput | number
-    likes?: IntFieldUpdateOperationsInput | number
-    shares?: IntFieldUpdateOperationsInput | number
-    comments?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -27342,16 +27342,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
-    calendars?: CalendarCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
-    invitations?: InvitationCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
     activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    calendars?: CalendarCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutCampaignsInput = {
@@ -27364,16 +27364,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
-    calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
     activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutCampaignsInput = {
@@ -27402,16 +27402,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
-    calendars?: CalendarUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
-    invitations?: InvitationUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    calendars?: CalendarUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutCampaignsInput = {
@@ -27424,16 +27424,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
-    calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutSubscriptionInput = {
@@ -27446,16 +27446,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
     calendars?: CalendarCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     invitations?: InvitationCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutSubscriptionInput = {
@@ -27468,16 +27468,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
     calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutSubscriptionInput = {
@@ -27506,16 +27506,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutSubscriptionInput = {
@@ -27528,16 +27528,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutInvoicesInput = {
@@ -27550,16 +27550,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
     calendars?: CalendarCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     invitations?: InvitationCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutInvoicesInput = {
@@ -27572,16 +27572,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
     calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutInvoicesInput = {
@@ -27610,16 +27610,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     invitations?: InvitationUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutInvoicesInput = {
@@ -27632,16 +27632,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutInvitationsInput = {
@@ -27654,16 +27654,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
     calendars?: CalendarCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutInvitationsInput = {
@@ -27676,16 +27676,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
     calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutInvitationsInput = {
@@ -27714,16 +27714,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutInvitationsInput = {
@@ -27736,16 +27736,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
     calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutActivityLogsInput = {
@@ -27758,16 +27758,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
     calendars?: CalendarCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     invitations?: InvitationCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutActivityLogsInput = {
@@ -27780,16 +27780,16 @@ export namespace Prisma {
     logo?: string | null
     primaryColor?: string | null
     secondaryColor?: string | null
-    brandFont?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
-    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    brandFont?: string | null
     calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
     campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutActivityLogsInput = {
@@ -27804,13 +27804,13 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
+    companies?: TeamMemberCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivityLogsInput = {
@@ -27820,13 +27820,13 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    companies?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivityLogsInput = {
@@ -27855,16 +27855,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     calendars?: CalendarUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutActivityLogsInput = {
@@ -27877,16 +27877,16 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
-    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
-    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
     calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
     campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserUpsertWithoutActivityLogsInput = {
@@ -27907,13 +27907,13 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    companies?: TeamMemberUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityLogsInput = {
@@ -27923,20 +27923,13 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type TeamMemberCreateManyUserInput = {
-    id?: string
-    companyId: string
-    role?: $Enums.Role
-    createdAt?: Date | string
+    companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -27953,12 +27946,6 @@ export namespace Prisma {
     session_state?: string | null
   }
 
-  export type SessionCreateManyUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
   export type ActivityLogCreateManyUserInput = {
     id?: string
     companyId: string
@@ -27967,25 +27954,17 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type TeamMemberUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    company?: CompanyUpdateOneRequiredWithoutMembersNestedInput
+  export type SessionCreateManyUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
   }
 
-  export type TeamMemberUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    companyId?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TeamMemberUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    companyId?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type TeamMemberCreateManyUserInput = {
+    id?: string
+    companyId: string
+    role?: $Enums.Role
+    createdAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -28030,24 +28009,6 @@ export namespace Prisma {
     session_state?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type ActivityLogUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
@@ -28072,24 +28033,51 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TeamMemberCreateManyCompanyInput = {
-    id?: string
-    userId: string
-    role?: $Enums.Role
-    createdAt?: Date | string
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SocialAccountCreateManyCompanyInput = {
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type TeamMemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActivityLogCreateManyCompanyInput = {
     id?: string
-    platform: string
-    platformId: string
-    name: string
-    accessToken: string
-    refreshToken?: string | null
-    expiresAt?: Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
+    userId?: string | null
+    action: string
+    details?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type CalendarCreateManyCompanyInput = {
@@ -28109,15 +28097,6 @@ export namespace Prisma {
     status?: string
   }
 
-  export type InvoiceCreateManyCompanyInput = {
-    id?: string
-    amount: number
-    status: string
-    date?: Date | string
-    invoiceUrl?: string | null
-    createdAt?: Date | string
-  }
-
   export type InvitationCreateManyCompanyInput = {
     id?: string
     email: string
@@ -28127,74 +28106,57 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type ActivityLogCreateManyCompanyInput = {
+  export type InvoiceCreateManyCompanyInput = {
     id?: string
-    userId?: string | null
-    action: string
-    details?: string | null
+    amount: number
+    status: string
+    date?: Date | string
+    invoiceUrl?: string | null
     createdAt?: Date | string
   }
 
-  export type TeamMemberUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCompaniesNestedInput
-  }
-
-  export type TeamMemberUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TeamMemberUncheckedUpdateManyWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SocialAccountUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    platform?: StringFieldUpdateOperationsInput | string
-    platformId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type SocialAccountCreateManyCompanyInput = {
+    id?: string
+    platform: string
+    platformId: string
+    name: string
+    accessToken: string
+    refreshToken?: string | null
+    expiresAt?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    posts?: PostUpdateManyWithoutSocialAccountNestedInput
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SocialAccountUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    platform?: StringFieldUpdateOperationsInput | string
-    platformId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    posts?: PostUncheckedUpdateManyWithoutSocialAccountNestedInput
+  export type TeamMemberCreateManyCompanyInput = {
+    id?: string
+    userId: string
+    role?: $Enums.Role
+    createdAt?: Date | string
   }
 
-  export type SocialAccountUncheckedUpdateManyWithoutCompanyInput = {
+  export type ActivityLogUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    platform?: StringFieldUpdateOperationsInput | string
-    platformId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutActivityLogsNestedInput
+  }
+
+  export type ActivityLogUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActivityLogUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CalendarUpdateWithoutCompanyInput = {
@@ -28250,33 +28212,6 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
   }
 
-  export type InvoiceUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    invoiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type InvoiceUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    invoiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type InvoiceUncheckedUpdateManyWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    invoiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type InvitationUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -28304,27 +28239,92 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ActivityLogUpdateWithoutCompanyInput = {
+  export type InvoiceUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutActivityLogsNestedInput
-  }
-
-  export type ActivityLogUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    details?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ActivityLogUncheckedUpdateManyWithoutCompanyInput = {
+  export type InvoiceUncheckedUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    details?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialAccountUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    platformId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUpdateManyWithoutSocialAccountNestedInput
+  }
+
+  export type SocialAccountUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    platformId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUncheckedUpdateManyWithoutSocialAccountNestedInput
+  }
+
+  export type SocialAccountUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    platformId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCompaniesNestedInput
+  }
+
+  export type TeamMemberUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28355,8 +28355,8 @@ export namespace Prisma {
     platformOptimized?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    calendar?: CalendarUpdateOneRequiredWithoutPostsNestedInput
     analytics?: AnalyticsUpdateOneWithoutPostNestedInput
+    calendar?: CalendarUpdateOneRequiredWithoutPostsNestedInput
   }
 
   export type PostUncheckedUpdateWithoutSocialAccountInput = {
@@ -28417,8 +28417,8 @@ export namespace Prisma {
     platformOptimized?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    socialAccount?: SocialAccountUpdateOneWithoutPostsNestedInput
     analytics?: AnalyticsUpdateOneWithoutPostNestedInput
+    socialAccount?: SocialAccountUpdateOneWithoutPostsNestedInput
   }
 
   export type PostUncheckedUpdateWithoutCalendarInput = {

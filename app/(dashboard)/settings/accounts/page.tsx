@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { 
@@ -15,6 +16,10 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { showAlert } from '@/lib/alerts';
+
+export const SOCIAL_SCOPES = {
+  facebook: ['pages_manage_posts', 'pages_read_engagement', 'pages_show_list', 'instagram_basic', 'instagram_content_publish', 'public_profile']
+};
 
 const PLATFORMS = [
   { id: 'facebook', name: 'Facebook', color: 'bg-[#1877F2]' },
@@ -38,6 +43,7 @@ interface Subscription {
 }
 
 export default function SocialAccountsPage() {
+  const searchParams = useSearchParams();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
@@ -73,7 +79,6 @@ export default function SocialAccountsPage() {
       return;
     }
     
-    // Redirect to OAuth
     window.location.href = `/api/social/connect/${platform}`;
   };
 
@@ -106,25 +111,67 @@ export default function SocialAccountsPage() {
   }
 
   const isFree = subscription?.plan === 'FREE';
-  const connectionLimit = isFree ? 2 : 'Unlimited';
+  
+  const getErrorMessage = (error: string | null) => {
+    if (!error) return null;
+    switch (error) {
+      case 'token_exchange_failed': 
+        return 'Facebook Token Exchange Failed. This usually means your CLIENT_SECRET or REDIRECT_URI in the Developer Portal does not match your .env settings.';
+      case 'facebook_api_error': 
+        return 'Could not retrieve data from Facebook. Please ensure "App Domains" includes localhost and your "Use Case" permissions are active.';
+      case 'database_error': 
+        return 'Database Sync Error. This could be due to a unique constraint or connection issue. Please try disconnecting and reconnecting.';
+      case 'oauth_failed': 
+        return 'The connection process was cancelled or failed. Please try again.';
+      case 'limit_reached': 
+        return 'You have reached the maximum number of social accounts for your plan.';
+      case 'no_company': 
+        return 'We could not identify your company workspace. Please log in again.';
+      case 'no_pages_found': 
+        return 'No Facebook Pages specifically selected. Click "Edit Settings" in the Facebook popup and select a Page.';
+      default: 
+        return 'An unexpected error occurred during connection. Please check your server logs for details.';
+    }
+  };
+
+  const errorMsg = getErrorMessage(searchParams.get('error'));
+  const errorDetails = searchParams.get('details');
 
   return (
-    <div className="flex flex-col gap-8 max-w-5xl mx-auto w-full pb-12">
-      <header className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
+    <div className="max-w-5xl mx-auto pb-20">
+      <header className="mb-10 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Social Connections</h1>
-          <p className="text-sm text-muted mt-1">Manage and connect your brand's social media accounts.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight">Social Connections</h1>
+          <p className="text-muted mt-1">Manage and connect your brand's social media accounts.</p>
         </div>
-        <div className="flex items-center gap-3 bg-surface border border-white/5 px-4 py-2 rounded-2xl">
-          <div className="flex flex-col items-end">
-            <p className="text-[10px] text-muted uppercase font-bold tracking-widest leading-none mb-1">Account Usage</p>
-            <p className="text-sm font-black">{accounts.length} / {connectionLimit}</p>
-          </div>
-          {isFree && accounts.length >= 2 && (
-             <Button variant="primary" size="sm" className="h-8 py-0 px-3 text-[10px] font-bold uppercase tracking-wider">Upgrade</Button>
-          )}
+        <div className="px-4 py-2 rounded-2xl bg-surface border border-border flex items-center gap-4">
+           <div className="text-right">
+             <p className="text-[10px] text-muted font-bold uppercase tracking-widest">Account Usage</p>
+             <p className="text-sm font-black text-foreground">{accounts.length} / {isFree ? '2' : '∞'}</p>
+           </div>
+           <div className="h-8 w-[1px] bg-border" />
+           <div className="w-24 h-2 bg-white/5 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-primary transition-all duration-500" 
+                style={{ width: `${Math.min((accounts.length / (isFree ? 2 : 10)) * 100, 100)}%` }} 
+              />
+           </div>
         </div>
       </header>
+      
+      {errorMsg && (
+        <div className="mb-8 p-6 rounded-xl bg-error/10 border border-error/20 animate-in fade-in slide-in-from-top-4">
+           <div className="flex items-center gap-4 text-error mb-2">
+              <AlertCircle size={20} />
+              <p className="text-sm font-bold uppercase tracking-wider">{errorMsg}</p>
+           </div>
+           {errorDetails && (
+             <div className="ml-9 p-3 rounded-lg bg-black/20 font-mono text-[10px] text-error/80 break-all border border-error/10">
+                Error Trace: {errorDetails}
+             </div>
+           )}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-6">
         {PLATFORMS.map((platform) => {

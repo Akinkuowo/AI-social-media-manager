@@ -127,10 +127,10 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   password: 'password',
-  twoFactorEnabled: 'twoFactorEnabled',
-  twoFactorSecret: 'twoFactorSecret',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  twoFactorEnabled: 'twoFactorEnabled',
+  twoFactorSecret: 'twoFactorSecret'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
@@ -178,9 +178,9 @@ exports.Prisma.CompanyScalarFieldEnum = {
   logo: 'logo',
   primaryColor: 'primaryColor',
   secondaryColor: 'secondaryColor',
-  brandFont: 'brandFont',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  brandFont: 'brandFont'
 };
 
 exports.Prisma.TeamMemberScalarFieldEnum = {

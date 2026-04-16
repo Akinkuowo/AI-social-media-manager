@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { exchangeCodeForToken } from "@/lib/social-oauth";
+import { exchangeCodeForToken, fetchLinkedInProfile } from "@/lib/social-oauth";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
@@ -22,8 +22,10 @@ export async function GET(req: Request) {
   }
 
   try {
+    // 1. Exchange code for token
     const tokenData = await exchangeCodeForToken('linkedin', code);
     
+    // 2. Find user's company and check limits
     const teamMember = await prisma.teamMember.findFirst({
       where: { userId: session.user.id },
       include: {
@@ -47,40 +49,44 @@ export async function GET(req: Request) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=limit_reached`);
     }
 
-    const mockPlatformId = `li_${Math.random().toString(36).substring(7)}`;
-    const mockName = `LinkedIn Profile ${Math.floor(Math.random() * 100)}`;
+    // 3. Fetch Real LinkedIn Profile info
+    const profile = await fetchLinkedInProfile(tokenData.access_token);
+    const realPlatformId = profile.id;
+    const realName = `${profile.localizedFirstName} ${profile.localizedLastName}`;
 
+    // 4. Save to Database
     await prisma.socialAccount.upsert({
       where: {
         companyId_platform_platformId: {
           companyId: teamMember.companyId,
           platform: 'linkedin',
-          platformId: mockPlatformId
+          platformId: realPlatformId
         }
       },
       update: {
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token || null,
         expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
-        name: mockName
+        name: realName
       },
       create: {
         companyId: teamMember.companyId,
         platform: 'linkedin',
-        platformId: mockPlatformId,
-        name: mockName,
+        platformId: realPlatformId,
+        name: realName,
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token || null,
         expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null
       }
     });
 
+    // 5. Log Activity
     await prisma.activityLog.create({
       data: {
         companyId: teamMember.companyId,
         userId: session.user.id,
         action: 'SOCIAL_ACCOUNT_CONNECTED',
-        details: `Connected LinkedIn account: ${mockName}`
+        details: `Connected LinkedIn account: ${realName}`
       }
     });
 
@@ -92,3 +98,4 @@ export async function GET(req: Request) {
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=server_error`);
   }
 }
+

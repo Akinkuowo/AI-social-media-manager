@@ -18,7 +18,11 @@ import {
   ChevronRight, 
   Plus, 
   MoreVertical,
-  Calendar as CalendarIcon
+  Calendar as CalendarIcon,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Pencil
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -64,11 +68,23 @@ interface Post {
   day: number;
   type: string;
   caption: string;
+  hashtags?: string;
   status: string;
+  scheduledAt?: string;
   socialAccount?: {
     platform: string;
+    name?: string;
   };
 }
+
+const STATUS_CONFIG: Record<string, { icon: any; color: string; label: string; pulse?: boolean }> = {
+  DRAFT: { icon: Pencil, color: 'text-muted', label: 'Draft' },
+  SCHEDULED: { icon: Clock, color: 'text-blue-400', label: 'Scheduled', pulse: true },
+  PUBLISHED: { icon: CheckCircle, color: 'text-emerald-400', label: 'Published' },
+  FAILED: { icon: AlertCircle, color: 'text-red-400', label: 'Failed' },
+  PENDING_REVIEW: { icon: Clock, color: 'text-amber-400', label: 'Pending' },
+  APPROVED: { icon: CheckCircle, color: 'text-sky-400', label: 'Approved' },
+};
 
 interface CalendarProps {
   posts: Post[];
@@ -174,7 +190,9 @@ export const Calendar = ({ posts, onAddPost, onEditPost, currentDate, onDateChan
               <div className="flex flex-col gap-1.5">
                 <AnimatePresence mode="popLayout">
                   {dayPosts.map((post) => {
-                    const Icon = PLATFORM_ICONS[post.socialAccount?.platform || 'instagram'] || Instagram;
+                    const PlatformIcon = PLATFORM_ICONS[post.socialAccount?.platform || 'instagram'] || Instagram;
+                    const statusCfg = STATUS_CONFIG[post.status] || STATUS_CONFIG.DRAFT;
+                    const StatusIcon = statusCfg.icon;
                     return (
                       <motion.div
                         layoutId={post.id}
@@ -187,15 +205,17 @@ export const Calendar = ({ posts, onAddPost, onEditPost, currentDate, onDateChan
                           onEditPost(post);
                         }}
                         className={clsx(
-                          "px-2 py-1.5 rounded-xl border border-white/5 text-[10px] font-medium flex items-center gap-2 cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg",
-                          post.status === 'SCHEDULED' ? "bg-primary/10 text-primary border-primary/20" : 
+                          "px-2 py-1.5 rounded-xl border text-[10px] font-medium flex items-center gap-1.5 cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg",
+                          post.status === 'SCHEDULED' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" : 
                           post.status === 'DRAFT' ? "bg-surface text-muted border-white/10" :
-                          post.status === 'PUBLISHED' ? "bg-success/10 text-success border-success/20" :
-                          "bg-surface text-foreground"
+                          post.status === 'PUBLISHED' ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
+                          post.status === 'FAILED' ? "bg-red-500/10 text-red-400 border-red-500/20" :
+                          "bg-surface text-foreground border-white/5"
                         )}
                       >
-                        <Icon size={12} className="flex-shrink-0" />
-                        <span className="truncate">{post.caption.substring(0, 30)}...</span>
+                        <PlatformIcon size={11} className="flex-shrink-0" />
+                        <span className="truncate flex-1">{post.caption.substring(0, 25)}...</span>
+                        <StatusIcon size={10} className={clsx("flex-shrink-0", statusCfg.color, statusCfg.pulse && "animate-pulse")} />
                       </motion.div>
                     );
                   })}
