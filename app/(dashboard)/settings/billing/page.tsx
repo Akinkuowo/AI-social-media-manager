@@ -19,7 +19,7 @@ import { showAlert } from '@/lib/alerts';
 const plans = [
   {
     name: 'Free',
-    price: '$0',
+    price: '₦0',
     description: 'Perfect for exploring the power of AI.',
     features: ['3 AI Generations / month', '1 Connected Brand', 'Basic Analytics', 'Community Support'],
     button: 'Current Plan',
@@ -27,7 +27,7 @@ const plans = [
   },
   {
     name: 'Pro',
-    price: '$49',
+    price: '₦20k',
     description: 'For growing brands needing more scale.',
     features: ['Unlimited AI Generations', '5 Connected Brands', 'Advanced AI Insights', 'Priority Support', 'Custom Brand Voices'],
     button: 'Upgrade to Pro',
@@ -36,10 +36,10 @@ const plans = [
   },
   {
     name: 'Agency',
-    price: '$149',
+    price: '₦50k',
     description: 'Complete control for large teams.',
     features: ['Everything in Pro', 'Unlimited Brands', 'Team Collaboration', 'API Access', 'White-label Reports'],
-    button: 'Contact Sales',
+    button: 'Upgrade to Agency',
     variant: 'glass'
   }
 ];
@@ -48,39 +48,85 @@ export default function BillingPage() {
   const [subscription, setSubscription] = useState<any>(null);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const [subRes, invRes] = await Promise.all([
+        fetch('/api/billing/subscription'),
+        fetch('/api/billing/history')
+      ]);
+
+      if (subRes.ok) setSubscription(await subRes.json());
+      if (invRes.ok) setInvoices(await invRes.json());
+    } catch (err) {
+      console.error("FAILED_TO_FETCH_BILLING:", err);
+      showAlert.error('Billing Error', 'We could not retrieve your billing details.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [subRes, invRes] = await Promise.all([
-          fetch('/api/billing/subscription'),
-          fetch('/api/billing/history')
-        ]);
-
-        if (subRes.ok) {
-          const subData = await subRes.json();
-          setSubscription(subData);
-        }
-
-        if (invRes.ok) {
-          const invData = await invRes.json();
-          setInvoices(invData);
-        }
-      } catch (err) {
-        console.error("FAILED_TO_FETCH_BILLING:", err);
-        showAlert.error('Billing Error', 'We could not retrieve your billing details. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
+
+    // Paystack Verification Logic
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const reference = params.get('reference') || params.get('trxref');
+      
+      if (reference) {
+        setIsProcessing(true);
+        fetch('/api/billing/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference })
+        })
+        .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, data })))
+        .then(({ ok, data }) => {
+           if (ok) {
+             showAlert.success('Payment Successful', `Welcome to the ${data.plan} plan!`);
+             fetchData();
+           } else {
+             showAlert.error('Payment Failed', data.message || 'Transaction failed.');
+           }
+        })
+        .catch(() => showAlert.error('Error', 'Network error during verification.'))
+        .finally(() => {
+           window.history.replaceState({}, document.title, window.location.pathname);
+           setIsProcessing(false);
+        });
+      }
+    }
   }, []);
 
-  if (isLoading) {
+  const handleUpgrade = async (planName: string) => {
+    setIsProcessing(true);
+    try {
+      const res = await fetch('/api/billing/initialize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: planName })
+      });
+      const data = await res.json();
+      
+      if (res.ok && data.authorization_url) {
+        window.location.href = data.authorization_url;
+      } else {
+        showAlert.error('Initialization Failed', data.message);
+        setIsProcessing(false);
+      }
+    } catch (err) {
+      showAlert.error('Network Error', 'Failed to connect to the payment gateway.');
+      setIsProcessing(false);
+    }
+  };
+
+  if (isLoading || isProcessing) {
     return (
-      <div className="flex items-center justify-center h-[400px]">
+      <div className="flex flex-col items-center justify-center h-[500px] gap-4">
         <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        {isProcessing && <p className="text-sm font-medium text-muted animate-pulse">Processing Payment Gateway...</p>}
       </div>
     );
   }
@@ -160,11 +206,8 @@ export default function BillingPage() {
               className="w-full mt-auto" 
               disabled={planName.toUpperCase() === plan.name.toUpperCase()}
               onClick={() => {
-                if (plan.name === 'Agency') {
-                  showAlert.success('Contact Sales', 'Our agency solutions are tailored to your needs. Our team will reach out to you within 24 hours!');
-                } else if (plan.name === 'Pro') {
-                  showAlert.info('Upgrade to Pro', 'Real payment integration is coming soon. Stay tuned for the complete launch!');
-                }
+                if (plan.name === 'Free') return;
+                handleUpgrade(plan.name);
               }}
             >
               {planName.toUpperCase() === plan.name.toUpperCase() ? 'Current Plan' : plan.button}
@@ -194,9 +237,9 @@ export default function BillingPage() {
                   {invoice.status}
                 </span>
                 <button 
-                  onClick={() => invoice.invoiceUrl && window.open(invoice.invoiceUrl, '_blank')}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface hover:bg-border text-muted hover:text-foreground transition-colors disabled:opacity-30"
-                  disabled={!invoice.invoiceUrl}
+                  onClick={() => window.open(`/invoice/${invoice.id}`, '_blank')}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface hover:bg-border text-muted hover:text-foreground transition-colors"
+                  title="Download Receipt"
                 >
                   <DownloadCloud size={16} />
                 </button>

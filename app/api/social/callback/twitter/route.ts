@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { exchangeCodeForToken } from "@/lib/social-oauth";
+import { exchangeCodeForToken, fetchTwitterProfile } from "@/lib/social-oauth";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
@@ -23,6 +23,10 @@ export async function GET(req: Request) {
 
   try {
     const tokenData = await exchangeCodeForToken('twitter', code);
+    
+    // Fetch real profile data from Twitter V2 API
+    const profileResponse = await fetchTwitterProfile(tokenData.access_token);
+    const profile = profileResponse.data;
     
     const teamMember = await prisma.teamMember.findFirst({
       where: { userId: session.user.id },
@@ -47,31 +51,34 @@ export async function GET(req: Request) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=limit_reached`);
     }
 
-    const mockPlatformId = `x_${Math.random().toString(36).substring(7)}`;
-    const mockName = `@x_user_${Math.floor(Math.random() * 100)}`;
+    const platformId = profile.id;
+    const name = `@${profile.username}`;
+    const profilePictureUrl = profile.profile_image_url;
 
     await prisma.socialAccount.upsert({
       where: {
         companyId_platform_platformId: {
           companyId: teamMember.companyId,
           platform: 'twitter',
-          platformId: mockPlatformId
+          platformId: platformId
         }
       },
       update: {
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token || null,
         expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
-        name: mockName
+        name: name,
+        metadata: { profilePictureUrl }
       },
       create: {
         companyId: teamMember.companyId,
         platform: 'twitter',
-        platformId: mockPlatformId,
-        name: mockName,
+        platformId: platformId,
+        name: name,
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token || null,
-        expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null
+        expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
+        metadata: { profilePictureUrl }
       }
     });
 
@@ -80,7 +87,7 @@ export async function GET(req: Request) {
         companyId: teamMember.companyId,
         userId: session.user.id,
         action: 'SOCIAL_ACCOUNT_CONNECTED',
-        details: `Connected X (Twitter) account: ${mockName}`
+        details: `Connected X (Twitter) account: ${name}`
       }
     });
 

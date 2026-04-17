@@ -72,11 +72,23 @@ export default function SocialAccountsPage() {
     fetchData();
   }, []);
 
-  const handleConnect = (platform: string) => {
+  const handleConnect = async (platform: string) => {
     const limit = subscription?.plan === 'FREE' ? 2 : Infinity;
     if (accounts.length >= limit) {
       showAlert.error('Limit Reached', 'Free accounts are limited to 2 social connections. Upgrade to Pro for unlimited accounts!');
       return;
+    }
+
+    if (platform === 'instagram') {
+      const result = await showAlert.confirm(
+        'Instagram Connection',
+        'Because Instagram is managed by Meta, you will be redirected to log in with Facebook. Please ensure your Instagram Business account is linked to the Facebook Page you select.',
+        'Got it, Continue'
+      );
+      
+      if (!result.isConfirmed) {
+        return;
+      }
     }
     
     window.location.href = `/api/social/connect/${platform}`;
@@ -254,7 +266,7 @@ export default function SocialAccountsPage() {
              <h4 className="font-bold text-sm">Need more connections?</h4>
              <p className="text-xs text-muted mt-0.5">Professional and Agency plans include unlimited social account connections and priority support.</p>
            </div>
-           <Button variant="primary" size="sm">Compare Plans</Button>
+           <Button variant="primary" size="sm" onClick={() => window.location.href = '/settings/billing'}>Compare Plans</Button>
         </Card>
       )}
     </div>

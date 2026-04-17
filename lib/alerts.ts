@@ -71,6 +71,16 @@ export const showAlert = {
     });
   },
 
+  info: (title: string, text?: string) => {
+    return MySwal.fire({
+      ...commonOptions,
+      icon: 'info',
+      iconColor: '#3b82f6',
+      title,
+      text,
+    });
+  },
+
   confirm: (title: string, text: string, confirmButtonText = 'Confirm') => {
     return MySwal.fire({
       ...commonOptions,
