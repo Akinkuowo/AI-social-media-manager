@@ -75,7 +75,6 @@ export default function CompanySettingsPage() {
 
   const handleSave = async () => {
     setIsLoading(true);
-    setMessage({ type: '', text: '' });
     
     try {
       let finalLogoUrl = formData.logo;

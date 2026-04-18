@@ -20,7 +20,8 @@ import {
   Send,
   Trash2,
   RefreshCw,
-  Zap
+  Zap,
+  Download
 } from 'lucide-react';
 import { showAlert } from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
@@ -49,6 +50,13 @@ export default function CalendarPage() {
     status: 'DRAFT',
     socialAccountId: ''
   });
+
+  // AI Generation State
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [isAIGenerating, setIsAIGenerating] = useState(false);
+  const [aiForm, setAiForm] = useState({ platform: 'instagram', trendingTopics: '' });
+  const [isRegenerating, setIsRegenerating] = useState(false);
+
   const router = useRouter();
 
   const fetchCalendar = async (date: Date) => {
@@ -91,6 +99,26 @@ export default function CalendarPage() {
   const handleViewPost = (post: any) => {
     setSelectedPost(post);
     setIsDetailModalOpen(true);
+  };
+
+  const handleDropPost = async (postId: string, newDay: number) => {
+    try {
+      const postToMove = calendar?.posts.find((p: any) => p.id === postId);
+      if (!postToMove || postToMove.day === newDay) return;
+      
+      const res = await fetch(`/api/calendar/${postId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ day: newDay })
+      });
+      
+      if (res.ok) {
+        showAlert.success("Post Moved", `Rescheduled to day ${newDay}`);
+        fetchCalendar(currentDate);
+      }
+    } catch (err) {
+      showAlert.error("Move Failed", "Could not accurately map the post.");
+    }
   };
 
   const handleSavePost = async (e: React.FormEvent) => {
@@ -155,6 +183,103 @@ export default function CalendarPage() {
     }
   };
 
+  const handleGenerateCalendar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsAIGenerating(true);
+    try {
+      const res = await fetch('/api/calendar/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          calendarId: calendar?.id,
+          platform: aiForm.platform,
+          trendingTopics: aiForm.trendingTopics,
+          month: currentDate.getMonth(),
+          year: currentDate.getFullYear(),
+        })
+      });
+      
+      if (res.ok) {
+        showAlert.success("30-Day Plan Generated!", "Successfully loaded AI calendar into the grid.");
+        setIsAIModalOpen(false);
+        fetchCalendar(currentDate);
+      } else {
+        const data = await res.json();
+        showAlert.error("Generation Failed", data.message || "Something went wrong.");
+      }
+    } catch (err) {
+      showAlert.error("Generation Failed", "Could not connect to AI Engine.");
+    } finally {
+      setIsAIGenerating(false);
+    }
+  };
+
+  const handleExportCalendar = () => {
+    if (!calendar?.posts?.length) {
+      return showAlert.info("Empty Calendar", "There are no scheduled posts to export.");
+    }
+    
+    const headers = ["Day", "Platform", "Type", "Status", "Scheduled At", "Caption", "Hashtags"];
+    const csvContent = [
+      headers.join(","),
+      ...calendar.posts.map((post: any) => {
+        const d = post.day || "";
+        const plat = post.socialAccount?.platform || "unlinked";
+        const t = post.type || "";
+        const s = post.status || "";
+        const sched = post.scheduledAt ? new Date(post.scheduledAt).toLocaleString() : "";
+        const cap = `"${(post.caption || "").replace(/"/g, '""')}"`;
+        const hash = `"${(post.hashtags || "").replace(/"/g, '""')}"`;
+        return [d, plat, t, s, sched, cap, hash].join(",");
+      })
+    ].join("\n");
+    
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `social_calendar_${currentDate.getMonth() + 1}_${currentDate.getFullYear()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleRegenerateIdea = async () => {
+    if (!selectedPost) return;
+    setIsRegenerating(true);
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          platform: selectedPost.socialAccount?.platform || 'instagram',
+          type: selectedPost.type || 'educational',
+          tone: 'professional',
+          promptOverride: 'Give me a fresh, alternative angle.'
+        })
+      });
+      const data = await res.json();
+      if (data.caption) {
+        const generatedHashtags = Array.isArray(data.hashtags) ? data.hashtags.join(' ') : data.hashtags;
+        
+        const patchRes = await fetch(`/api/calendar/${selectedPost.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ caption: data.caption, hashtags: generatedHashtags })
+        });
+        if (patchRes.ok) {
+          setSelectedPost({ ...selectedPost, caption: data.caption, hashtags: generatedHashtags });
+          fetchCalendar(currentDate);
+          showAlert.success("Idea Regenerated", "Fresh content successfully written.");
+        }
+      }
+    } catch (err) {
+      showAlert.error("Regeneration Failed", "Failed to get fresh idea from AI.");
+    } finally {
+      setIsRegenerating(false);
+    }
+  };
+
   if (isLoading && !calendar) {
     return (
       <div className="flex items-center justify-center h-[500px]">
@@ -183,6 +308,18 @@ export default function CalendarPage() {
           <p className="text-sm text-muted mt-1">Manage your multi-platform content schedule effortlessly.</p>
         </div>
         <div className="flex items-center gap-3">
+          <Button variant="ghost" onClick={handleExportCalendar}>
+            <Download size={18} className="mr-2 text-muted" /> Export
+          </Button>
+
+          <Button 
+            variant="ghost" 
+            onClick={() => setIsAIModalOpen(true)}
+            className="text-primary hover:bg-primary/10 border border-primary/20 bg-primary/5"
+          >
+            <Sparkles size={18} className="mr-2" /> AI 30-Day Auto-Fill
+          </Button>
+
           <Button 
             variant="ghost" 
             onClick={handleRunPublisher}
@@ -191,11 +328,9 @@ export default function CalendarPage() {
           >
             <Zap size={18} className="mr-2" /> Run Publisher
           </Button>
-          <Button variant="ghost" onClick={() => router.push('/generate')}>
-            <Sparkles size={18} className="mr-2 text-primary" /> AI Studio
-          </Button>
+          
           <Button onClick={() => handleAddPost(new Date().getDate())}>
-            <Plus size={18} className="mr-2" /> New Post
+            <Plus size={18} className="mr-2" /> Add Post
           </Button>
         </div>
       </header>
@@ -208,6 +343,7 @@ export default function CalendarPage() {
             onDateChange={setCurrentDate}
             onAddPost={handleAddPost}
             onEditPost={handleViewPost}
+            onDropPost={handleDropPost}
           />
         </div>
 
@@ -267,6 +403,53 @@ export default function CalendarPage() {
           </Card>
         </div>
       </div>
+
+      {/* AI Generate Calendar Modal */}
+      <Modal 
+        isOpen={isAIModalOpen} 
+        onClose={() => setIsAIModalOpen(false)}
+        title={`AI Auto-Fill: ${currentDate.toLocaleString('default', { month: 'long' })}`}
+      >
+        <form onSubmit={handleGenerateCalendar} className="flex flex-col gap-6 py-4">
+          <div className="p-4 bg-primary/10 border border-primary/20 rounded-xl">
+            <p className="text-sm text-primary leading-relaxed font-medium">
+              The AI will read your Company's onboarding profile (Niche, Target Audience, and Brand Voice) to automatically craft a hyper-optimized 30-day posting calendar filled with captions, hashtags, and exact posting times.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Primary Platform Focus</label>
+            <select 
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              value={aiForm.platform}
+              onChange={(e) => setAiForm({...aiForm, platform: e.target.value})}
+              required
+            >
+              <option value="instagram">Instagram</option>
+              <option value="twitter">X / Twitter</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="tiktok">TikTok</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Trending Topics / Specific Themes (Optional)</label>
+            <textarea 
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground min-h-[80px]"
+              placeholder="E.g. Focus heavily on AI tools, software growth, and summer sales."
+              value={aiForm.trendingTopics}
+              onChange={(e) => setAiForm({...aiForm, trendingTopics: e.target.value})}
+            />
+          </div>
+
+          <div className="pt-4 flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={() => setIsAIModalOpen(false)}>Cancel</Button>
+            <Button className="flex-1" type="submit" isLoading={isAIGenerating}>
+              {isAIGenerating ? "Writing 30 Posts..." : "Generate 30 Days"}
+            </Button>
+          </div>
+        </form>
+      </Modal>
 
       {/* New Post Modal */}
       <Modal 
@@ -336,9 +519,21 @@ export default function CalendarPage() {
           return (
             <div className="flex flex-col gap-6 py-4">
               {/* Status Badge */}
-              <div className={clsx("inline-flex items-center gap-2 px-4 py-2 rounded-xl self-start", cfg.bg)}>
-                <StatusIcon size={16} className={cfg.text} />
-                <span className={clsx("text-sm font-bold uppercase tracking-wider", cfg.text)}>{cfg.label}</span>
+              <div className="flex items-center justify-between">
+                <div className={clsx("inline-flex items-center gap-2 px-4 py-2 rounded-xl", cfg.bg)}>
+                  <StatusIcon size={16} className={cfg.text} />
+                  <span className={clsx("text-sm font-bold uppercase tracking-wider", cfg.text)}>{cfg.label}</span>
+                </div>
+                
+                <Button 
+                  variant="ghost" 
+                  onClick={handleRegenerateIdea} 
+                  isLoading={isRegenerating}
+                  className="text-primary hover:bg-primary/10 border border-primary/20"
+                >
+                  <RefreshCw size={16} className={clsx("mr-2", isRegenerating && "animate-spin")} /> 
+                  Regenerate Idea
+                </Button>
               </div>
 
               {/* Status Timeline */}

@@ -90,11 +90,12 @@ interface CalendarProps {
   posts: Post[];
   onAddPost: (day: number) => void;
   onEditPost: (post: Post) => void;
+  onDropPost?: (postId: string, newDay: number) => void;
   currentDate: Date;
   onDateChange: (date: Date) => void;
 }
 
-export const Calendar = ({ posts, onAddPost, onEditPost, currentDate, onDateChange }: CalendarProps) => {
+export const Calendar = ({ posts, onAddPost, onEditPost, onDropPost, currentDate, onDateChange }: CalendarProps) => {
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -163,6 +164,17 @@ export const Calendar = ({ posts, onAddPost, onEditPost, currentDate, onDateChan
           return (
             <div 
               key={day.toString()}
+              onDragOver={(e) => {
+                // Prevent default to allow drop
+                if (isCurrentMonth) e.preventDefault(); 
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                const droppedPostId = e.dataTransfer.getData('postId');
+                if (droppedPostId && onDropPost && isCurrentMonth) {
+                  onDropPost(droppedPostId, day.getDate());
+                }
+              }}
               className={clsx(
                 "min-h-[140px] p-2 border-r border-b border-white/5 transition-all relative group",
                 !isCurrentMonth ? "bg-black/20 opacity-30" : "bg-white/0 hover:bg-white/2",
@@ -200,7 +212,11 @@ export const Calendar = ({ posts, onAddPost, onEditPost, currentDate, onDateChan
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         key={post.id}
-                        onClick={(e) => {
+                        draggable={true}
+                        onDragStart={(e: any) => {
+                          e.dataTransfer.setData('postId', post.id);
+                        }}
+                        onClick={(e: any) => {
                           e.stopPropagation();
                           onEditPost(post);
                         }}

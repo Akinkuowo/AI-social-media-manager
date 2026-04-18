@@ -80,8 +80,8 @@ export async function POST(req: Request) {
         caption,
         hashtags,
         socialAccountId,
-        scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
-        status: scheduledAt ? 'SCHEDULED' : 'DRAFT'
+        scheduledAt: scheduledAt ? new Date(scheduledAt) : new Date(),
+        status: 'SCHEDULED'
       }
     });
 

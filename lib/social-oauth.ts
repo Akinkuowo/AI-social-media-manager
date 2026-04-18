@@ -5,7 +5,7 @@
 
 export const SOCIAL_SCOPES = {
   facebook: ['pages_manage_posts', 'pages_read_engagement', 'instagram_basic', 'instagram_content_publish', 'public_profile'],
-  linkedin: ['w_member_social', 'r_liteprofile', 'r_emailaddress'],
+  linkedin: ['w_member_social', 'openid', 'profile', 'email'],
   twitter: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'],
   tiktok: ['video.upload', 'user.info.basic'],
 };
@@ -42,10 +42,23 @@ export function getAuthorizationUrl(platform: keyof typeof PLATFORM_ENDPOINTS, s
     scope: SOCIAL_SCOPES[platform].join(' '),
   });
 
-  // Twitter PKCE requirement
+  // Twitter PKCE requirement (Allows 'plain' method)
   if (platform === 'twitter') {
-    params.append('code_challenge', 'challenge'); // In a real app, generate a proper challenge
+    params.append('code_challenge', 'challenge');
     params.append('code_challenge_method', 'plain');
+  }
+
+  // TikTok strictly requires 'S256' for its PKCE challenge.
+  if (platform === 'tiktok') {
+    // Sha256-Base64Url Hash of the word "challenge"
+    params.append('code_challenge', 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM'); 
+    params.append('code_challenge_method', 'S256');
+  }
+
+  // TikTok requires 'client_key' strictly in its redirect instead of 'client_id'
+  if (platform === 'tiktok') {
+    params.delete('client_id');
+    params.append('client_key', clientId || '');
   }
 
   return `${config.auth}?${params.toString()}`;
@@ -131,10 +144,12 @@ export async function fetchInstagramAccounts(accessToken: string) {
  * Fetch the basic profile of the authenticated LinkedIn member.
  */
 export async function fetchLinkedInProfile(accessToken: string) {
-  const response = await fetch('https://api.linkedin.com/v2/me', {
+  const response = await fetch('https://api.linkedin.com/v2/userinfo', {
     headers: { 'Authorization': `Bearer ${accessToken}` }
   });
   if (!response.ok) {
+    const err = await response.text();
+    console.error('[LINKEDIN_PROFILE_ERROR]:', err);
     throw new Error('Failed to fetch LinkedIn profile');
   }
   return response.json();

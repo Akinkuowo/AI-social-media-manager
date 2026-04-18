@@ -49,10 +49,10 @@ export async function GET(req: Request) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=limit_reached`);
     }
 
-    // 3. Fetch Real LinkedIn Profile info
+    // 3. Fetch Real LinkedIn Profile info via OpenID
     const profile = await fetchLinkedInProfile(tokenData.access_token);
-    const realPlatformId = profile.id;
-    const realName = `${profile.localizedFirstName} ${profile.localizedLastName}`;
+    const realPlatformId = profile.sub; // OpenID 'sub' is the platform ID
+    const realName = profile.name || 'LinkedIn User';
 
     // 4. Save to Database
     await prisma.socialAccount.upsert({

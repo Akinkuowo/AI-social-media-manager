@@ -131,6 +131,37 @@ export async function POST(req: Request) {
               break;
             }
 
+            case 'twitter': {
+              // Publish to Twitter (X)
+              const twitterRes = await fetch('https://api.twitter.com/2/tweets', {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${accessToken}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  text: `${post.caption}${post.hashtags ? '\n\n' + post.hashtags : ''}`
+                })
+              });
+
+              if (twitterRes.ok) {
+                const twitterData = await twitterRes.json();
+                platformPostId = twitterData.data.id;
+              } else {
+                const errorText = await twitterRes.text();
+                console.error("[PUBLISH_TWITTER_ERROR]:", errorText);
+                let msg = errorText;
+                try {
+                  const errorJson = JSON.parse(errorText);
+                  msg = errorJson.detail || errorJson.title || errorText;
+                } catch (e) {
+                  // Not Valid JSON, keep raw text
+                }
+                throw new Error(`X/Twitter Error: ${msg}`);
+              }
+              break;
+            }
+
             default:
               // For platforms without API integration yet, simulate success
               console.warn(`[PUBLISH] Platform "${platform}" not yet supported for auto-publish. Marking as published.`);

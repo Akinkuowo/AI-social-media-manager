@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
     // Update the company's subscription
     const nextBillingDate = new Date();
-    nextBillingDate.setDate(nextBillingDate.getDate() + 30); // Add 30 days
+    nextBillingDate.setMonth(nextBillingDate.getMonth() + 1); // Exact exactly 1 calendar month
 
     await prisma.subscription.upsert({
       where: { companyId },

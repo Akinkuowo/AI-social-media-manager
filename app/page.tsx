@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Home() {
+  const { data: session } = useSession();
+
   return (
     <div className="min-h-screen flex flex-col">
       <nav className="glass flex justify-between items-center px-16 py-6 sticky top-0 z-50 mt-4 mx-8 rounded-2xl max-lg:px-8">
@@ -13,10 +16,24 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-6">
           <Link href="/pricing" className="text-muted hover:text-foreground transition-all duration-300">Pricing</Link>
-          <Link href="/login" className="font-semibold px-6 py-3">Login</Link>
-          <Link href="/register" className="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(59,130,246,0.2)] transition-all duration-300">
-            Get Started
-          </Link>
+          {session ? (
+            <>
+              <Link href="/dashboard" className="font-semibold px-6 py-3 text-emerald-400">Dashboard</Link>
+              <button 
+                onClick={() => signOut()} 
+                className="bg-red-500/10 text-red-500 font-semibold px-6 py-3 rounded-lg hover:bg-red-500/20 transition-all duration-300"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="font-semibold px-6 py-3">Login</Link>
+              <Link href="/register" className="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(59,130,246,0.2)] transition-all duration-300">
+                Get Started
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -33,9 +50,15 @@ export default function Home() {
             your brand across all platforms with our AI-first manager.
           </p>
           <div className="flex gap-4 max-lg:justify-center">
-            <Link href="/register" className="bg-primary text-white font-semibold px-10 py-4 text-lg rounded-lg hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(59,130,246,0.2)] transition-all duration-300">
-              Start Free Trial
-            </Link>
+            {session ? (
+              <Link href="/dashboard" className="bg-primary text-white font-semibold px-10 py-4 text-lg rounded-lg hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(59,130,246,0.2)] transition-all duration-300">
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link href="/register" className="bg-primary text-white font-semibold px-10 py-4 text-lg rounded-lg hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(59,130,246,0.2)] transition-all duration-300">
+                Start Free Trial
+              </Link>
+            )}
             <Link href="/demo" className="glass text-white font-semibold px-10 py-4 text-lg rounded-lg hover:bg-surface-hover hover:-translate-y-0.5 transition-all duration-300">
               Watch Demo
             </Link>
