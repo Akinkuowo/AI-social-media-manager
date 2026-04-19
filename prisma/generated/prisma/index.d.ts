@@ -103,6 +103,16 @@ export type ActivityLog = $Result.DefaultSelection<Prisma.$ActivityLogPayload>
  * 
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model Competitor
+ * 
+ */
+export type Competitor = $Result.DefaultSelection<Prisma.$CompetitorPayload>
+/**
+ * Model CompetitorPost
+ * 
+ */
+export type CompetitorPost = $Result.DefaultSelection<Prisma.$CompetitorPostPayload>
 
 /**
  * Enums
@@ -480,6 +490,26 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.competitor`: Exposes CRUD operations for the **Competitor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Competitors
+    * const competitors = await prisma.competitor.findMany()
+    * ```
+    */
+  get competitor(): Prisma.CompetitorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.competitorPost`: Exposes CRUD operations for the **CompetitorPost** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CompetitorPosts
+    * const competitorPosts = await prisma.competitorPost.findMany()
+    * ```
+    */
+  get competitorPost(): Prisma.CompetitorPostDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -931,7 +961,9 @@ export namespace Prisma {
     Invoice: 'Invoice',
     Invitation: 'Invitation',
     ActivityLog: 'ActivityLog',
-    Notification: 'Notification'
+    Notification: 'Notification',
+    Competitor: 'Competitor',
+    CompetitorPost: 'CompetitorPost'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -947,7 +979,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "verificationToken" | "passwordResetToken" | "account" | "session" | "company" | "teamMember" | "socialAccount" | "platformMetric" | "calendar" | "post" | "analytics" | "campaign" | "subscription" | "invoice" | "invitation" | "activityLog" | "notification"
+      modelProps: "user" | "verificationToken" | "passwordResetToken" | "account" | "session" | "company" | "teamMember" | "socialAccount" | "platformMetric" | "calendar" | "post" | "analytics" | "campaign" | "subscription" | "invoice" | "invitation" | "activityLog" | "notification" | "competitor" | "competitorPost"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2283,6 +2315,154 @@ export namespace Prisma {
           }
         }
       }
+      Competitor: {
+        payload: Prisma.$CompetitorPayload<ExtArgs>
+        fields: Prisma.CompetitorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompetitorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompetitorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>
+          }
+          findFirst: {
+            args: Prisma.CompetitorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompetitorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>
+          }
+          findMany: {
+            args: Prisma.CompetitorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>[]
+          }
+          create: {
+            args: Prisma.CompetitorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>
+          }
+          createMany: {
+            args: Prisma.CompetitorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompetitorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>[]
+          }
+          delete: {
+            args: Prisma.CompetitorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>
+          }
+          update: {
+            args: Prisma.CompetitorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompetitorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompetitorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompetitorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompetitorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPayload>
+          }
+          aggregate: {
+            args: Prisma.CompetitorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompetitor>
+          }
+          groupBy: {
+            args: Prisma.CompetitorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompetitorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompetitorCountArgs<ExtArgs>
+            result: $Utils.Optional<CompetitorCountAggregateOutputType> | number
+          }
+        }
+      }
+      CompetitorPost: {
+        payload: Prisma.$CompetitorPostPayload<ExtArgs>
+        fields: Prisma.CompetitorPostFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompetitorPostFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompetitorPostFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>
+          }
+          findFirst: {
+            args: Prisma.CompetitorPostFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompetitorPostFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>
+          }
+          findMany: {
+            args: Prisma.CompetitorPostFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>[]
+          }
+          create: {
+            args: Prisma.CompetitorPostCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>
+          }
+          createMany: {
+            args: Prisma.CompetitorPostCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompetitorPostCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>[]
+          }
+          delete: {
+            args: Prisma.CompetitorPostDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>
+          }
+          update: {
+            args: Prisma.CompetitorPostUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompetitorPostDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompetitorPostUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompetitorPostUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompetitorPostUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitorPostPayload>
+          }
+          aggregate: {
+            args: Prisma.CompetitorPostAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompetitorPost>
+          }
+          groupBy: {
+            args: Prisma.CompetitorPostGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompetitorPostGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompetitorPostCountArgs<ExtArgs>
+            result: $Utils.Optional<CompetitorPostCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2409,6 +2589,8 @@ export namespace Prisma {
     invitation?: InvitationOmit
     activityLog?: ActivityLogOmit
     notification?: NotificationOmit
+    competitor?: CompetitorOmit
+    competitorPost?: CompetitorPostOmit
   }
 
   /* Types for Logging */
@@ -2563,6 +2745,7 @@ export namespace Prisma {
     invoices: number
     socialAccounts: number
     members: number
+    competitors: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2573,6 +2756,7 @@ export namespace Prisma {
     invoices?: boolean | CompanyCountOutputTypeCountInvoicesArgs
     socialAccounts?: boolean | CompanyCountOutputTypeCountSocialAccountsArgs
     members?: boolean | CompanyCountOutputTypeCountMembersArgs
+    competitors?: boolean | CompanyCountOutputTypeCountCompetitorsArgs
   }
 
   // Custom InputTypes
@@ -2633,6 +2817,13 @@ export namespace Prisma {
    */
   export type CompanyCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TeamMemberWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountCompetitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompetitorWhereInput
   }
 
 
@@ -2704,6 +2895,37 @@ export namespace Prisma {
    */
   export type CalendarCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
+  }
+
+
+  /**
+   * Count Type CompetitorCountOutputType
+   */
+
+  export type CompetitorCountOutputType = {
+    posts: number
+  }
+
+  export type CompetitorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    posts?: boolean | CompetitorCountOutputTypeCountPostsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CompetitorCountOutputType without action
+   */
+  export type CompetitorCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorCountOutputType
+     */
+    select?: CompetitorCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompetitorCountOutputType without action
+   */
+  export type CompetitorCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompetitorPostWhereInput
   }
 
 
@@ -8410,6 +8632,7 @@ export namespace Prisma {
     socialAccounts?: boolean | Company$socialAccountsArgs<ExtArgs>
     subscription?: boolean | Company$subscriptionArgs<ExtArgs>
     members?: boolean | Company$membersArgs<ExtArgs>
+    competitors?: boolean | Company$competitorsArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
@@ -8477,6 +8700,7 @@ export namespace Prisma {
     socialAccounts?: boolean | Company$socialAccountsArgs<ExtArgs>
     subscription?: boolean | Company$subscriptionArgs<ExtArgs>
     members?: boolean | Company$membersArgs<ExtArgs>
+    competitors?: boolean | Company$competitorsArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8493,6 +8717,7 @@ export namespace Prisma {
       socialAccounts: Prisma.$SocialAccountPayload<ExtArgs>[]
       subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
       members: Prisma.$TeamMemberPayload<ExtArgs>[]
+      competitors: Prisma.$CompetitorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8912,6 +9137,7 @@ export namespace Prisma {
     socialAccounts<T extends Company$socialAccountsArgs<ExtArgs> = {}>(args?: Subset<T, Company$socialAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscription<T extends Company$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, Company$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     members<T extends Company$membersArgs<ExtArgs> = {}>(args?: Subset<T, Company$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    competitors<T extends Company$competitorsArgs<ExtArgs> = {}>(args?: Subset<T, Company$competitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9533,6 +9759,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
+  }
+
+  /**
+   * Company.competitors
+   */
+  export type Company$competitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    where?: CompetitorWhereInput
+    orderBy?: CompetitorOrderByWithRelationInput | CompetitorOrderByWithRelationInput[]
+    cursor?: CompetitorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompetitorScalarFieldEnum | CompetitorScalarFieldEnum[]
   }
 
   /**
@@ -23176,6 +23426,2368 @@ export namespace Prisma {
 
 
   /**
+   * Model Competitor
+   */
+
+  export type AggregateCompetitor = {
+    _count: CompetitorCountAggregateOutputType | null
+    _avg: CompetitorAvgAggregateOutputType | null
+    _sum: CompetitorSumAggregateOutputType | null
+    _min: CompetitorMinAggregateOutputType | null
+    _max: CompetitorMaxAggregateOutputType | null
+  }
+
+  export type CompetitorAvgAggregateOutputType = {
+    followerCount: number | null
+    engagementRate: number | null
+  }
+
+  export type CompetitorSumAggregateOutputType = {
+    followerCount: number | null
+    engagementRate: number | null
+  }
+
+  export type CompetitorMinAggregateOutputType = {
+    id: string | null
+    companyId: string | null
+    name: string | null
+    platform: string | null
+    handle: string | null
+    followerCount: number | null
+    engagementRate: number | null
+    avatar: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompetitorMaxAggregateOutputType = {
+    id: string | null
+    companyId: string | null
+    name: string | null
+    platform: string | null
+    handle: string | null
+    followerCount: number | null
+    engagementRate: number | null
+    avatar: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompetitorCountAggregateOutputType = {
+    id: number
+    companyId: number
+    name: number
+    platform: number
+    handle: number
+    followerCount: number
+    engagementRate: number
+    avatar: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompetitorAvgAggregateInputType = {
+    followerCount?: true
+    engagementRate?: true
+  }
+
+  export type CompetitorSumAggregateInputType = {
+    followerCount?: true
+    engagementRate?: true
+  }
+
+  export type CompetitorMinAggregateInputType = {
+    id?: true
+    companyId?: true
+    name?: true
+    platform?: true
+    handle?: true
+    followerCount?: true
+    engagementRate?: true
+    avatar?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompetitorMaxAggregateInputType = {
+    id?: true
+    companyId?: true
+    name?: true
+    platform?: true
+    handle?: true
+    followerCount?: true
+    engagementRate?: true
+    avatar?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompetitorCountAggregateInputType = {
+    id?: true
+    companyId?: true
+    name?: true
+    platform?: true
+    handle?: true
+    followerCount?: true
+    engagementRate?: true
+    avatar?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompetitorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Competitor to aggregate.
+     */
+    where?: CompetitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitors to fetch.
+     */
+    orderBy?: CompetitorOrderByWithRelationInput | CompetitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompetitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Competitors
+    **/
+    _count?: true | CompetitorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompetitorAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompetitorSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompetitorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompetitorMaxAggregateInputType
+  }
+
+  export type GetCompetitorAggregateType<T extends CompetitorAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompetitor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompetitor[P]>
+      : GetScalarType<T[P], AggregateCompetitor[P]>
+  }
+
+
+
+
+  export type CompetitorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompetitorWhereInput
+    orderBy?: CompetitorOrderByWithAggregationInput | CompetitorOrderByWithAggregationInput[]
+    by: CompetitorScalarFieldEnum[] | CompetitorScalarFieldEnum
+    having?: CompetitorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompetitorCountAggregateInputType | true
+    _avg?: CompetitorAvgAggregateInputType
+    _sum?: CompetitorSumAggregateInputType
+    _min?: CompetitorMinAggregateInputType
+    _max?: CompetitorMaxAggregateInputType
+  }
+
+  export type CompetitorGroupByOutputType = {
+    id: string
+    companyId: string
+    name: string
+    platform: string
+    handle: string
+    followerCount: number
+    engagementRate: number
+    avatar: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CompetitorCountAggregateOutputType | null
+    _avg: CompetitorAvgAggregateOutputType | null
+    _sum: CompetitorSumAggregateOutputType | null
+    _min: CompetitorMinAggregateOutputType | null
+    _max: CompetitorMaxAggregateOutputType | null
+  }
+
+  type GetCompetitorGroupByPayload<T extends CompetitorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompetitorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompetitorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompetitorGroupByOutputType[P]>
+            : GetScalarType<T[P], CompetitorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompetitorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    companyId?: boolean
+    name?: boolean
+    platform?: boolean
+    handle?: boolean
+    followerCount?: boolean
+    engagementRate?: boolean
+    avatar?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    posts?: boolean | Competitor$postsArgs<ExtArgs>
+    _count?: boolean | CompetitorCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competitor"]>
+
+  export type CompetitorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    companyId?: boolean
+    name?: boolean
+    platform?: boolean
+    handle?: boolean
+    followerCount?: boolean
+    engagementRate?: boolean
+    avatar?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competitor"]>
+
+  export type CompetitorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    companyId?: boolean
+    name?: boolean
+    platform?: boolean
+    handle?: boolean
+    followerCount?: boolean
+    engagementRate?: boolean
+    avatar?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competitor"]>
+
+  export type CompetitorSelectScalar = {
+    id?: boolean
+    companyId?: boolean
+    name?: boolean
+    platform?: boolean
+    handle?: boolean
+    followerCount?: boolean
+    engagementRate?: boolean
+    avatar?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompetitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "name" | "platform" | "handle" | "followerCount" | "engagementRate" | "avatar" | "createdAt" | "updatedAt", ExtArgs["result"]["competitor"]>
+  export type CompetitorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    posts?: boolean | Competitor$postsArgs<ExtArgs>
+    _count?: boolean | CompetitorCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CompetitorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type CompetitorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+
+  export type $CompetitorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Competitor"
+    objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
+      posts: Prisma.$CompetitorPostPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      companyId: string
+      name: string
+      platform: string
+      handle: string
+      followerCount: number
+      engagementRate: number
+      avatar: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["competitor"]>
+    composites: {}
+  }
+
+  type CompetitorGetPayload<S extends boolean | null | undefined | CompetitorDefaultArgs> = $Result.GetResult<Prisma.$CompetitorPayload, S>
+
+  type CompetitorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompetitorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompetitorCountAggregateInputType | true
+    }
+
+  export interface CompetitorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Competitor'], meta: { name: 'Competitor' } }
+    /**
+     * Find zero or one Competitor that matches the filter.
+     * @param {CompetitorFindUniqueArgs} args - Arguments to find a Competitor
+     * @example
+     * // Get one Competitor
+     * const competitor = await prisma.competitor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompetitorFindUniqueArgs>(args: SelectSubset<T, CompetitorFindUniqueArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Competitor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompetitorFindUniqueOrThrowArgs} args - Arguments to find a Competitor
+     * @example
+     * // Get one Competitor
+     * const competitor = await prisma.competitor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompetitorFindUniqueOrThrowArgs>(args: SelectSubset<T, CompetitorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Competitor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorFindFirstArgs} args - Arguments to find a Competitor
+     * @example
+     * // Get one Competitor
+     * const competitor = await prisma.competitor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompetitorFindFirstArgs>(args?: SelectSubset<T, CompetitorFindFirstArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Competitor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorFindFirstOrThrowArgs} args - Arguments to find a Competitor
+     * @example
+     * // Get one Competitor
+     * const competitor = await prisma.competitor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompetitorFindFirstOrThrowArgs>(args?: SelectSubset<T, CompetitorFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Competitors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Competitors
+     * const competitors = await prisma.competitor.findMany()
+     * 
+     * // Get first 10 Competitors
+     * const competitors = await prisma.competitor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const competitorWithIdOnly = await prisma.competitor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompetitorFindManyArgs>(args?: SelectSubset<T, CompetitorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Competitor.
+     * @param {CompetitorCreateArgs} args - Arguments to create a Competitor.
+     * @example
+     * // Create one Competitor
+     * const Competitor = await prisma.competitor.create({
+     *   data: {
+     *     // ... data to create a Competitor
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompetitorCreateArgs>(args: SelectSubset<T, CompetitorCreateArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Competitors.
+     * @param {CompetitorCreateManyArgs} args - Arguments to create many Competitors.
+     * @example
+     * // Create many Competitors
+     * const competitor = await prisma.competitor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompetitorCreateManyArgs>(args?: SelectSubset<T, CompetitorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Competitors and returns the data saved in the database.
+     * @param {CompetitorCreateManyAndReturnArgs} args - Arguments to create many Competitors.
+     * @example
+     * // Create many Competitors
+     * const competitor = await prisma.competitor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Competitors and only return the `id`
+     * const competitorWithIdOnly = await prisma.competitor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompetitorCreateManyAndReturnArgs>(args?: SelectSubset<T, CompetitorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Competitor.
+     * @param {CompetitorDeleteArgs} args - Arguments to delete one Competitor.
+     * @example
+     * // Delete one Competitor
+     * const Competitor = await prisma.competitor.delete({
+     *   where: {
+     *     // ... filter to delete one Competitor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompetitorDeleteArgs>(args: SelectSubset<T, CompetitorDeleteArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Competitor.
+     * @param {CompetitorUpdateArgs} args - Arguments to update one Competitor.
+     * @example
+     * // Update one Competitor
+     * const competitor = await prisma.competitor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompetitorUpdateArgs>(args: SelectSubset<T, CompetitorUpdateArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Competitors.
+     * @param {CompetitorDeleteManyArgs} args - Arguments to filter Competitors to delete.
+     * @example
+     * // Delete a few Competitors
+     * const { count } = await prisma.competitor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompetitorDeleteManyArgs>(args?: SelectSubset<T, CompetitorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Competitors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Competitors
+     * const competitor = await prisma.competitor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompetitorUpdateManyArgs>(args: SelectSubset<T, CompetitorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Competitors and returns the data updated in the database.
+     * @param {CompetitorUpdateManyAndReturnArgs} args - Arguments to update many Competitors.
+     * @example
+     * // Update many Competitors
+     * const competitor = await prisma.competitor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Competitors and only return the `id`
+     * const competitorWithIdOnly = await prisma.competitor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompetitorUpdateManyAndReturnArgs>(args: SelectSubset<T, CompetitorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Competitor.
+     * @param {CompetitorUpsertArgs} args - Arguments to update or create a Competitor.
+     * @example
+     * // Update or create a Competitor
+     * const competitor = await prisma.competitor.upsert({
+     *   create: {
+     *     // ... data to create a Competitor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Competitor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompetitorUpsertArgs>(args: SelectSubset<T, CompetitorUpsertArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Competitors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorCountArgs} args - Arguments to filter Competitors to count.
+     * @example
+     * // Count the number of Competitors
+     * const count = await prisma.competitor.count({
+     *   where: {
+     *     // ... the filter for the Competitors we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompetitorCountArgs>(
+      args?: Subset<T, CompetitorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompetitorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Competitor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompetitorAggregateArgs>(args: Subset<T, CompetitorAggregateArgs>): Prisma.PrismaPromise<GetCompetitorAggregateType<T>>
+
+    /**
+     * Group by Competitor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompetitorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompetitorGroupByArgs['orderBy'] }
+        : { orderBy?: CompetitorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompetitorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompetitorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Competitor model
+   */
+  readonly fields: CompetitorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Competitor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompetitorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    posts<T extends Competitor$postsArgs<ExtArgs> = {}>(args?: Subset<T, Competitor$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Competitor model
+   */
+  interface CompetitorFieldRefs {
+    readonly id: FieldRef<"Competitor", 'String'>
+    readonly companyId: FieldRef<"Competitor", 'String'>
+    readonly name: FieldRef<"Competitor", 'String'>
+    readonly platform: FieldRef<"Competitor", 'String'>
+    readonly handle: FieldRef<"Competitor", 'String'>
+    readonly followerCount: FieldRef<"Competitor", 'Int'>
+    readonly engagementRate: FieldRef<"Competitor", 'Float'>
+    readonly avatar: FieldRef<"Competitor", 'String'>
+    readonly createdAt: FieldRef<"Competitor", 'DateTime'>
+    readonly updatedAt: FieldRef<"Competitor", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Competitor findUnique
+   */
+  export type CompetitorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * Filter, which Competitor to fetch.
+     */
+    where: CompetitorWhereUniqueInput
+  }
+
+  /**
+   * Competitor findUniqueOrThrow
+   */
+  export type CompetitorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * Filter, which Competitor to fetch.
+     */
+    where: CompetitorWhereUniqueInput
+  }
+
+  /**
+   * Competitor findFirst
+   */
+  export type CompetitorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * Filter, which Competitor to fetch.
+     */
+    where?: CompetitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitors to fetch.
+     */
+    orderBy?: CompetitorOrderByWithRelationInput | CompetitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Competitors.
+     */
+    cursor?: CompetitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Competitors.
+     */
+    distinct?: CompetitorScalarFieldEnum | CompetitorScalarFieldEnum[]
+  }
+
+  /**
+   * Competitor findFirstOrThrow
+   */
+  export type CompetitorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * Filter, which Competitor to fetch.
+     */
+    where?: CompetitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitors to fetch.
+     */
+    orderBy?: CompetitorOrderByWithRelationInput | CompetitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Competitors.
+     */
+    cursor?: CompetitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Competitors.
+     */
+    distinct?: CompetitorScalarFieldEnum | CompetitorScalarFieldEnum[]
+  }
+
+  /**
+   * Competitor findMany
+   */
+  export type CompetitorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * Filter, which Competitors to fetch.
+     */
+    where?: CompetitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitors to fetch.
+     */
+    orderBy?: CompetitorOrderByWithRelationInput | CompetitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Competitors.
+     */
+    cursor?: CompetitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Competitors.
+     */
+    distinct?: CompetitorScalarFieldEnum | CompetitorScalarFieldEnum[]
+  }
+
+  /**
+   * Competitor create
+   */
+  export type CompetitorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Competitor.
+     */
+    data: XOR<CompetitorCreateInput, CompetitorUncheckedCreateInput>
+  }
+
+  /**
+   * Competitor createMany
+   */
+  export type CompetitorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Competitors.
+     */
+    data: CompetitorCreateManyInput | CompetitorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Competitor createManyAndReturn
+   */
+  export type CompetitorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * The data used to create many Competitors.
+     */
+    data: CompetitorCreateManyInput | CompetitorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Competitor update
+   */
+  export type CompetitorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Competitor.
+     */
+    data: XOR<CompetitorUpdateInput, CompetitorUncheckedUpdateInput>
+    /**
+     * Choose, which Competitor to update.
+     */
+    where: CompetitorWhereUniqueInput
+  }
+
+  /**
+   * Competitor updateMany
+   */
+  export type CompetitorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Competitors.
+     */
+    data: XOR<CompetitorUpdateManyMutationInput, CompetitorUncheckedUpdateManyInput>
+    /**
+     * Filter which Competitors to update
+     */
+    where?: CompetitorWhereInput
+    /**
+     * Limit how many Competitors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Competitor updateManyAndReturn
+   */
+  export type CompetitorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * The data used to update Competitors.
+     */
+    data: XOR<CompetitorUpdateManyMutationInput, CompetitorUncheckedUpdateManyInput>
+    /**
+     * Filter which Competitors to update
+     */
+    where?: CompetitorWhereInput
+    /**
+     * Limit how many Competitors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Competitor upsert
+   */
+  export type CompetitorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Competitor to update in case it exists.
+     */
+    where: CompetitorWhereUniqueInput
+    /**
+     * In case the Competitor found by the `where` argument doesn't exist, create a new Competitor with this data.
+     */
+    create: XOR<CompetitorCreateInput, CompetitorUncheckedCreateInput>
+    /**
+     * In case the Competitor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompetitorUpdateInput, CompetitorUncheckedUpdateInput>
+  }
+
+  /**
+   * Competitor delete
+   */
+  export type CompetitorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+    /**
+     * Filter which Competitor to delete.
+     */
+    where: CompetitorWhereUniqueInput
+  }
+
+  /**
+   * Competitor deleteMany
+   */
+  export type CompetitorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Competitors to delete
+     */
+    where?: CompetitorWhereInput
+    /**
+     * Limit how many Competitors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Competitor.posts
+   */
+  export type Competitor$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    where?: CompetitorPostWhereInput
+    orderBy?: CompetitorPostOrderByWithRelationInput | CompetitorPostOrderByWithRelationInput[]
+    cursor?: CompetitorPostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompetitorPostScalarFieldEnum | CompetitorPostScalarFieldEnum[]
+  }
+
+  /**
+   * Competitor without action
+   */
+  export type CompetitorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competitor
+     */
+    select?: CompetitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competitor
+     */
+    omit?: CompetitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CompetitorPost
+   */
+
+  export type AggregateCompetitorPost = {
+    _count: CompetitorPostCountAggregateOutputType | null
+    _avg: CompetitorPostAvgAggregateOutputType | null
+    _sum: CompetitorPostSumAggregateOutputType | null
+    _min: CompetitorPostMinAggregateOutputType | null
+    _max: CompetitorPostMaxAggregateOutputType | null
+  }
+
+  export type CompetitorPostAvgAggregateOutputType = {
+    likes: number | null
+    comments: number | null
+  }
+
+  export type CompetitorPostSumAggregateOutputType = {
+    likes: number | null
+    comments: number | null
+  }
+
+  export type CompetitorPostMinAggregateOutputType = {
+    id: string | null
+    competitorId: string | null
+    postId: string | null
+    caption: string | null
+    likes: number | null
+    comments: number | null
+    postedAt: Date | null
+    mediaUrl: string | null
+    hashtags: string | null
+    createdAt: Date | null
+  }
+
+  export type CompetitorPostMaxAggregateOutputType = {
+    id: string | null
+    competitorId: string | null
+    postId: string | null
+    caption: string | null
+    likes: number | null
+    comments: number | null
+    postedAt: Date | null
+    mediaUrl: string | null
+    hashtags: string | null
+    createdAt: Date | null
+  }
+
+  export type CompetitorPostCountAggregateOutputType = {
+    id: number
+    competitorId: number
+    postId: number
+    caption: number
+    likes: number
+    comments: number
+    postedAt: number
+    mediaUrl: number
+    hashtags: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type CompetitorPostAvgAggregateInputType = {
+    likes?: true
+    comments?: true
+  }
+
+  export type CompetitorPostSumAggregateInputType = {
+    likes?: true
+    comments?: true
+  }
+
+  export type CompetitorPostMinAggregateInputType = {
+    id?: true
+    competitorId?: true
+    postId?: true
+    caption?: true
+    likes?: true
+    comments?: true
+    postedAt?: true
+    mediaUrl?: true
+    hashtags?: true
+    createdAt?: true
+  }
+
+  export type CompetitorPostMaxAggregateInputType = {
+    id?: true
+    competitorId?: true
+    postId?: true
+    caption?: true
+    likes?: true
+    comments?: true
+    postedAt?: true
+    mediaUrl?: true
+    hashtags?: true
+    createdAt?: true
+  }
+
+  export type CompetitorPostCountAggregateInputType = {
+    id?: true
+    competitorId?: true
+    postId?: true
+    caption?: true
+    likes?: true
+    comments?: true
+    postedAt?: true
+    mediaUrl?: true
+    hashtags?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type CompetitorPostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompetitorPost to aggregate.
+     */
+    where?: CompetitorPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompetitorPosts to fetch.
+     */
+    orderBy?: CompetitorPostOrderByWithRelationInput | CompetitorPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompetitorPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompetitorPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompetitorPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CompetitorPosts
+    **/
+    _count?: true | CompetitorPostCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompetitorPostAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompetitorPostSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompetitorPostMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompetitorPostMaxAggregateInputType
+  }
+
+  export type GetCompetitorPostAggregateType<T extends CompetitorPostAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompetitorPost]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompetitorPost[P]>
+      : GetScalarType<T[P], AggregateCompetitorPost[P]>
+  }
+
+
+
+
+  export type CompetitorPostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompetitorPostWhereInput
+    orderBy?: CompetitorPostOrderByWithAggregationInput | CompetitorPostOrderByWithAggregationInput[]
+    by: CompetitorPostScalarFieldEnum[] | CompetitorPostScalarFieldEnum
+    having?: CompetitorPostScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompetitorPostCountAggregateInputType | true
+    _avg?: CompetitorPostAvgAggregateInputType
+    _sum?: CompetitorPostSumAggregateInputType
+    _min?: CompetitorPostMinAggregateInputType
+    _max?: CompetitorPostMaxAggregateInputType
+  }
+
+  export type CompetitorPostGroupByOutputType = {
+    id: string
+    competitorId: string
+    postId: string
+    caption: string | null
+    likes: number
+    comments: number
+    postedAt: Date
+    mediaUrl: string | null
+    hashtags: string | null
+    createdAt: Date
+    _count: CompetitorPostCountAggregateOutputType | null
+    _avg: CompetitorPostAvgAggregateOutputType | null
+    _sum: CompetitorPostSumAggregateOutputType | null
+    _min: CompetitorPostMinAggregateOutputType | null
+    _max: CompetitorPostMaxAggregateOutputType | null
+  }
+
+  type GetCompetitorPostGroupByPayload<T extends CompetitorPostGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompetitorPostGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompetitorPostGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompetitorPostGroupByOutputType[P]>
+            : GetScalarType<T[P], CompetitorPostGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompetitorPostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    competitorId?: boolean
+    postId?: boolean
+    caption?: boolean
+    likes?: boolean
+    comments?: boolean
+    postedAt?: boolean
+    mediaUrl?: boolean
+    hashtags?: boolean
+    createdAt?: boolean
+    competitor?: boolean | CompetitorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competitorPost"]>
+
+  export type CompetitorPostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    competitorId?: boolean
+    postId?: boolean
+    caption?: boolean
+    likes?: boolean
+    comments?: boolean
+    postedAt?: boolean
+    mediaUrl?: boolean
+    hashtags?: boolean
+    createdAt?: boolean
+    competitor?: boolean | CompetitorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competitorPost"]>
+
+  export type CompetitorPostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    competitorId?: boolean
+    postId?: boolean
+    caption?: boolean
+    likes?: boolean
+    comments?: boolean
+    postedAt?: boolean
+    mediaUrl?: boolean
+    hashtags?: boolean
+    createdAt?: boolean
+    competitor?: boolean | CompetitorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competitorPost"]>
+
+  export type CompetitorPostSelectScalar = {
+    id?: boolean
+    competitorId?: boolean
+    postId?: boolean
+    caption?: boolean
+    likes?: boolean
+    comments?: boolean
+    postedAt?: boolean
+    mediaUrl?: boolean
+    hashtags?: boolean
+    createdAt?: boolean
+  }
+
+  export type CompetitorPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "competitorId" | "postId" | "caption" | "likes" | "comments" | "postedAt" | "mediaUrl" | "hashtags" | "createdAt", ExtArgs["result"]["competitorPost"]>
+  export type CompetitorPostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    competitor?: boolean | CompetitorDefaultArgs<ExtArgs>
+  }
+  export type CompetitorPostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    competitor?: boolean | CompetitorDefaultArgs<ExtArgs>
+  }
+  export type CompetitorPostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    competitor?: boolean | CompetitorDefaultArgs<ExtArgs>
+  }
+
+  export type $CompetitorPostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CompetitorPost"
+    objects: {
+      competitor: Prisma.$CompetitorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      competitorId: string
+      postId: string
+      caption: string | null
+      likes: number
+      comments: number
+      postedAt: Date
+      mediaUrl: string | null
+      hashtags: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["competitorPost"]>
+    composites: {}
+  }
+
+  type CompetitorPostGetPayload<S extends boolean | null | undefined | CompetitorPostDefaultArgs> = $Result.GetResult<Prisma.$CompetitorPostPayload, S>
+
+  type CompetitorPostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompetitorPostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompetitorPostCountAggregateInputType | true
+    }
+
+  export interface CompetitorPostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CompetitorPost'], meta: { name: 'CompetitorPost' } }
+    /**
+     * Find zero or one CompetitorPost that matches the filter.
+     * @param {CompetitorPostFindUniqueArgs} args - Arguments to find a CompetitorPost
+     * @example
+     * // Get one CompetitorPost
+     * const competitorPost = await prisma.competitorPost.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompetitorPostFindUniqueArgs>(args: SelectSubset<T, CompetitorPostFindUniqueArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CompetitorPost that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompetitorPostFindUniqueOrThrowArgs} args - Arguments to find a CompetitorPost
+     * @example
+     * // Get one CompetitorPost
+     * const competitorPost = await prisma.competitorPost.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompetitorPostFindUniqueOrThrowArgs>(args: SelectSubset<T, CompetitorPostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompetitorPost that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorPostFindFirstArgs} args - Arguments to find a CompetitorPost
+     * @example
+     * // Get one CompetitorPost
+     * const competitorPost = await prisma.competitorPost.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompetitorPostFindFirstArgs>(args?: SelectSubset<T, CompetitorPostFindFirstArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompetitorPost that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorPostFindFirstOrThrowArgs} args - Arguments to find a CompetitorPost
+     * @example
+     * // Get one CompetitorPost
+     * const competitorPost = await prisma.competitorPost.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompetitorPostFindFirstOrThrowArgs>(args?: SelectSubset<T, CompetitorPostFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CompetitorPosts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorPostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CompetitorPosts
+     * const competitorPosts = await prisma.competitorPost.findMany()
+     * 
+     * // Get first 10 CompetitorPosts
+     * const competitorPosts = await prisma.competitorPost.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const competitorPostWithIdOnly = await prisma.competitorPost.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompetitorPostFindManyArgs>(args?: SelectSubset<T, CompetitorPostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CompetitorPost.
+     * @param {CompetitorPostCreateArgs} args - Arguments to create a CompetitorPost.
+     * @example
+     * // Create one CompetitorPost
+     * const CompetitorPost = await prisma.competitorPost.create({
+     *   data: {
+     *     // ... data to create a CompetitorPost
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompetitorPostCreateArgs>(args: SelectSubset<T, CompetitorPostCreateArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CompetitorPosts.
+     * @param {CompetitorPostCreateManyArgs} args - Arguments to create many CompetitorPosts.
+     * @example
+     * // Create many CompetitorPosts
+     * const competitorPost = await prisma.competitorPost.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompetitorPostCreateManyArgs>(args?: SelectSubset<T, CompetitorPostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CompetitorPosts and returns the data saved in the database.
+     * @param {CompetitorPostCreateManyAndReturnArgs} args - Arguments to create many CompetitorPosts.
+     * @example
+     * // Create many CompetitorPosts
+     * const competitorPost = await prisma.competitorPost.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CompetitorPosts and only return the `id`
+     * const competitorPostWithIdOnly = await prisma.competitorPost.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompetitorPostCreateManyAndReturnArgs>(args?: SelectSubset<T, CompetitorPostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CompetitorPost.
+     * @param {CompetitorPostDeleteArgs} args - Arguments to delete one CompetitorPost.
+     * @example
+     * // Delete one CompetitorPost
+     * const CompetitorPost = await prisma.competitorPost.delete({
+     *   where: {
+     *     // ... filter to delete one CompetitorPost
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompetitorPostDeleteArgs>(args: SelectSubset<T, CompetitorPostDeleteArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CompetitorPost.
+     * @param {CompetitorPostUpdateArgs} args - Arguments to update one CompetitorPost.
+     * @example
+     * // Update one CompetitorPost
+     * const competitorPost = await prisma.competitorPost.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompetitorPostUpdateArgs>(args: SelectSubset<T, CompetitorPostUpdateArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CompetitorPosts.
+     * @param {CompetitorPostDeleteManyArgs} args - Arguments to filter CompetitorPosts to delete.
+     * @example
+     * // Delete a few CompetitorPosts
+     * const { count } = await prisma.competitorPost.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompetitorPostDeleteManyArgs>(args?: SelectSubset<T, CompetitorPostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompetitorPosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorPostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CompetitorPosts
+     * const competitorPost = await prisma.competitorPost.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompetitorPostUpdateManyArgs>(args: SelectSubset<T, CompetitorPostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompetitorPosts and returns the data updated in the database.
+     * @param {CompetitorPostUpdateManyAndReturnArgs} args - Arguments to update many CompetitorPosts.
+     * @example
+     * // Update many CompetitorPosts
+     * const competitorPost = await prisma.competitorPost.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CompetitorPosts and only return the `id`
+     * const competitorPostWithIdOnly = await prisma.competitorPost.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompetitorPostUpdateManyAndReturnArgs>(args: SelectSubset<T, CompetitorPostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CompetitorPost.
+     * @param {CompetitorPostUpsertArgs} args - Arguments to update or create a CompetitorPost.
+     * @example
+     * // Update or create a CompetitorPost
+     * const competitorPost = await prisma.competitorPost.upsert({
+     *   create: {
+     *     // ... data to create a CompetitorPost
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CompetitorPost we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompetitorPostUpsertArgs>(args: SelectSubset<T, CompetitorPostUpsertArgs<ExtArgs>>): Prisma__CompetitorPostClient<$Result.GetResult<Prisma.$CompetitorPostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CompetitorPosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorPostCountArgs} args - Arguments to filter CompetitorPosts to count.
+     * @example
+     * // Count the number of CompetitorPosts
+     * const count = await prisma.competitorPost.count({
+     *   where: {
+     *     // ... the filter for the CompetitorPosts we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompetitorPostCountArgs>(
+      args?: Subset<T, CompetitorPostCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompetitorPostCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CompetitorPost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorPostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompetitorPostAggregateArgs>(args: Subset<T, CompetitorPostAggregateArgs>): Prisma.PrismaPromise<GetCompetitorPostAggregateType<T>>
+
+    /**
+     * Group by CompetitorPost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitorPostGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompetitorPostGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompetitorPostGroupByArgs['orderBy'] }
+        : { orderBy?: CompetitorPostGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompetitorPostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompetitorPostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CompetitorPost model
+   */
+  readonly fields: CompetitorPostFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CompetitorPost.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompetitorPostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    competitor<T extends CompetitorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompetitorDefaultArgs<ExtArgs>>): Prisma__CompetitorClient<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CompetitorPost model
+   */
+  interface CompetitorPostFieldRefs {
+    readonly id: FieldRef<"CompetitorPost", 'String'>
+    readonly competitorId: FieldRef<"CompetitorPost", 'String'>
+    readonly postId: FieldRef<"CompetitorPost", 'String'>
+    readonly caption: FieldRef<"CompetitorPost", 'String'>
+    readonly likes: FieldRef<"CompetitorPost", 'Int'>
+    readonly comments: FieldRef<"CompetitorPost", 'Int'>
+    readonly postedAt: FieldRef<"CompetitorPost", 'DateTime'>
+    readonly mediaUrl: FieldRef<"CompetitorPost", 'String'>
+    readonly hashtags: FieldRef<"CompetitorPost", 'String'>
+    readonly createdAt: FieldRef<"CompetitorPost", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CompetitorPost findUnique
+   */
+  export type CompetitorPostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * Filter, which CompetitorPost to fetch.
+     */
+    where: CompetitorPostWhereUniqueInput
+  }
+
+  /**
+   * CompetitorPost findUniqueOrThrow
+   */
+  export type CompetitorPostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * Filter, which CompetitorPost to fetch.
+     */
+    where: CompetitorPostWhereUniqueInput
+  }
+
+  /**
+   * CompetitorPost findFirst
+   */
+  export type CompetitorPostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * Filter, which CompetitorPost to fetch.
+     */
+    where?: CompetitorPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompetitorPosts to fetch.
+     */
+    orderBy?: CompetitorPostOrderByWithRelationInput | CompetitorPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompetitorPosts.
+     */
+    cursor?: CompetitorPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompetitorPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompetitorPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompetitorPosts.
+     */
+    distinct?: CompetitorPostScalarFieldEnum | CompetitorPostScalarFieldEnum[]
+  }
+
+  /**
+   * CompetitorPost findFirstOrThrow
+   */
+  export type CompetitorPostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * Filter, which CompetitorPost to fetch.
+     */
+    where?: CompetitorPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompetitorPosts to fetch.
+     */
+    orderBy?: CompetitorPostOrderByWithRelationInput | CompetitorPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompetitorPosts.
+     */
+    cursor?: CompetitorPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompetitorPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompetitorPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompetitorPosts.
+     */
+    distinct?: CompetitorPostScalarFieldEnum | CompetitorPostScalarFieldEnum[]
+  }
+
+  /**
+   * CompetitorPost findMany
+   */
+  export type CompetitorPostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * Filter, which CompetitorPosts to fetch.
+     */
+    where?: CompetitorPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompetitorPosts to fetch.
+     */
+    orderBy?: CompetitorPostOrderByWithRelationInput | CompetitorPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CompetitorPosts.
+     */
+    cursor?: CompetitorPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompetitorPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompetitorPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompetitorPosts.
+     */
+    distinct?: CompetitorPostScalarFieldEnum | CompetitorPostScalarFieldEnum[]
+  }
+
+  /**
+   * CompetitorPost create
+   */
+  export type CompetitorPostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CompetitorPost.
+     */
+    data: XOR<CompetitorPostCreateInput, CompetitorPostUncheckedCreateInput>
+  }
+
+  /**
+   * CompetitorPost createMany
+   */
+  export type CompetitorPostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CompetitorPosts.
+     */
+    data: CompetitorPostCreateManyInput | CompetitorPostCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompetitorPost createManyAndReturn
+   */
+  export type CompetitorPostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * The data used to create many CompetitorPosts.
+     */
+    data: CompetitorPostCreateManyInput | CompetitorPostCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CompetitorPost update
+   */
+  export type CompetitorPostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CompetitorPost.
+     */
+    data: XOR<CompetitorPostUpdateInput, CompetitorPostUncheckedUpdateInput>
+    /**
+     * Choose, which CompetitorPost to update.
+     */
+    where: CompetitorPostWhereUniqueInput
+  }
+
+  /**
+   * CompetitorPost updateMany
+   */
+  export type CompetitorPostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CompetitorPosts.
+     */
+    data: XOR<CompetitorPostUpdateManyMutationInput, CompetitorPostUncheckedUpdateManyInput>
+    /**
+     * Filter which CompetitorPosts to update
+     */
+    where?: CompetitorPostWhereInput
+    /**
+     * Limit how many CompetitorPosts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompetitorPost updateManyAndReturn
+   */
+  export type CompetitorPostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * The data used to update CompetitorPosts.
+     */
+    data: XOR<CompetitorPostUpdateManyMutationInput, CompetitorPostUncheckedUpdateManyInput>
+    /**
+     * Filter which CompetitorPosts to update
+     */
+    where?: CompetitorPostWhereInput
+    /**
+     * Limit how many CompetitorPosts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CompetitorPost upsert
+   */
+  export type CompetitorPostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CompetitorPost to update in case it exists.
+     */
+    where: CompetitorPostWhereUniqueInput
+    /**
+     * In case the CompetitorPost found by the `where` argument doesn't exist, create a new CompetitorPost with this data.
+     */
+    create: XOR<CompetitorPostCreateInput, CompetitorPostUncheckedCreateInput>
+    /**
+     * In case the CompetitorPost was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompetitorPostUpdateInput, CompetitorPostUncheckedUpdateInput>
+  }
+
+  /**
+   * CompetitorPost delete
+   */
+  export type CompetitorPostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+    /**
+     * Filter which CompetitorPost to delete.
+     */
+    where: CompetitorPostWhereUniqueInput
+  }
+
+  /**
+   * CompetitorPost deleteMany
+   */
+  export type CompetitorPostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompetitorPosts to delete
+     */
+    where?: CompetitorPostWhereInput
+    /**
+     * Limit how many CompetitorPosts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompetitorPost without action
+   */
+  export type CompetitorPostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitorPost
+     */
+    select?: CompetitorPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompetitorPost
+     */
+    omit?: CompetitorPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitorPostInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -23439,6 +26051,38 @@ export namespace Prisma {
   };
 
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const CompetitorScalarFieldEnum: {
+    id: 'id',
+    companyId: 'companyId',
+    name: 'name',
+    platform: 'platform',
+    handle: 'handle',
+    followerCount: 'followerCount',
+    engagementRate: 'engagementRate',
+    avatar: 'avatar',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompetitorScalarFieldEnum = (typeof CompetitorScalarFieldEnum)[keyof typeof CompetitorScalarFieldEnum]
+
+
+  export const CompetitorPostScalarFieldEnum: {
+    id: 'id',
+    competitorId: 'competitorId',
+    postId: 'postId',
+    caption: 'caption',
+    likes: 'likes',
+    comments: 'comments',
+    postedAt: 'postedAt',
+    mediaUrl: 'mediaUrl',
+    hashtags: 'hashtags',
+    createdAt: 'createdAt'
+  };
+
+  export type CompetitorPostScalarFieldEnum = (typeof CompetitorPostScalarFieldEnum)[keyof typeof CompetitorPostScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -23990,6 +26634,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountListRelationFilter
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
     members?: TeamMemberListRelationFilter
+    competitors?: CompetitorListRelationFilter
   }
 
   export type CompanyOrderByWithRelationInput = {
@@ -24016,6 +26661,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountOrderByRelationAggregateInput
     subscription?: SubscriptionOrderByWithRelationInput
     members?: TeamMemberOrderByRelationAggregateInput
+    competitors?: CompetitorOrderByRelationAggregateInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -24045,6 +26691,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountListRelationFilter
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
     members?: TeamMemberListRelationFilter
+    competitors?: CompetitorListRelationFilter
   }, "id">
 
   export type CompanyOrderByWithAggregationInput = {
@@ -24967,6 +27614,175 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
+  export type CompetitorWhereInput = {
+    AND?: CompetitorWhereInput | CompetitorWhereInput[]
+    OR?: CompetitorWhereInput[]
+    NOT?: CompetitorWhereInput | CompetitorWhereInput[]
+    id?: StringFilter<"Competitor"> | string
+    companyId?: StringFilter<"Competitor"> | string
+    name?: StringFilter<"Competitor"> | string
+    platform?: StringFilter<"Competitor"> | string
+    handle?: StringFilter<"Competitor"> | string
+    followerCount?: IntFilter<"Competitor"> | number
+    engagementRate?: FloatFilter<"Competitor"> | number
+    avatar?: StringNullableFilter<"Competitor"> | string | null
+    createdAt?: DateTimeFilter<"Competitor"> | Date | string
+    updatedAt?: DateTimeFilter<"Competitor"> | Date | string
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    posts?: CompetitorPostListRelationFilter
+  }
+
+  export type CompetitorOrderByWithRelationInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    followerCount?: SortOrder
+    engagementRate?: SortOrder
+    avatar?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    company?: CompanyOrderByWithRelationInput
+    posts?: CompetitorPostOrderByRelationAggregateInput
+  }
+
+  export type CompetitorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    companyId_platform_handle?: CompetitorCompanyIdPlatformHandleCompoundUniqueInput
+    AND?: CompetitorWhereInput | CompetitorWhereInput[]
+    OR?: CompetitorWhereInput[]
+    NOT?: CompetitorWhereInput | CompetitorWhereInput[]
+    companyId?: StringFilter<"Competitor"> | string
+    name?: StringFilter<"Competitor"> | string
+    platform?: StringFilter<"Competitor"> | string
+    handle?: StringFilter<"Competitor"> | string
+    followerCount?: IntFilter<"Competitor"> | number
+    engagementRate?: FloatFilter<"Competitor"> | number
+    avatar?: StringNullableFilter<"Competitor"> | string | null
+    createdAt?: DateTimeFilter<"Competitor"> | Date | string
+    updatedAt?: DateTimeFilter<"Competitor"> | Date | string
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    posts?: CompetitorPostListRelationFilter
+  }, "id" | "companyId_platform_handle">
+
+  export type CompetitorOrderByWithAggregationInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    followerCount?: SortOrder
+    engagementRate?: SortOrder
+    avatar?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompetitorCountOrderByAggregateInput
+    _avg?: CompetitorAvgOrderByAggregateInput
+    _max?: CompetitorMaxOrderByAggregateInput
+    _min?: CompetitorMinOrderByAggregateInput
+    _sum?: CompetitorSumOrderByAggregateInput
+  }
+
+  export type CompetitorScalarWhereWithAggregatesInput = {
+    AND?: CompetitorScalarWhereWithAggregatesInput | CompetitorScalarWhereWithAggregatesInput[]
+    OR?: CompetitorScalarWhereWithAggregatesInput[]
+    NOT?: CompetitorScalarWhereWithAggregatesInput | CompetitorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Competitor"> | string
+    companyId?: StringWithAggregatesFilter<"Competitor"> | string
+    name?: StringWithAggregatesFilter<"Competitor"> | string
+    platform?: StringWithAggregatesFilter<"Competitor"> | string
+    handle?: StringWithAggregatesFilter<"Competitor"> | string
+    followerCount?: IntWithAggregatesFilter<"Competitor"> | number
+    engagementRate?: FloatWithAggregatesFilter<"Competitor"> | number
+    avatar?: StringNullableWithAggregatesFilter<"Competitor"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Competitor"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Competitor"> | Date | string
+  }
+
+  export type CompetitorPostWhereInput = {
+    AND?: CompetitorPostWhereInput | CompetitorPostWhereInput[]
+    OR?: CompetitorPostWhereInput[]
+    NOT?: CompetitorPostWhereInput | CompetitorPostWhereInput[]
+    id?: StringFilter<"CompetitorPost"> | string
+    competitorId?: StringFilter<"CompetitorPost"> | string
+    postId?: StringFilter<"CompetitorPost"> | string
+    caption?: StringNullableFilter<"CompetitorPost"> | string | null
+    likes?: IntFilter<"CompetitorPost"> | number
+    comments?: IntFilter<"CompetitorPost"> | number
+    postedAt?: DateTimeFilter<"CompetitorPost"> | Date | string
+    mediaUrl?: StringNullableFilter<"CompetitorPost"> | string | null
+    hashtags?: StringNullableFilter<"CompetitorPost"> | string | null
+    createdAt?: DateTimeFilter<"CompetitorPost"> | Date | string
+    competitor?: XOR<CompetitorScalarRelationFilter, CompetitorWhereInput>
+  }
+
+  export type CompetitorPostOrderByWithRelationInput = {
+    id?: SortOrder
+    competitorId?: SortOrder
+    postId?: SortOrder
+    caption?: SortOrderInput | SortOrder
+    likes?: SortOrder
+    comments?: SortOrder
+    postedAt?: SortOrder
+    mediaUrl?: SortOrderInput | SortOrder
+    hashtags?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    competitor?: CompetitorOrderByWithRelationInput
+  }
+
+  export type CompetitorPostWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    competitorId_postId?: CompetitorPostCompetitorIdPostIdCompoundUniqueInput
+    AND?: CompetitorPostWhereInput | CompetitorPostWhereInput[]
+    OR?: CompetitorPostWhereInput[]
+    NOT?: CompetitorPostWhereInput | CompetitorPostWhereInput[]
+    competitorId?: StringFilter<"CompetitorPost"> | string
+    postId?: StringFilter<"CompetitorPost"> | string
+    caption?: StringNullableFilter<"CompetitorPost"> | string | null
+    likes?: IntFilter<"CompetitorPost"> | number
+    comments?: IntFilter<"CompetitorPost"> | number
+    postedAt?: DateTimeFilter<"CompetitorPost"> | Date | string
+    mediaUrl?: StringNullableFilter<"CompetitorPost"> | string | null
+    hashtags?: StringNullableFilter<"CompetitorPost"> | string | null
+    createdAt?: DateTimeFilter<"CompetitorPost"> | Date | string
+    competitor?: XOR<CompetitorScalarRelationFilter, CompetitorWhereInput>
+  }, "id" | "competitorId_postId">
+
+  export type CompetitorPostOrderByWithAggregationInput = {
+    id?: SortOrder
+    competitorId?: SortOrder
+    postId?: SortOrder
+    caption?: SortOrderInput | SortOrder
+    likes?: SortOrder
+    comments?: SortOrder
+    postedAt?: SortOrder
+    mediaUrl?: SortOrderInput | SortOrder
+    hashtags?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: CompetitorPostCountOrderByAggregateInput
+    _avg?: CompetitorPostAvgOrderByAggregateInput
+    _max?: CompetitorPostMaxOrderByAggregateInput
+    _min?: CompetitorPostMinOrderByAggregateInput
+    _sum?: CompetitorPostSumOrderByAggregateInput
+  }
+
+  export type CompetitorPostScalarWhereWithAggregatesInput = {
+    AND?: CompetitorPostScalarWhereWithAggregatesInput | CompetitorPostScalarWhereWithAggregatesInput[]
+    OR?: CompetitorPostScalarWhereWithAggregatesInput[]
+    NOT?: CompetitorPostScalarWhereWithAggregatesInput | CompetitorPostScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CompetitorPost"> | string
+    competitorId?: StringWithAggregatesFilter<"CompetitorPost"> | string
+    postId?: StringWithAggregatesFilter<"CompetitorPost"> | string
+    caption?: StringNullableWithAggregatesFilter<"CompetitorPost"> | string | null
+    likes?: IntWithAggregatesFilter<"CompetitorPost"> | number
+    comments?: IntWithAggregatesFilter<"CompetitorPost"> | number
+    postedAt?: DateTimeWithAggregatesFilter<"CompetitorPost"> | Date | string
+    mediaUrl?: StringNullableWithAggregatesFilter<"CompetitorPost"> | string | null
+    hashtags?: StringNullableWithAggregatesFilter<"CompetitorPost"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CompetitorPost"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -25345,6 +28161,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
@@ -25371,6 +28188,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
@@ -25397,6 +28215,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
@@ -25423,6 +28242,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
@@ -26404,6 +29224,190 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CompetitorCreateInput = {
+    id?: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    company: CompanyCreateNestedOneWithoutCompetitorsInput
+    posts?: CompetitorPostCreateNestedManyWithoutCompetitorInput
+  }
+
+  export type CompetitorUncheckedCreateInput = {
+    id?: string
+    companyId: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    posts?: CompetitorPostUncheckedCreateNestedManyWithoutCompetitorInput
+  }
+
+  export type CompetitorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutCompetitorsNestedInput
+    posts?: CompetitorPostUpdateManyWithoutCompetitorNestedInput
+  }
+
+  export type CompetitorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: CompetitorPostUncheckedUpdateManyWithoutCompetitorNestedInput
+  }
+
+  export type CompetitorCreateManyInput = {
+    id?: string
+    companyId: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompetitorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitorPostCreateInput = {
+    id?: string
+    postId: string
+    caption?: string | null
+    likes?: number
+    comments?: number
+    postedAt: Date | string
+    mediaUrl?: string | null
+    hashtags?: string | null
+    createdAt?: Date | string
+    competitor: CompetitorCreateNestedOneWithoutPostsInput
+  }
+
+  export type CompetitorPostUncheckedCreateInput = {
+    id?: string
+    competitorId: string
+    postId: string
+    caption?: string | null
+    likes?: number
+    comments?: number
+    postedAt: Date | string
+    mediaUrl?: string | null
+    hashtags?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CompetitorPostUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postId?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    hashtags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    competitor?: CompetitorUpdateOneRequiredWithoutPostsNestedInput
+  }
+
+  export type CompetitorPostUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    competitorId?: StringFieldUpdateOperationsInput | string
+    postId?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    hashtags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitorPostCreateManyInput = {
+    id?: string
+    competitorId: string
+    postId: string
+    caption?: string | null
+    likes?: number
+    comments?: number
+    postedAt: Date | string
+    mediaUrl?: string | null
+    hashtags?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CompetitorPostUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postId?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    hashtags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitorPostUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    competitorId?: StringFieldUpdateOperationsInput | string
+    postId?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    hashtags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -26845,6 +29849,12 @@ export namespace Prisma {
     isNot?: SubscriptionWhereInput | null
   }
 
+  export type CompetitorListRelationFilter = {
+    every?: CompetitorWhereInput
+    some?: CompetitorWhereInput
+    none?: CompetitorWhereInput
+  }
+
   export type CalendarOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -26862,6 +29872,10 @@ export namespace Prisma {
   }
 
   export type SocialAccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompetitorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27626,6 +30640,130 @@ export namespace Prisma {
     _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
   }
 
+  export type CompetitorPostListRelationFilter = {
+    every?: CompetitorPostWhereInput
+    some?: CompetitorPostWhereInput
+    none?: CompetitorPostWhereInput
+  }
+
+  export type CompetitorPostOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompetitorCompanyIdPlatformHandleCompoundUniqueInput = {
+    companyId: string
+    platform: string
+    handle: string
+  }
+
+  export type CompetitorCountOrderByAggregateInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    followerCount?: SortOrder
+    engagementRate?: SortOrder
+    avatar?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompetitorAvgOrderByAggregateInput = {
+    followerCount?: SortOrder
+    engagementRate?: SortOrder
+  }
+
+  export type CompetitorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    followerCount?: SortOrder
+    engagementRate?: SortOrder
+    avatar?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompetitorMinOrderByAggregateInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    followerCount?: SortOrder
+    engagementRate?: SortOrder
+    avatar?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompetitorSumOrderByAggregateInput = {
+    followerCount?: SortOrder
+    engagementRate?: SortOrder
+  }
+
+  export type CompetitorScalarRelationFilter = {
+    is?: CompetitorWhereInput
+    isNot?: CompetitorWhereInput
+  }
+
+  export type CompetitorPostCompetitorIdPostIdCompoundUniqueInput = {
+    competitorId: string
+    postId: string
+  }
+
+  export type CompetitorPostCountOrderByAggregateInput = {
+    id?: SortOrder
+    competitorId?: SortOrder
+    postId?: SortOrder
+    caption?: SortOrder
+    likes?: SortOrder
+    comments?: SortOrder
+    postedAt?: SortOrder
+    mediaUrl?: SortOrder
+    hashtags?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CompetitorPostAvgOrderByAggregateInput = {
+    likes?: SortOrder
+    comments?: SortOrder
+  }
+
+  export type CompetitorPostMaxOrderByAggregateInput = {
+    id?: SortOrder
+    competitorId?: SortOrder
+    postId?: SortOrder
+    caption?: SortOrder
+    likes?: SortOrder
+    comments?: SortOrder
+    postedAt?: SortOrder
+    mediaUrl?: SortOrder
+    hashtags?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CompetitorPostMinOrderByAggregateInput = {
+    id?: SortOrder
+    competitorId?: SortOrder
+    postId?: SortOrder
+    caption?: SortOrder
+    likes?: SortOrder
+    comments?: SortOrder
+    postedAt?: SortOrder
+    mediaUrl?: SortOrder
+    hashtags?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CompetitorPostSumOrderByAggregateInput = {
+    likes?: SortOrder
+    comments?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -27947,6 +31085,13 @@ export namespace Prisma {
     connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
   }
 
+  export type CompetitorCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompetitorCreateWithoutCompanyInput, CompetitorUncheckedCreateWithoutCompanyInput> | CompetitorCreateWithoutCompanyInput[] | CompetitorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompetitorCreateOrConnectWithoutCompanyInput | CompetitorCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompetitorCreateManyCompanyInputEnvelope
+    connect?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+  }
+
   export type ActivityLogUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
@@ -28000,6 +31145,13 @@ export namespace Prisma {
     connectOrCreate?: TeamMemberCreateOrConnectWithoutCompanyInput | TeamMemberCreateOrConnectWithoutCompanyInput[]
     createMany?: TeamMemberCreateManyCompanyInputEnvelope
     connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+  }
+
+  export type CompetitorUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompetitorCreateWithoutCompanyInput, CompetitorUncheckedCreateWithoutCompanyInput> | CompetitorCreateWithoutCompanyInput[] | CompetitorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompetitorCreateOrConnectWithoutCompanyInput | CompetitorCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompetitorCreateManyCompanyInputEnvelope
+    connect?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
   }
 
   export type ActivityLogUpdateManyWithoutCompanyNestedInput = {
@@ -28110,6 +31262,20 @@ export namespace Prisma {
     deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
   }
 
+  export type CompetitorUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompetitorCreateWithoutCompanyInput, CompetitorUncheckedCreateWithoutCompanyInput> | CompetitorCreateWithoutCompanyInput[] | CompetitorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompetitorCreateOrConnectWithoutCompanyInput | CompetitorCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompetitorUpsertWithWhereUniqueWithoutCompanyInput | CompetitorUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompetitorCreateManyCompanyInputEnvelope
+    set?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    disconnect?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    delete?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    connect?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    update?: CompetitorUpdateWithWhereUniqueWithoutCompanyInput | CompetitorUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompetitorUpdateManyWithWhereWithoutCompanyInput | CompetitorUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompetitorScalarWhereInput | CompetitorScalarWhereInput[]
+  }
+
   export type ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<ActivityLogCreateWithoutCompanyInput, ActivityLogUncheckedCreateWithoutCompanyInput> | ActivityLogCreateWithoutCompanyInput[] | ActivityLogUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutCompanyInput | ActivityLogCreateOrConnectWithoutCompanyInput[]
@@ -28216,6 +31382,20 @@ export namespace Prisma {
     update?: TeamMemberUpdateWithWhereUniqueWithoutCompanyInput | TeamMemberUpdateWithWhereUniqueWithoutCompanyInput[]
     updateMany?: TeamMemberUpdateManyWithWhereWithoutCompanyInput | TeamMemberUpdateManyWithWhereWithoutCompanyInput[]
     deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+  }
+
+  export type CompetitorUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompetitorCreateWithoutCompanyInput, CompetitorUncheckedCreateWithoutCompanyInput> | CompetitorCreateWithoutCompanyInput[] | CompetitorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompetitorCreateOrConnectWithoutCompanyInput | CompetitorCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompetitorUpsertWithWhereUniqueWithoutCompanyInput | CompetitorUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompetitorCreateManyCompanyInputEnvelope
+    set?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    disconnect?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    delete?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    connect?: CompetitorWhereUniqueInput | CompetitorWhereUniqueInput[]
+    update?: CompetitorUpdateWithWhereUniqueWithoutCompanyInput | CompetitorUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompetitorUpdateManyWithWhereWithoutCompanyInput | CompetitorUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompetitorScalarWhereInput | CompetitorScalarWhereInput[]
   }
 
   export type CompanyCreateNestedOneWithoutMembersInput = {
@@ -28633,6 +31813,76 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutNotificationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type CompanyCreateNestedOneWithoutCompetitorsInput = {
+    create?: XOR<CompanyCreateWithoutCompetitorsInput, CompanyUncheckedCreateWithoutCompetitorsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutCompetitorsInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type CompetitorPostCreateNestedManyWithoutCompetitorInput = {
+    create?: XOR<CompetitorPostCreateWithoutCompetitorInput, CompetitorPostUncheckedCreateWithoutCompetitorInput> | CompetitorPostCreateWithoutCompetitorInput[] | CompetitorPostUncheckedCreateWithoutCompetitorInput[]
+    connectOrCreate?: CompetitorPostCreateOrConnectWithoutCompetitorInput | CompetitorPostCreateOrConnectWithoutCompetitorInput[]
+    createMany?: CompetitorPostCreateManyCompetitorInputEnvelope
+    connect?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+  }
+
+  export type CompetitorPostUncheckedCreateNestedManyWithoutCompetitorInput = {
+    create?: XOR<CompetitorPostCreateWithoutCompetitorInput, CompetitorPostUncheckedCreateWithoutCompetitorInput> | CompetitorPostCreateWithoutCompetitorInput[] | CompetitorPostUncheckedCreateWithoutCompetitorInput[]
+    connectOrCreate?: CompetitorPostCreateOrConnectWithoutCompetitorInput | CompetitorPostCreateOrConnectWithoutCompetitorInput[]
+    createMany?: CompetitorPostCreateManyCompetitorInputEnvelope
+    connect?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+  }
+
+  export type CompanyUpdateOneRequiredWithoutCompetitorsNestedInput = {
+    create?: XOR<CompanyCreateWithoutCompetitorsInput, CompanyUncheckedCreateWithoutCompetitorsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutCompetitorsInput
+    upsert?: CompanyUpsertWithoutCompetitorsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutCompetitorsInput, CompanyUpdateWithoutCompetitorsInput>, CompanyUncheckedUpdateWithoutCompetitorsInput>
+  }
+
+  export type CompetitorPostUpdateManyWithoutCompetitorNestedInput = {
+    create?: XOR<CompetitorPostCreateWithoutCompetitorInput, CompetitorPostUncheckedCreateWithoutCompetitorInput> | CompetitorPostCreateWithoutCompetitorInput[] | CompetitorPostUncheckedCreateWithoutCompetitorInput[]
+    connectOrCreate?: CompetitorPostCreateOrConnectWithoutCompetitorInput | CompetitorPostCreateOrConnectWithoutCompetitorInput[]
+    upsert?: CompetitorPostUpsertWithWhereUniqueWithoutCompetitorInput | CompetitorPostUpsertWithWhereUniqueWithoutCompetitorInput[]
+    createMany?: CompetitorPostCreateManyCompetitorInputEnvelope
+    set?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    disconnect?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    delete?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    connect?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    update?: CompetitorPostUpdateWithWhereUniqueWithoutCompetitorInput | CompetitorPostUpdateWithWhereUniqueWithoutCompetitorInput[]
+    updateMany?: CompetitorPostUpdateManyWithWhereWithoutCompetitorInput | CompetitorPostUpdateManyWithWhereWithoutCompetitorInput[]
+    deleteMany?: CompetitorPostScalarWhereInput | CompetitorPostScalarWhereInput[]
+  }
+
+  export type CompetitorPostUncheckedUpdateManyWithoutCompetitorNestedInput = {
+    create?: XOR<CompetitorPostCreateWithoutCompetitorInput, CompetitorPostUncheckedCreateWithoutCompetitorInput> | CompetitorPostCreateWithoutCompetitorInput[] | CompetitorPostUncheckedCreateWithoutCompetitorInput[]
+    connectOrCreate?: CompetitorPostCreateOrConnectWithoutCompetitorInput | CompetitorPostCreateOrConnectWithoutCompetitorInput[]
+    upsert?: CompetitorPostUpsertWithWhereUniqueWithoutCompetitorInput | CompetitorPostUpsertWithWhereUniqueWithoutCompetitorInput[]
+    createMany?: CompetitorPostCreateManyCompetitorInputEnvelope
+    set?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    disconnect?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    delete?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    connect?: CompetitorPostWhereUniqueInput | CompetitorPostWhereUniqueInput[]
+    update?: CompetitorPostUpdateWithWhereUniqueWithoutCompetitorInput | CompetitorPostUpdateWithWhereUniqueWithoutCompetitorInput[]
+    updateMany?: CompetitorPostUpdateManyWithWhereWithoutCompetitorInput | CompetitorPostUpdateManyWithWhereWithoutCompetitorInput[]
+    deleteMany?: CompetitorPostScalarWhereInput | CompetitorPostScalarWhereInput[]
+  }
+
+  export type CompetitorCreateNestedOneWithoutPostsInput = {
+    create?: XOR<CompetitorCreateWithoutPostsInput, CompetitorUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: CompetitorCreateOrConnectWithoutPostsInput
+    connect?: CompetitorWhereUniqueInput
+  }
+
+  export type CompetitorUpdateOneRequiredWithoutPostsNestedInput = {
+    create?: XOR<CompetitorCreateWithoutPostsInput, CompetitorUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: CompetitorCreateOrConnectWithoutPostsInput
+    upsert?: CompetitorUpsertWithoutPostsInput
+    connect?: CompetitorWhereUniqueInput
+    update?: XOR<XOR<CompetitorUpdateToOneWithWhereWithoutPostsInput, CompetitorUpdateWithoutPostsInput>, CompetitorUncheckedUpdateWithoutPostsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -29640,6 +32890,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CompetitorCreateWithoutCompanyInput = {
+    id?: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    posts?: CompetitorPostCreateNestedManyWithoutCompetitorInput
+  }
+
+  export type CompetitorUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    posts?: CompetitorPostUncheckedCreateNestedManyWithoutCompetitorInput
+  }
+
+  export type CompetitorCreateOrConnectWithoutCompanyInput = {
+    where: CompetitorWhereUniqueInput
+    create: XOR<CompetitorCreateWithoutCompanyInput, CompetitorUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompetitorCreateManyCompanyInputEnvelope = {
+    data: CompetitorCreateManyCompanyInput | CompetitorCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ActivityLogUpsertWithWhereUniqueWithoutCompanyInput = {
     where: ActivityLogWhereUniqueInput
     update: XOR<ActivityLogUpdateWithoutCompanyInput, ActivityLogUncheckedUpdateWithoutCompanyInput>
@@ -29851,6 +33137,38 @@ export namespace Prisma {
     data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyWithoutCompanyInput>
   }
 
+  export type CompetitorUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: CompetitorWhereUniqueInput
+    update: XOR<CompetitorUpdateWithoutCompanyInput, CompetitorUncheckedUpdateWithoutCompanyInput>
+    create: XOR<CompetitorCreateWithoutCompanyInput, CompetitorUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompetitorUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: CompetitorWhereUniqueInput
+    data: XOR<CompetitorUpdateWithoutCompanyInput, CompetitorUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type CompetitorUpdateManyWithWhereWithoutCompanyInput = {
+    where: CompetitorScalarWhereInput
+    data: XOR<CompetitorUpdateManyMutationInput, CompetitorUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type CompetitorScalarWhereInput = {
+    AND?: CompetitorScalarWhereInput | CompetitorScalarWhereInput[]
+    OR?: CompetitorScalarWhereInput[]
+    NOT?: CompetitorScalarWhereInput | CompetitorScalarWhereInput[]
+    id?: StringFilter<"Competitor"> | string
+    companyId?: StringFilter<"Competitor"> | string
+    name?: StringFilter<"Competitor"> | string
+    platform?: StringFilter<"Competitor"> | string
+    handle?: StringFilter<"Competitor"> | string
+    followerCount?: IntFilter<"Competitor"> | number
+    engagementRate?: FloatFilter<"Competitor"> | number
+    avatar?: StringNullableFilter<"Competitor"> | string | null
+    createdAt?: DateTimeFilter<"Competitor"> | Date | string
+    updatedAt?: DateTimeFilter<"Competitor"> | Date | string
+  }
+
   export type CompanyCreateWithoutMembersInput = {
     id?: string
     name: string
@@ -29874,6 +33192,7 @@ export namespace Prisma {
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutMembersInput = {
@@ -29899,6 +33218,7 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutMembersInput = {
@@ -29979,6 +33299,7 @@ export namespace Prisma {
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutMembersInput = {
@@ -30004,6 +33325,7 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserUpsertWithoutCompaniesInput = {
@@ -30122,6 +33444,7 @@ export namespace Prisma {
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutSocialAccountsInput = {
@@ -30147,6 +33470,7 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutSocialAccountsInput = {
@@ -30252,6 +33576,7 @@ export namespace Prisma {
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutSocialAccountsInput = {
@@ -30277,6 +33602,7 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type PlatformMetricUpsertWithWhereUniqueWithoutSocialAccountInput = {
@@ -30406,6 +33732,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutCalendarsInput = {
@@ -30431,6 +33758,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutCalendarsInput = {
@@ -30520,6 +33848,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutCalendarsInput = {
@@ -30545,6 +33874,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutCalendarInput = {
@@ -30862,6 +34192,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutCampaignsInput = {
@@ -30887,6 +34218,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutCampaignsInput = {
@@ -30928,6 +34260,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutCampaignsInput = {
@@ -30953,6 +34286,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutSubscriptionInput = {
@@ -30978,6 +34312,7 @@ export namespace Prisma {
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutSubscriptionInput = {
@@ -31003,6 +34338,7 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutSubscriptionInput = {
@@ -31044,6 +34380,7 @@ export namespace Prisma {
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutSubscriptionInput = {
@@ -31069,6 +34406,7 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutInvoicesInput = {
@@ -31094,6 +34432,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutInvoicesInput = {
@@ -31119,6 +34458,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutInvoicesInput = {
@@ -31160,6 +34500,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutInvoicesInput = {
@@ -31185,6 +34526,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutInvitationsInput = {
@@ -31210,6 +34552,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutInvitationsInput = {
@@ -31235,6 +34578,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutInvitationsInput = {
@@ -31276,6 +34620,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutInvitationsInput = {
@@ -31301,6 +34646,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutActivityLogsInput = {
@@ -31326,6 +34672,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
     members?: TeamMemberCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutActivityLogsInput = {
@@ -31351,6 +34698,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
     members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutActivityLogsInput = {
@@ -31431,6 +34779,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutActivityLogsInput = {
@@ -31456,6 +34805,7 @@ export namespace Prisma {
     socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
     members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserUpsertWithoutActivityLogsInput = {
@@ -31585,6 +34935,260 @@ export namespace Prisma {
     activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     companies?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CompanyCreateWithoutCompetitorsInput = {
+    id?: string
+    name: string
+    niche?: string | null
+    brandVoice?: string | null
+    targetAudience?: string | null
+    businessGoals?: string | null
+    logo?: string | null
+    primaryColor?: string | null
+    secondaryColor?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    brandFont?: string | null
+    timezone?: string
+    aiInsights?: NullableJsonNullValueInput | InputJsonValue
+    lastInsightAt?: Date | string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutCompanyInput
+    calendars?: CalendarCreateNestedManyWithoutCompanyInput
+    campaigns?: CampaignCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutCompetitorsInput = {
+    id?: string
+    name: string
+    niche?: string | null
+    brandVoice?: string | null
+    targetAudience?: string | null
+    businessGoals?: string | null
+    logo?: string | null
+    primaryColor?: string | null
+    secondaryColor?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    brandFont?: string | null
+    timezone?: string
+    aiInsights?: NullableJsonNullValueInput | InputJsonValue
+    lastInsightAt?: Date | string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutCompanyInput
+    calendars?: CalendarUncheckedCreateNestedManyWithoutCompanyInput
+    campaigns?: CampaignUncheckedCreateNestedManyWithoutCompanyInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutCompanyInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+    socialAccounts?: SocialAccountUncheckedCreateNestedManyWithoutCompanyInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutCompanyInput
+    members?: TeamMemberUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutCompetitorsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutCompetitorsInput, CompanyUncheckedCreateWithoutCompetitorsInput>
+  }
+
+  export type CompetitorPostCreateWithoutCompetitorInput = {
+    id?: string
+    postId: string
+    caption?: string | null
+    likes?: number
+    comments?: number
+    postedAt: Date | string
+    mediaUrl?: string | null
+    hashtags?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CompetitorPostUncheckedCreateWithoutCompetitorInput = {
+    id?: string
+    postId: string
+    caption?: string | null
+    likes?: number
+    comments?: number
+    postedAt: Date | string
+    mediaUrl?: string | null
+    hashtags?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CompetitorPostCreateOrConnectWithoutCompetitorInput = {
+    where: CompetitorPostWhereUniqueInput
+    create: XOR<CompetitorPostCreateWithoutCompetitorInput, CompetitorPostUncheckedCreateWithoutCompetitorInput>
+  }
+
+  export type CompetitorPostCreateManyCompetitorInputEnvelope = {
+    data: CompetitorPostCreateManyCompetitorInput | CompetitorPostCreateManyCompetitorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CompanyUpsertWithoutCompetitorsInput = {
+    update: XOR<CompanyUpdateWithoutCompetitorsInput, CompanyUncheckedUpdateWithoutCompetitorsInput>
+    create: XOR<CompanyCreateWithoutCompetitorsInput, CompanyUncheckedCreateWithoutCompetitorsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutCompetitorsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutCompetitorsInput, CompanyUncheckedUpdateWithoutCompetitorsInput>
+  }
+
+  export type CompanyUpdateWithoutCompetitorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    niche?: NullableStringFieldUpdateOperationsInput | string | null
+    brandVoice?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAudience?: NullableStringFieldUpdateOperationsInput | string | null
+    businessGoals?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    aiInsights?: NullableJsonNullValueInput | InputJsonValue
+    lastInsightAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutCompanyNestedInput
+    calendars?: CalendarUpdateManyWithoutCompanyNestedInput
+    campaigns?: CampaignUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutCompetitorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    niche?: NullableStringFieldUpdateOperationsInput | string | null
+    brandVoice?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAudience?: NullableStringFieldUpdateOperationsInput | string | null
+    businessGoals?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandFont?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    aiInsights?: NullableJsonNullValueInput | InputJsonValue
+    lastInsightAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutCompanyNestedInput
+    calendars?: CalendarUncheckedUpdateManyWithoutCompanyNestedInput
+    campaigns?: CampaignUncheckedUpdateManyWithoutCompanyNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutCompanyNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+    socialAccounts?: SocialAccountUncheckedUpdateManyWithoutCompanyNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutCompanyNestedInput
+    members?: TeamMemberUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompetitorPostUpsertWithWhereUniqueWithoutCompetitorInput = {
+    where: CompetitorPostWhereUniqueInput
+    update: XOR<CompetitorPostUpdateWithoutCompetitorInput, CompetitorPostUncheckedUpdateWithoutCompetitorInput>
+    create: XOR<CompetitorPostCreateWithoutCompetitorInput, CompetitorPostUncheckedCreateWithoutCompetitorInput>
+  }
+
+  export type CompetitorPostUpdateWithWhereUniqueWithoutCompetitorInput = {
+    where: CompetitorPostWhereUniqueInput
+    data: XOR<CompetitorPostUpdateWithoutCompetitorInput, CompetitorPostUncheckedUpdateWithoutCompetitorInput>
+  }
+
+  export type CompetitorPostUpdateManyWithWhereWithoutCompetitorInput = {
+    where: CompetitorPostScalarWhereInput
+    data: XOR<CompetitorPostUpdateManyMutationInput, CompetitorPostUncheckedUpdateManyWithoutCompetitorInput>
+  }
+
+  export type CompetitorPostScalarWhereInput = {
+    AND?: CompetitorPostScalarWhereInput | CompetitorPostScalarWhereInput[]
+    OR?: CompetitorPostScalarWhereInput[]
+    NOT?: CompetitorPostScalarWhereInput | CompetitorPostScalarWhereInput[]
+    id?: StringFilter<"CompetitorPost"> | string
+    competitorId?: StringFilter<"CompetitorPost"> | string
+    postId?: StringFilter<"CompetitorPost"> | string
+    caption?: StringNullableFilter<"CompetitorPost"> | string | null
+    likes?: IntFilter<"CompetitorPost"> | number
+    comments?: IntFilter<"CompetitorPost"> | number
+    postedAt?: DateTimeFilter<"CompetitorPost"> | Date | string
+    mediaUrl?: StringNullableFilter<"CompetitorPost"> | string | null
+    hashtags?: StringNullableFilter<"CompetitorPost"> | string | null
+    createdAt?: DateTimeFilter<"CompetitorPost"> | Date | string
+  }
+
+  export type CompetitorCreateWithoutPostsInput = {
+    id?: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    company: CompanyCreateNestedOneWithoutCompetitorsInput
+  }
+
+  export type CompetitorUncheckedCreateWithoutPostsInput = {
+    id?: string
+    companyId: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompetitorCreateOrConnectWithoutPostsInput = {
+    where: CompetitorWhereUniqueInput
+    create: XOR<CompetitorCreateWithoutPostsInput, CompetitorUncheckedCreateWithoutPostsInput>
+  }
+
+  export type CompetitorUpsertWithoutPostsInput = {
+    update: XOR<CompetitorUpdateWithoutPostsInput, CompetitorUncheckedUpdateWithoutPostsInput>
+    create: XOR<CompetitorCreateWithoutPostsInput, CompetitorUncheckedCreateWithoutPostsInput>
+    where?: CompetitorWhereInput
+  }
+
+  export type CompetitorUpdateToOneWithWhereWithoutPostsInput = {
+    where?: CompetitorWhereInput
+    data: XOR<CompetitorUpdateWithoutPostsInput, CompetitorUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type CompetitorUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutCompetitorsNestedInput
+  }
+
+  export type CompetitorUncheckedUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AccountCreateManyUserInput = {
@@ -31830,6 +35434,18 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type CompetitorCreateManyCompanyInput = {
+    id?: string
+    name: string
+    platform: string
+    handle: string
+    followerCount?: number
+    engagementRate?: number
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ActivityLogUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
@@ -32025,6 +35641,44 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CompetitorUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: CompetitorPostUpdateManyWithoutCompetitorNestedInput
+  }
+
+  export type CompetitorUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: CompetitorPostUncheckedUpdateManyWithoutCompetitorNestedInput
+  }
+
+  export type CompetitorUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    engagementRate?: FloatFieldUpdateOperationsInput | number
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PostCreateManySocialAccountInput = {
     id?: string
     calendarId: string
@@ -32203,6 +35857,54 @@ export namespace Prisma {
     errorLog?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitorPostCreateManyCompetitorInput = {
+    id?: string
+    postId: string
+    caption?: string | null
+    likes?: number
+    comments?: number
+    postedAt: Date | string
+    mediaUrl?: string | null
+    hashtags?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CompetitorPostUpdateWithoutCompetitorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postId?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    hashtags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitorPostUncheckedUpdateWithoutCompetitorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postId?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    hashtags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitorPostUncheckedUpdateManyWithoutCompetitorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postId?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: IntFieldUpdateOperationsInput | number
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    hashtags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

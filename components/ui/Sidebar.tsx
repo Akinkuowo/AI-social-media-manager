@@ -14,7 +14,8 @@ import {
   Users,
   Share2,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Target
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -25,6 +26,7 @@ const menuItems = [
   { icon: Zap, label: 'AI Strategy Assistant', href: '/strategy' },
   { icon: ImageIcon, label: 'Media Library', href: '/media' },
   { icon: BarChart2, label: 'Analytics', href: '/analytics' },
+  { icon: Target, label: 'Competitor Monitoring', href: '/competitors' },
   { icon: Share2, label: 'Social Connections', href: '/settings/accounts' },
   { icon: Users, label: 'Team', href: '/team' },
 ];

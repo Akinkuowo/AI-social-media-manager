@@ -30,13 +30,19 @@ export async function POST(req: Request) {
 
     const { company } = teamMember;
 
-    // Contact the AI to build the array using our new lib function
+    // Phase 1: Close the Learning Loop
+    // Fetch historical insights to "train" the AI on what's working
+    const { getPerformanceInsights } = await import("@/lib/learning-engine");
+    const performanceInsights = await getPerformanceInsights(company.id);
+
+    // Phase 2: Adaptive Generation
     const calendarArray = await generate30DayCalendar({
       platform,
       niche: company.niche || "General Business",
       targetAudience: company.targetAudience || "General Audience",
       businessGoals: company.businessGoals || "Growth and Engagement",
-      trendingTopics: trendingTopics || "General Industry Trends"
+      trendingTopics: trendingTopics || "General Industry Trends",
+      performanceInsights
     });
 
     if (!Array.isArray(calendarArray) || calendarArray.length === 0) {

@@ -190,6 +190,47 @@ export async function processQueue() {
             break;
           }
 
+          case 'instagram': {
+            if (optimized.mediaUrls.length === 0) {
+              throw new Error("Instagram requires at least one image or video.");
+            }
+
+            // Step 1: Create Media Container
+            const containerRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                image_url: optimized.mediaUrls[0],
+                caption: optimized.chunks[0],
+                access_token: accessToken
+              })
+            });
+
+            if (!containerRes.ok) {
+              const containerErr = await containerRes.json();
+              throw new Error(containerErr.error?.message || "Instagram Container Error");
+            }
+            const { id: creationId } = await containerRes.json();
+
+            // Step 2: Publish Container
+            const publishRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media_publish`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                creation_id: creationId,
+                access_token: accessToken
+              })
+            });
+
+            if (!publishRes.ok) {
+              const publishErr = await publishRes.json();
+              throw new Error(publishErr.error?.message || "Instagram Final Publish Error");
+            }
+            const publishData = await publishRes.json();
+            platformPostId = publishData.id;
+            break;
+          }
+
           default:
             platformPostId = `sim_${Date.now()}`;
             break;

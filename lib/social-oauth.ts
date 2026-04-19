@@ -5,6 +5,7 @@
 
 export const SOCIAL_SCOPES = {
   facebook: ['pages_manage_posts', 'pages_read_engagement', 'instagram_basic', 'instagram_content_publish', 'public_profile'],
+  instagram: ['instagram_basic', 'instagram_content_publish', 'pages_read_engagement', 'public_profile'],
   linkedin: ['w_member_social', 'openid', 'profile', 'email'],
   twitter: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'],
   tiktok: ['video.upload', 'user.info.basic'],
@@ -18,6 +19,10 @@ export const PLATFORM_ENDPOINTS = {
   linkedin: {
     auth: 'https://www.linkedin.com/oauth/v2/authorization',
     token: 'https://www.linkedin.com/oauth/v2/accessToken',
+  },
+  instagram: {
+    auth: 'https://www.facebook.com/v18.0/dialog/oauth',
+    token: 'https://graph.facebook.com/v18.0/oauth/access_token',
   },
   twitter: {
     auth: 'https://twitter.com/i/oauth2/authorize',

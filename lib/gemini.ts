@@ -1,6 +1,25 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const apiKey = process.env.GEMINI_API_KEY;
+const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+
+/**
+ * Helper to handle transient AI errors with exponential backoff.
+ */
+async function withRetry<T>(fn: () => Promise<T>, retries = 3, delay = 2000): Promise<T> {
+  try {
+    return await fn();
+  } catch (err: any) {
+    const isRetryable = err.status === 503 || err.status === 429 || err.message?.includes('503') || err.message?.includes('429');
+    
+    if (isRetryable && retries > 0) {
+      console.warn(`[GEMINI_RETRY] Service busy. Retrying in ${delay}ms... (${retries} attempts left)`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return withRetry(fn, retries - 1, delay * 2);
+    }
+    throw err;
+  }
+}
 
 export async function generateSocialContent({
   platform,
@@ -19,12 +38,12 @@ export async function generateSocialContent({
   targetAudience: string;
   promptOverride: string;
 }) {
-  if (!apiKey) {
+  if (!genAI || !apiKey) {
     console.warn("GEMINI_API_KEY_MISSING: Using mock generation.");
     return getMockContent(platform, type, tone);
   }
 
-  const genAI = new GoogleGenerativeAI(apiKey);
+  // Reverting to gemini-2.5-flash as it is the only model confirmed to exist in this environment (returned 503 instead of 404)
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const systemPrompt = `You are an expert social media manager and content creator. 
@@ -44,11 +63,11 @@ export async function generateSocialContent({
   `;
 
   try {
-    const result = await model.generateContent(systemPrompt);
-    const response = result.response;
-    const text = response.text();
+    const text = await withRetry(async () => {
+      const result = await model.generateContent(systemPrompt);
+      return result.response.text();
+    });
     
-    // Attempt to extract JSON from the text if code blocks were used
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0]);
@@ -78,45 +97,54 @@ export async function generate30DayCalendar({
   niche,
   targetAudience,
   businessGoals,
-  trendingTopics
+  trendingTopics,
+  performanceInsights = ""
 }: {
   platform: string;
   niche: string;
   targetAudience: string;
   businessGoals: string;
   trendingTopics: string;
+  performanceInsights?: string;
 }) {
-  if (!apiKey) {
+  if (!genAI || !apiKey) {
     throw new Error("GEMINI_API_KEY is not configured on the server.");
   }
 
-  const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-  const systemPrompt = `You are an expert social media manager.
-Your niche is: ${niche}.
-Target Audience: ${targetAudience}.
-Business Goals: ${businessGoals}.
-Trending Topics/Themes requested: ${trendingTopics}.
-    
-Task: Create an engaging 30-day social media content calendar for ${platform}.
-Output strictly a valid JSON array containing exactly 30 objects. The array should not be wrapped in markdown tags, just the raw JSON array starting with [ and ending with ].
+  const systemPrompt = `You are an expert social media manager. 
+A key part of your job is to LEARN from past performance and optimize for growth.
 
-Schema for each object in the array:
+Strategy Parameters:
+- Niche: ${niche}
+- Audience: ${targetAudience}
+- Goals: ${businessGoals}
+- Themes: ${trendingTopics}
+
+${performanceInsights ? `ADAPTIVE LEARNING CONTEXT:
+${performanceInsights}
+CRITICAL: Use the data above to optimize the mix of content. If specific types are winners, increase their frequency. If specific times are optimal, schedule more posts then.` : ""}
+
+Task: Create an engaging 30-day social media content calendar for ${platform}.
+Output strictly a valid JSON array containing exactly 30 objects.
+
+Schema for each object:
 {
-  "day": <number 1 through 30>,
-  "postIdea": "Brief description of the core concept",
-  "contentType": "(MUST be EXACTLY one of: educational, promotional, storytelling, tips, meme, video)",
-  "caption": "The written content ready to publish, including formatting and emojis",
-  "hashtags": "Space-separated hash tags like #example #trending",
-  "bestPostingTime": "HH:MM" // Highly optimized 24-hour time based on the platform and audience
+  "day": <number>,
+  "postIdea": "Brief concept",
+  "contentType": "(educational, promotional, storytelling, tips, meme, video)",
+  "caption": "Full ready-to-publish content",
+  "hashtags": "Space-separated hash tags",
+  "bestPostingTime": "HH:MM"
 }`;
 
   try {
-    const result = await model.generateContent(systemPrompt);
-    const text = result.response.text();
+    const text = await withRetry(async () => {
+      const result = await model.generateContent(systemPrompt);
+      return result.response.text();
+    });
     
-    // Scrape specifically the JSON Array if wrapped in Markdown
     const jsonMatch = text.match(/\[[\s\S]*\]/);
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0]);
@@ -128,3 +156,4 @@ Schema for each object in the array:
     throw err;
   }
 }
+

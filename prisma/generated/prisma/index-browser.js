@@ -318,6 +318,32 @@ exports.Prisma.NotificationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.CompetitorScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  platform: 'platform',
+  handle: 'handle',
+  followerCount: 'followerCount',
+  engagementRate: 'engagementRate',
+  avatar: 'avatar',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CompetitorPostScalarFieldEnum = {
+  id: 'id',
+  competitorId: 'competitorId',
+  postId: 'postId',
+  caption: 'caption',
+  likes: 'likes',
+  comments: 'comments',
+  postedAt: 'postedAt',
+  mediaUrl: 'mediaUrl',
+  hashtags: 'hashtags',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -397,7 +423,9 @@ exports.Prisma.ModelName = {
   Invoice: 'Invoice',
   Invitation: 'Invitation',
   ActivityLog: 'ActivityLog',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  Competitor: 'Competitor',
+  CompetitorPost: 'CompetitorPost'
 };
 
 /**

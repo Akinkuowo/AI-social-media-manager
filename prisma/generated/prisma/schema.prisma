@@ -92,6 +92,7 @@ model Company {
   members        TeamMember[]
   aiInsights     Json?
   lastInsightAt  DateTime?
+  competitors    Competitor[]
 }
 
 model TeamMember {
@@ -289,4 +290,37 @@ enum NotificationType {
   ANALYTICS_READY
   COMMENT_RECEIVED
   SYSTEM_ALERT
+}
+
+model Competitor {
+  id             String           @id @default(cuid())
+  companyId      String
+  name           String
+  platform       String
+  handle         String
+  followerCount  Int              @default(0)
+  engagementRate Float            @default(0)
+  avatar         String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  company        Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  posts          CompetitorPost[]
+
+  @@unique([companyId, platform, handle])
+}
+
+model CompetitorPost {
+  id           String     @id @default(cuid())
+  competitorId String
+  postId       String
+  caption      String?
+  likes        Int        @default(0)
+  comments     Int        @default(0)
+  postedAt     DateTime
+  mediaUrl     String?
+  hashtags     String?
+  createdAt    DateTime   @default(now())
+  competitor   Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@unique([competitorId, postId])
 }

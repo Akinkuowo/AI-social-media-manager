@@ -58,76 +58,113 @@ export async function GET(req: Request) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=limit_reached`);
     }
 
-    // 3. Fetch Real Page/Profile info from Facebook
-    let realPlatformId: string;
-    let realName: string;
-    let pageToken: string;
-
+    // 3. Fetch Pages and Connected Instagram Accounts
     try {
-      const pagesData = await fetchFacebookPages(tokenData.access_token);
+      const { fetchInstagramAccounts } = await import("@/lib/social-oauth");
+      const pagesData = await fetchInstagramAccounts(tokenData.access_token);
       
+      let accountsConnectedCount = 0;
+
       if (pagesData.data && pagesData.data.length > 0) {
-        // Use the first page
-        const page = pagesData.data[0];
-        realPlatformId = page.id;
-        realName = page.name;
-        pageToken = page.access_token;
-      } else {
-        // Fallback to Personal Profile if no pages found
-        const profile = await fetchFacebookProfile(tokenData.access_token);
-        realPlatformId = profile.id;
-        realName = `${profile.name} (Personal)`;
-        pageToken = tokenData.access_token;
-        console.warn("[FACEBOOK_CALLBACK] No pages found, falling back to profile.");
-      }
-    } catch (apiErr) {
-      console.error("[FACEBOOK_API_FETCH_FAILED]:", apiErr);
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=facebook_api_error`);
-    }
+        for (const page of pagesData.data) {
+          // A. Save Facebook Page
+          const existingFB = await prisma.socialAccount.findFirst({
+            where: {
+              companyId: teamMember.companyId,
+              platform: 'facebook',
+              platformId: page.id
+            }
+          });
 
-    // 4. Save to Database
-    try {
-      console.log("[FACEBOOK_DB_SAVE] Attempting to save:", {
-        companyId: teamMember.companyId,
-        platform: 'facebook',
-        platformId: realPlatformId,
-        name: realName,
-        hasToken: !!pageToken
-      });
-
-      // Use findFirst + create/update instead of upsert to avoid adapter issues
-      const existing = await prisma.socialAccount.findFirst({
-        where: {
-          companyId: teamMember.companyId,
-          platform: 'facebook',
-          platformId: realPlatformId
-        }
-      });
-
-      if (existing) {
-        await prisma.socialAccount.update({
-          where: { id: existing.id },
-          data: {
-            accessToken: pageToken,
-            refreshToken: tokenData.refresh_token || null,
-            expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
-            name: realName
+          if (existingFB) {
+            await prisma.socialAccount.update({
+              where: { id: existingFB.id },
+              data: {
+                accessToken: page.access_token,
+                refreshToken: tokenData.refresh_token || null,
+                expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
+                name: page.name
+              }
+            });
+          } else if (currentCount + accountsConnectedCount < (plan === "FREE" ? 2 : 10)) {
+            await prisma.socialAccount.create({
+              data: {
+                companyId: teamMember.companyId,
+                platform: 'facebook',
+                platformId: page.id,
+                name: page.name,
+                accessToken: page.access_token,
+                refreshToken: tokenData.refresh_token || null,
+                expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null
+              }
+            });
+            accountsConnectedCount++;
           }
-        });
-        console.log("[FACEBOOK_DB_SAVE] Updated existing account:", existing.id);
+
+          // B. Save Connected Instagram Business Account
+          if (page.instagram_business_account) {
+            const ig = page.instagram_business_account;
+            const existingIG = await prisma.socialAccount.findFirst({
+              where: {
+                companyId: teamMember.companyId,
+                platform: 'instagram',
+                platformId: ig.id
+              }
+            });
+
+            if (existingIG) {
+              await prisma.socialAccount.update({
+                where: { id: existingIG.id },
+                data: {
+                  accessToken: page.access_token, // IG uses the Page token
+                  refreshToken: tokenData.refresh_token || null,
+                  expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null,
+                  name: ig.username
+                }
+              });
+            } else if (currentCount + accountsConnectedCount < (plan === "FREE" ? 2 : 10)) {
+              await prisma.socialAccount.create({
+                data: {
+                  companyId: teamMember.companyId,
+                  platform: 'instagram',
+                  platformId: ig.id,
+                  name: ig.username,
+                  accessToken: page.access_token,
+                  refreshToken: tokenData.refresh_token || null,
+                  expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null
+                }
+              });
+              accountsConnectedCount++;
+            }
+          }
+          
+          // Only process the first page for Free users to keep things simple, 
+          // but we capture both FB and IG from that one page.
+          break; 
+        }
       } else {
-        const created = await prisma.socialAccount.create({
-          data: {
+        // Fallback to Profile (Facebook only)
+        const profile = await fetchFacebookProfile(tokenData.access_token);
+        await prisma.socialAccount.upsert({
+          where: { 
+            companyId_platform_platformId: {
+              companyId: teamMember.companyId,
+              platform: 'facebook',
+              platformId: profile.id
+            }
+          },
+          update: {
+            accessToken: tokenData.access_token,
+            name: `${profile.name} (Personal)`
+          },
+          create: {
             companyId: teamMember.companyId,
             platform: 'facebook',
-            platformId: realPlatformId,
-            name: realName,
-            accessToken: pageToken,
-            refreshToken: tokenData.refresh_token || null,
-            expiresAt: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null
+            platformId: profile.id,
+            name: `${profile.name} (Personal)`,
+            accessToken: tokenData.access_token
           }
         });
-        console.log("[FACEBOOK_DB_SAVE] Created new account:", created.id);
       }
 
       // 5. Log Activity
@@ -136,13 +173,12 @@ export async function GET(req: Request) {
           companyId: teamMember.companyId,
           userId: session.user.id,
           action: 'SOCIAL_ACCOUNT_CONNECTED',
-          details: `Connected Facebook account: ${realName}`
+          details: `Connected Facebook/Instagram accounts via Meta`
         }
       });
-    } catch (dbErr: any) {
-      console.error("[FACEBOOK_DATABASE_FAILED]:", dbErr);
-      const msg = encodeURIComponent(dbErr.message?.substring(0, 200) || "Database failure");
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=database_error&details=${msg}`);
+    } catch (apiErr: any) {
+      console.error("[FACEBOOK_CALLBACK_PROCESS_FAILED]:", apiErr);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=callback_processing_failed&details=${encodeURIComponent(apiErr.message)}`);
     }
 
     // Clean up

@@ -439,15 +439,19 @@ export default function CalendarPage() {
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Primary Platform Focus</label>
             <select 
-              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground capitalize"
               value={aiForm.platform}
               onChange={(e) => setAiForm({...aiForm, platform: e.target.value})}
               required
             >
-              <option value="instagram">Instagram</option>
-              <option value="twitter">X / Twitter</option>
-              <option value="linkedin">LinkedIn</option>
-              <option value="tiktok">TikTok</option>
+              {[...new Set(socialAccounts.map(a => a.platform))].map(platform => (
+                <option key={platform} value={platform}>
+                  {platform === 'twitter' ? 'X / Twitter' : platform}
+                </option>
+              ))}
+              {socialAccounts.length === 0 && (
+                <option value="" disabled>No accounts connected</option>
+              )}
             </select>
           </div>
 
