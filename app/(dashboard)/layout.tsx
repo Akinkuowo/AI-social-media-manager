@@ -2,6 +2,7 @@ import { Sidebar } from '@/components/ui/Sidebar';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import { NotificationBell } from '@/components/ui/NotificationBell';
 
 export default async function DashboardLayout({
   children,
@@ -36,9 +37,15 @@ export default async function DashboardLayout({
             <h2 className="text-xl font-bold">Welcome back, <span className="text-primary">{firstName}</span></h2>
             <p className="text-sm text-muted mt-1">Here's what's happening with your brands today.</p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">{initial}</div>
-            <span className="text-sm font-medium">{userName}</span>
+          <div className="flex items-center gap-6">
+            <NotificationBell />
+            <div className="flex items-center gap-3 pl-6 border-l border-white/10">
+              <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">{initial}</div>
+              <div className="flex flex-col">
+                <span className="text-sm font-black leading-none">{userName}</span>
+                <span className="text-[10px] text-muted font-bold uppercase tracking-widest mt-1">Free Plan</span>
+              </div>
+            </div>
           </div>
         </header>
         <div className="flex-1 p-8 overflow-y-auto">

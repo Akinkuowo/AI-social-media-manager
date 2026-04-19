@@ -44,11 +44,22 @@ export default function CalendarPage() {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [socialAccounts, setSocialAccounts] = useState<any[]>([]);
-  const [newPost, setNewPost] = useState({
+  const [newPost, setNewPost] = useState<{
+    caption: string;
+    type: string;
+    status: string;
+    socialAccountIds: string[];
+    scheduledAt: string;
+    isRecurring: boolean;
+    recurrenceInterval: string;
+  }>({
     caption: '',
     type: 'educational',
     status: 'DRAFT',
-    socialAccountId: ''
+    socialAccountIds: [],
+    scheduledAt: '',
+    isRecurring: false,
+    recurrenceInterval: 'daily'
   });
 
   // AI Generation State
@@ -137,9 +148,17 @@ export default function CalendarPage() {
       });
 
       if (res.ok) {
-        showAlert.success('Scheduled', 'Post added to your calendar.');
+        showAlert.success('Cross-Platform Scheduled', 'Posts added to your automated schedule.');
         setIsModalOpen(false);
-        setNewPost({ caption: '', type: 'educational', status: 'DRAFT', socialAccountId: '' });
+        setNewPost({ 
+          caption: '', 
+          type: 'educational', 
+          status: 'DRAFT', 
+          socialAccountIds: [],
+          scheduledAt: '',
+          isRecurring: false,
+          recurrenceInterval: 'daily'
+        });
         fetchCalendar(currentDate);
       }
     } catch (err) {
@@ -484,20 +503,62 @@ export default function CalendarPage() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">Platform</label>
+            <label className="text-sm font-medium">Platforms (Select multiple)</label>
             <select 
-              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground text-capitalize"
-              value={newPost.socialAccountId}
-              onChange={(e) => setNewPost({...newPost, socialAccountId: e.target.value})}
+              multiple
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground text-capitalize min-h-[100px]"
+              value={newPost.socialAccountIds}
+              onChange={(e) => {
+                const values = Array.from(e.target.selectedOptions, option => option.value);
+                setNewPost({...newPost, socialAccountIds: values});
+              }}
               required
             >
-              <option value="" disabled>Select a platform...</option>
               {socialAccounts.map(account => (
-                <option key={account.id} value={account.id} className="capitalize">
+                <option key={account.id} value={account.id} className="capitalize py-1">
                   {account.platform} ({account.name})
                 </option>
               ))}
             </select>
+            <p className="text-[10px] text-muted">Hold CTRL or CMD to select multiple pipelines.</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Exact Dispatch Time (Optional)</label>
+              <input 
+                type="datetime-local" 
+                className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                value={newPost.scheduledAt}
+                onChange={(e) => setNewPost({...newPost, scheduledAt: e.target.value})}
+              />
+            </div>
+            
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Recurring Sequence</label>
+              <div className="flex items-center gap-3 h-full">
+                <label className="flex items-center gap-2 text-sm">
+                  <input 
+                    type="checkbox" 
+                    checked={newPost.isRecurring}
+                    onChange={(e) => setNewPost({...newPost, isRecurring: e.target.checked})}
+                    className="rounded border-border text-primary focus:ring-primary"
+                  />
+                  Repeat Post
+                </label>
+                {newPost.isRecurring && (
+                  <select 
+                    className="flex-1 bg-surface border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                    value={newPost.recurrenceInterval}
+                    onChange={(e) => setNewPost({...newPost, recurrenceInterval: e.target.value})}
+                  >
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="pt-4 flex gap-3">

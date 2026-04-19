@@ -22,6 +22,7 @@ model User {
   activityLogs     ActivityLog[]
   sessions         Session[]
   companies        TeamMember[]
+  notifications    Notification[]
 }
 
 model VerificationToken {
@@ -80,6 +81,7 @@ model Company {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   brandFont      String?
+  timezone       String          @default("UTC")
   activityLogs   ActivityLog[]
   calendars      Calendar[]
   campaigns      Campaign[]
@@ -88,6 +90,8 @@ model Company {
   socialAccounts SocialAccount[]
   subscription   Subscription?
   members        TeamMember[]
+  aiInsights     Json?
+  lastInsightAt  DateTime?
 }
 
 model TeamMember {
@@ -118,6 +122,19 @@ model SocialAccount {
   company      Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@unique([companyId, platform, platformId])
+  metrics      PlatformMetric[]
+}
+
+model PlatformMetric {
+  id              String        @id @default(cuid())
+  socialAccountId String
+  date            DateTime      @default(now())
+  followers       Int           @default(0)
+  reach           Int           @default(0)
+  engagement      Int           @default(0)
+  socialAccount   SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
+
+  @@unique([socialAccountId, date])
 }
 
 model Calendar {
@@ -144,6 +161,9 @@ model Post {
   hashtags          String?
   mediaUrls         String[]
   platformOptimized Json?
+  isRecurring       Boolean        @default(false)
+  recurrenceInterval String?       // daily, weekly, monthly
+  errorLog          String?        // Detailed error for failed queue posts
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
   analytics         Analytics?
@@ -249,4 +269,24 @@ enum SubscriptionStatus {
   ACTIVE
   CANCELED
   PAST_DUE
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean          @default(false)
+  link      String?
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum NotificationType {
+  PUBLISH_SUCCESS
+  PUBLISH_FAILED
+  ANALYTICS_READY
+  COMMENT_RECEIVED
+  SYSTEM_ALERT
 }

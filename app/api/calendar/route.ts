@@ -70,19 +70,40 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { calendarId, day, type, caption, hashtags, socialAccountId, scheduledAt } = body;
+    const { 
+      calendarId, 
+      day, 
+      type, 
+      caption, 
+      hashtags, 
+      socialAccountIds, 
+      scheduledAt,
+      isRecurring,
+      recurrenceInterval
+    } = body;
 
-    const post = await prisma.post.create({
-      data: {
-        calendarId,
-        day,
-        type,
-        caption,
-        hashtags,
-        socialAccountId,
-        scheduledAt: scheduledAt ? new Date(scheduledAt) : new Date(),
-        status: 'SCHEDULED'
-      }
+    if (!Array.isArray(socialAccountIds) || socialAccountIds.length === 0) {
+      return NextResponse.json({ message: "Must select at least one platform." }, { status: 400 });
+    }
+
+    // Prepare exactly when the post fires
+    const safeDate = scheduledAt ? new Date(scheduledAt) : new Date();
+
+    const dataToInsert = socialAccountIds.map(accountId => ({
+      calendarId,
+      day,
+      type,
+      caption,
+      hashtags,
+      socialAccountId: accountId,
+      scheduledAt: safeDate,
+      status: 'SCHEDULED' as const, // PostStatus Enum mapping
+      isRecurring: Boolean(isRecurring),
+      recurrenceInterval: isRecurring ? recurrenceInterval : null
+    }));
+
+    const result = await prisma.post.createMany({
+      data: dataToInsert
     });
 
     // Log Activity
@@ -92,15 +113,15 @@ export async function POST(req: Request) {
         data: {
           companyId: calendar.companyId,
           userId: session.user.id,
-          action: 'POST_SCHEDULED',
-          details: `Scheduled a new ${type} post for day ${day}`
+          action: 'POST_SCHEDULED_BULK',
+          details: `Scheduled a new ${type} post across ${socialAccountIds.length} platforms for day ${day}`
         }
       });
     }
 
-    return NextResponse.json(post);
+    return NextResponse.json({ success: true, count: result.count });
   } catch (err) {
     console.error("POST_SCHEDULING_ERROR:", err);
-    return NextResponse.json({ message: "Failed to schedule post" }, { status: 500 });
+    return NextResponse.json({ message: "Failed to schedule cross-platform posts" }, { status: 500 });
   }
 }

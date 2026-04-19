@@ -180,7 +180,10 @@ exports.Prisma.CompanyScalarFieldEnum = {
   secondaryColor: 'secondaryColor',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  brandFont: 'brandFont'
+  brandFont: 'brandFont',
+  timezone: 'timezone',
+  aiInsights: 'aiInsights',
+  lastInsightAt: 'lastInsightAt'
 };
 
 exports.Prisma.TeamMemberScalarFieldEnum = {
@@ -205,6 +208,15 @@ exports.Prisma.SocialAccountScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PlatformMetricScalarFieldEnum = {
+  id: 'id',
+  socialAccountId: 'socialAccountId',
+  date: 'date',
+  followers: 'followers',
+  reach: 'reach',
+  engagement: 'engagement'
+};
+
 exports.Prisma.CalendarScalarFieldEnum = {
   id: 'id',
   companyId: 'companyId',
@@ -225,6 +237,9 @@ exports.Prisma.PostScalarFieldEnum = {
   hashtags: 'hashtags',
   mediaUrls: 'mediaUrls',
   platformOptimized: 'platformOptimized',
+  isRecurring: 'isRecurring',
+  recurrenceInterval: 'recurrenceInterval',
+  errorLog: 'errorLog',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -292,6 +307,17 @@ exports.Prisma.ActivityLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  isRead: 'isRead',
+  link: 'link',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -345,6 +371,14 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   PAST_DUE: 'PAST_DUE'
 };
 
+exports.NotificationType = exports.$Enums.NotificationType = {
+  PUBLISH_SUCCESS: 'PUBLISH_SUCCESS',
+  PUBLISH_FAILED: 'PUBLISH_FAILED',
+  ANALYTICS_READY: 'ANALYTICS_READY',
+  COMMENT_RECEIVED: 'COMMENT_RECEIVED',
+  SYSTEM_ALERT: 'SYSTEM_ALERT'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   VerificationToken: 'VerificationToken',
@@ -354,6 +388,7 @@ exports.Prisma.ModelName = {
   Company: 'Company',
   TeamMember: 'TeamMember',
   SocialAccount: 'SocialAccount',
+  PlatformMetric: 'PlatformMetric',
   Calendar: 'Calendar',
   Post: 'Post',
   Analytics: 'Analytics',
@@ -361,7 +396,8 @@ exports.Prisma.ModelName = {
   Subscription: 'Subscription',
   Invoice: 'Invoice',
   Invitation: 'Invitation',
-  ActivityLog: 'ActivityLog'
+  ActivityLog: 'ActivityLog',
+  Notification: 'Notification'
 };
 
 /**
