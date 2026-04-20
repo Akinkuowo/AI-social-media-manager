@@ -21,7 +21,8 @@ import {
   Trash2,
   RefreshCw,
   Zap,
-  Download
+  Download,
+  Image as ImageIcon
 } from 'lucide-react';
 import { showAlert } from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
@@ -43,7 +44,9 @@ export default function CalendarPage() {
   const [selectedPost, setSelectedPost] = useState<any>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [socialAccounts, setSocialAccounts] = useState<any[]>([]);
+  const [editForm, setEditForm] = useState<any>(null);
   const [newPost, setNewPost] = useState<{
     caption: string;
     type: string;
@@ -52,6 +55,7 @@ export default function CalendarPage() {
     scheduledAt: string;
     isRecurring: boolean;
     recurrenceInterval: string;
+    mediaUrl: string;
   }>({
     caption: '',
     type: 'educational',
@@ -59,7 +63,8 @@ export default function CalendarPage() {
     socialAccountIds: [],
     scheduledAt: '',
     isRecurring: false,
-    recurrenceInterval: 'daily'
+    recurrenceInterval: 'daily',
+    mediaUrl: ''
   });
 
   // AI Generation State
@@ -109,7 +114,34 @@ export default function CalendarPage() {
 
   const handleViewPost = (post: any) => {
     setSelectedPost(post);
+    setEditForm({
+      caption: post.caption,
+      hashtags: post.hashtags,
+      mediaUrls: post.mediaUrls || [],
+      scheduledAt: post.scheduledAt || '',
+    });
+    setIsEditing(false);
     setIsDetailModalOpen(true);
+  };
+
+  const handleUpdatePost = async () => {
+    if (!selectedPost) return;
+    try {
+      const res = await fetch(`/api/calendar/${selectedPost.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editForm)
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setSelectedPost(updated);
+        setIsEditing(false);
+        fetchCalendar(currentDate);
+        showAlert.success('Content Synchronized', 'Your changes have been locked in.');
+      }
+    } catch {
+      showAlert.error('Sync Error', 'Failed to update post details.');
+    }
   };
 
   const handleDropPost = async (postId: string, newDay: number) => {
@@ -143,7 +175,8 @@ export default function CalendarPage() {
         body: JSON.stringify({
           calendarId: calendar.id,
           day: selectedDay,
-          ...newPost
+          ...newPost,
+          mediaUrls: newPost.mediaUrl ? [newPost.mediaUrl] : []
         })
       });
 
@@ -157,7 +190,8 @@ export default function CalendarPage() {
           socialAccountIds: [],
           scheduledAt: '',
           isRecurring: false,
-          recurrenceInterval: 'daily'
+          recurrenceInterval: 'daily',
+          mediaUrl: ''
         });
         fetchCalendar(currentDate);
       }
@@ -507,6 +541,18 @@ export default function CalendarPage() {
           </div>
 
           <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Image/Media URL (Optional)</label>
+            <input 
+              type="text"
+              className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              placeholder="Paste an image or video link here..."
+              value={newPost.mediaUrl}
+              onChange={(e) => setNewPost({...newPost, mediaUrl: e.target.value})}
+            />
+            <p className="text-[10px] text-muted italic">If empty, our AI will autonomously resolve a professional visual for Instagram dispatches.</p>
+          </div>
+
+          <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Platforms (Select multiple)</label>
             <select 
               multiple
@@ -583,162 +629,255 @@ export default function CalendarPage() {
           const StatusIcon = cfg.icon;
           return (
             <div className="flex flex-col gap-6 py-4">
-              {/* Status Badge */}
+              {/* Header Actions */}
               <div className="flex items-center justify-between">
                 <div className={clsx("inline-flex items-center gap-2 px-4 py-2 rounded-xl", cfg.bg)}>
                   <StatusIcon size={16} className={cfg.text} />
                   <span className={clsx("text-sm font-bold uppercase tracking-wider", cfg.text)}>{cfg.label}</span>
                 </div>
                 
-                <Button 
-                  variant="ghost" 
-                  onClick={handleRegenerateIdea} 
-                  isLoading={isRegenerating}
-                  className="text-primary hover:bg-primary/10 border border-primary/20"
-                >
-                  <RefreshCw size={16} className={clsx("mr-2", isRegenerating && "animate-spin")} /> 
-                  Regenerate Idea
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => {
+                      if (isEditing) handleUpdatePost();
+                      else setIsEditing(true);
+                    }}
+                    className={clsx(
+                      "border transition-all",
+                      isEditing ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-primary/10 border-primary/20 text-primary"
+                    )}
+                  >
+                    {isEditing ? <CheckCircle size={16} className="mr-2" /> : <RefreshCw size={16} className="mr-2" />}
+                    {isEditing ? "Save Changes" : "Edit Content"}
+                  </Button>
+                  {!isEditing && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={handleRegenerateIdea} 
+                      isLoading={isRegenerating}
+                      className="text-primary/60 hover:text-primary"
+                    >
+                      <Sparkles size={16} />
+                    </Button>
+                  )}
+                </div>
               </div>
 
+              {/* Edit Mode Warning */}
+              {isEditing && (
+                <div className="p-3 bg-white/5 border border-white/10 rounded-xl flex gap-3 text-xs text-muted leading-relaxed">
+                  <Zap size={16} className="text-primary shrink-0" />
+                  <p>You are in <strong>Direct Command Mode</strong>. Changes will be synchronized across all associated dispatch pipelines.</p>
+                </div>
+              )}
+
               {/* Status Timeline */}
-              <div className="flex items-center gap-2 px-2">
-                <div className="flex items-center gap-1">
-                  <div className="w-3 h-3 rounded-full bg-emerald-400 border-2 border-emerald-400/30" />
-                  <span className="text-[9px] font-bold text-emerald-400 uppercase">Created</span>
+              {!isEditing && (
+                <div className="flex items-center gap-2 px-2">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-emerald-400/30" />
+                    <span className="text-[9px] font-bold text-emerald-400 uppercase">Created</span>
+                  </div>
+                  <div className={clsx("flex-1 h-0.5 rounded", selectedPost.status !== 'DRAFT' ? 'bg-blue-400' : 'bg-white/10')} />
+                  <div className="flex items-center gap-1">
+                    <div className={clsx("w-2.5 h-2.5 rounded-full border-2", 
+                      selectedPost.status !== 'DRAFT' ? 'bg-blue-400 border-blue-400/30' : 'bg-white/10 border-white/20'
+                    )} />
+                    <span className={clsx("text-[9px] font-bold uppercase", selectedPost.status !== 'DRAFT' ? 'text-blue-400' : 'text-muted')}>Scheduled</span>
+                  </div>
+                  <div className={clsx("flex-1 h-0.5 rounded", selectedPost.status === 'PUBLISHED' ? 'bg-emerald-400' : selectedPost.status === 'FAILED' ? 'bg-red-400' : 'bg-white/10')} />
+                  <div className="flex items-center gap-1">
+                    <div className={clsx("w-2.5 h-2.5 rounded-full border-2", 
+                      selectedPost.status === 'PUBLISHED' ? 'bg-emerald-400 border-emerald-400/30' : 
+                      selectedPost.status === 'FAILED' ? 'bg-red-400 border-red-400/30' : 'bg-white/10 border-white/20'
+                    )} />
+                    <span className={clsx("text-[9px] font-bold uppercase", 
+                      selectedPost.status === 'PUBLISHED' ? 'text-emerald-400' : 
+                      selectedPost.status === 'FAILED' ? 'text-red-400' : 'text-muted'
+                    )}>
+                      {selectedPost.status === 'FAILED' ? 'Failed' : 'Published'}
+                    </span>
+                  </div>
                 </div>
-                <div className={clsx("flex-1 h-0.5 rounded", selectedPost.status !== 'DRAFT' ? 'bg-blue-400' : 'bg-white/10')} />
-                <div className="flex items-center gap-1">
-                  <div className={clsx("w-3 h-3 rounded-full border-2", 
-                    selectedPost.status !== 'DRAFT' ? 'bg-blue-400 border-blue-400/30' : 'bg-white/10 border-white/20'
-                  )} />
-                  <span className={clsx("text-[9px] font-bold uppercase", selectedPost.status !== 'DRAFT' ? 'text-blue-400' : 'text-muted')}>Scheduled</span>
-                </div>
-                <div className={clsx("flex-1 h-0.5 rounded", selectedPost.status === 'PUBLISHED' ? 'bg-emerald-400' : selectedPost.status === 'FAILED' ? 'bg-red-400' : 'bg-white/10')} />
-                <div className="flex items-center gap-1">
-                  <div className={clsx("w-3 h-3 rounded-full border-2", 
-                    selectedPost.status === 'PUBLISHED' ? 'bg-emerald-400 border-emerald-400/30' : 
-                    selectedPost.status === 'FAILED' ? 'bg-red-400 border-red-400/30' : 'bg-white/10 border-white/20'
-                  )} />
-                  <span className={clsx("text-[9px] font-bold uppercase", 
-                    selectedPost.status === 'PUBLISHED' ? 'text-emerald-400' : 
-                    selectedPost.status === 'FAILED' ? 'text-red-400' : 'text-muted'
-                  )}>
-                    {selectedPost.status === 'FAILED' ? 'Failed' : 'Published'}
-                  </span>
-                </div>
-              </div>
+              )}
 
               {/* Platform & Account */}
               {selectedPost.socialAccount && (
                 <div className="flex items-center gap-3 p-3 rounded-xl bg-surface border border-border">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-xs uppercase">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-[10px] uppercase">
                     {selectedPost.socialAccount.platform.substring(0, 2)}
                   </div>
                   <div>
-                    <p className="text-sm font-bold">{selectedPost.socialAccount.name || selectedPost.socialAccount.platform}</p>
-                    <p className="text-[10px] text-muted capitalize">{selectedPost.socialAccount.platform}</p>
+                    <p className="text-xs font-bold">{selectedPost.socialAccount.name || selectedPost.socialAccount.platform}</p>
+                    <p className="text-[9px] text-muted capitalize">{selectedPost.socialAccount.platform}</p>
                   </div>
                 </div>
               )}
 
               {/* Caption */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] text-muted uppercase font-bold tracking-widest">Caption</label>
-                <div className="p-4 rounded-xl bg-surface border border-border">
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{selectedPost.caption}</p>
-                </div>
+                <label className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">Narrative Content</label>
+                {isEditing ? (
+                  <textarea 
+                    className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground min-h-[140px] leading-relaxed transition-all"
+                    value={editForm.caption}
+                    onChange={(e) => setEditForm({...editForm, caption: e.target.value})}
+                    placeholder="Refine your post narrative..."
+                  />
+                ) : (
+                  <div className="p-4 rounded-xl bg-surface border border-border">
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{selectedPost.caption}</p>
+                  </div>
+                )}
               </div>
 
               {/* Hashtags */}
-              {selectedPost.hashtags && (
-                <div className="flex flex-col gap-2">
-                  <label className="text-[10px] text-muted uppercase font-bold tracking-widest">Hashtags</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">Tag Ecosystem</label>
+                {isEditing ? (
+                  <input 
+                    className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                    value={editForm.hashtags}
+                    onChange={(e) => setEditForm({...editForm, hashtags: e.target.value})}
+                    placeholder="#social #growth #strategy"
+                  />
+                ) : selectedPost.hashtags ? (
                   <div className="flex flex-wrap gap-1.5">
                     {selectedPost.hashtags.split(' ').filter(Boolean).map((tag: string, i: number) => (
-                      <span key={i} className="px-2 py-1 rounded-lg bg-primary/10 text-primary text-[10px] font-bold">
+                      <span key={i} className="px-2 py-0.5 rounded-lg bg-primary/5 text-primary text-[10px] font-bold border border-primary/10">
                         {tag}
                       </span>
                     ))}
                   </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground italic">No tags associated.</p>
+                )}
+              </div>
+
+              {/* Media Library - THE NEW PART */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">Media Library</label>
+                  {isEditing && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-6 text-[10px]" 
+                      onClick={() => setEditForm({...editForm, mediaUrls: [...editForm.mediaUrls, ""]})}
+                    >
+                      <Plus size={12} className="mr-1" /> Add Slot
+                    </Button>
+                  )}
                 </div>
-              )}
+                
+                <div className="grid grid-cols-2 gap-3">
+                  {(isEditing ? editForm.mediaUrls : (selectedPost.mediaUrls || [])).map((url: string, i: number) => (
+                    <div key={i} className="group relative aspect-square rounded-xl bg-surface border border-border overflow-hidden">
+                      {url ? (
+                        <img src={url} alt={`Media ${i}`} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground italic text-[10px] p-2 text-center">
+                          Empty Frame
+                        </div>
+                      )}
+                      
+                      {isEditing && (
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col p-3 justify-center gap-2">
+                          <input 
+                            className="bg-surface/80 border border-white/10 rounded-lg px-2 py-1 text-[9px] focus:outline-none"
+                            value={url}
+                            onChange={(e) => {
+                              const newUrls = [...editForm.mediaUrls];
+                              newUrls[i] = e.target.value;
+                              setEditForm({...editForm, mediaUrls: newUrls});
+                            }}
+                            placeholder="Image URL..."
+                          />
+                          <Button 
+                            variant="primary" 
+                            size="sm" 
+                            className="bg-red-500/80 hover:bg-red-500 h-6 text-[9px]"
+                            onClick={() => {
+                              const newUrls = editForm.mediaUrls.filter((_: any, idx: number) => idx !== i);
+                              setEditForm({...editForm, mediaUrls: newUrls});
+                            }}
+                          >
+                            <Trash2 size={10} className="mr-1" /> Remove
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {((isEditing ? editForm.mediaUrls : (selectedPost.mediaUrls || [])).length === 0) && (
+                    <div className="col-span-2 p-6 rounded-2xl border-2 border-dashed border-white/5 flex flex-col items-center justify-center text-muted-foreground italic text-xs">
+                      <ImageIcon className="opacity-20 mb-2" size={32} />
+                      <p>No media creative established.</p>
+                      {selectedPost.socialAccount?.platform === 'instagram' && (
+                        <p className="mt-2 text-primary font-bold">Smart Fallback is active 🛡️</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {/* Scheduled Time */}
-              {selectedPost.scheduledAt && (
-                <div className="flex items-center gap-2 text-xs text-muted">
-                  <Clock size={14} />
-                  <span>Scheduled for: {new Date(selectedPost.scheduledAt).toLocaleString()}</span>
+              {selectedPost.scheduledAt && !isEditing && (
+                <div className="flex items-center gap-2 text-[10px] text-muted-foreground uppercase font-black tracking-widest pt-4 border-t border-white/5">
+                  <Clock size={12} />
+                  <span>Scheduled Arrival: {new Date(selectedPost.scheduledAt).toLocaleString()}</span>
                 </div>
               )}
 
               {/* Error Message (for failed posts) */}
-              {selectedPost.status === 'FAILED' && selectedPost.platformOptimized?.error && (
-                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20">
-                  <p className="text-xs text-red-400 font-mono">{selectedPost.platformOptimized.error}</p>
+              {selectedPost.status === 'FAILED' && selectedPost.errorLog && !isEditing && (
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex gap-3 text-red-300">
+                  <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                  <p className="text-[10px] font-mono leading-relaxed">{selectedPost.errorLog}</p>
                 </div>
               )}
 
-              {/* Actions */}
-              <div className="pt-4 flex gap-3 border-t border-white/5">
-                <Button 
-                  variant="ghost" 
-                  className="flex-1 text-red-400 hover:bg-red-400/10 border border-red-400/20"
-                  onClick={() => handleDeletePost(selectedPost.id)}
-                >
-                  <Trash2 size={16} className="mr-2" /> Delete
-                </Button>
-                {selectedPost.status === 'DRAFT' && (
+              {/* Actions Footer */}
+              {!isEditing && (
+                <div className="pt-4 flex gap-3 border-t border-white/5">
                   <Button 
-                    className="flex-1"
-                    onClick={async () => {
-                      try {
-                        const res = await fetch(`/api/calendar/${selectedPost.id}`, {
-                          method: 'PATCH',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ status: 'SCHEDULED', scheduledAt: new Date().toISOString() })
-                        });
-                        if (res.ok) {
-                          showAlert.success('Scheduled!', 'Post is now scheduled and ready to publish.');
+                    variant="ghost" 
+                    className="flex-1 text-red-400 hover:bg-red-400/10 border border-red-400/20"
+                    onClick={() => handleDeletePost(selectedPost.id)}
+                  >
+                    <Trash2 size={16} className="mr-2" /> Delete Post
+                  </Button>
+                  
+                  {selectedPost.status === 'PUBLISHED' ? (
+                    <div className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm font-bold">
+                      <CheckCircle size={16} /> Successfully Dispatched
+                    </div>
+                  ) : (
+                    <Button 
+                      className="flex-1 bg-gradient-to-r from-primary to-primary-focus shadow-lg shadow-primary/20"
+                      onClick={async () => {
+                        setIsPublishing(true);
+                        try {
+                          const res = await fetch('/api/publish', { method: 'POST' });
+                          const data = await res.json();
+                          showAlert.success('Heartbeat Pulse Successful', `${data.published} published, ${data.failed} failed.`);
                           setIsDetailModalOpen(false);
                           fetchCalendar(currentDate);
+                        } catch {
+                          showAlert.error('Dispatch Failure', 'Failed to connect to publisher service.');
+                        } finally {
+                          setIsPublishing(false);
                         }
-                      } catch {
-                        showAlert.error('Error', 'Failed to schedule post.');
-                      }
-                    }}
-                  >
-                    <Clock size={16} className="mr-2" /> Schedule Now
-                  </Button>
-                )}
-                {(selectedPost.status === 'SCHEDULED' || selectedPost.status === 'FAILED') && (
-                  <Button 
-                    className="flex-1"
-                    onClick={async () => {
-                      setIsPublishing(true);
-                      try {
-                        const res = await fetch('/api/publish', { method: 'POST' });
-                        const data = await res.json();
-                        showAlert.success('Publisher Ran', `${data.published} published, ${data.failed} failed.`);
-                        setIsDetailModalOpen(false);
-                        fetchCalendar(currentDate);
-                      } catch {
-                        showAlert.error('Error', 'Failed to publish.');
-                      } finally {
-                        setIsPublishing(false);
-                      }
-                    }}
-                    isLoading={isPublishing}
-                  >
-                    <Send size={16} className="mr-2" /> Publish Now
-                  </Button>
-                )}
-                {selectedPost.status === 'PUBLISHED' && (
-                  <div className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm font-bold">
-                    <CheckCircle size={16} /> Successfully Published
-                  </div>
-                )}
-              </div>
+                      }}
+                      isLoading={isPublishing}
+                    >
+                      <Send size={16} className="mr-2" /> Publish Now
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           );
         })()}

@@ -28,7 +28,8 @@ export async function generateSocialContent({
   brandVoice,
   niche,
   targetAudience,
-  promptOverride
+  promptOverride,
+  userId
 }: {
   platform: string;
   type: string;
@@ -37,13 +38,13 @@ export async function generateSocialContent({
   niche: string;
   targetAudience: string;
   promptOverride: string;
+  userId?: string;
 }) {
   if (!genAI || !apiKey) {
     console.warn("GEMINI_API_KEY_MISSING: Using mock generation.");
     return getMockContent(platform, type, tone);
   }
 
-  // Reverting to gemini-2.5-flash as it is the only model confirmed to exist in this environment (returned 503 instead of 404)
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const systemPrompt = `You are an expert social media manager and content creator. 
@@ -68,6 +69,13 @@ export async function generateSocialContent({
       return result.response.text();
     });
     
+    // Log usage if userId is provided
+    if (userId) {
+      const { logAIUsage } = await import("./usage");
+      const estTokens = Math.ceil((systemPrompt.length + text.length) / 4);
+      await logAIUsage(userId, `generate_post_${platform}`, estTokens);
+    }
+
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0]);
@@ -98,7 +106,8 @@ export async function generate30DayCalendar({
   targetAudience,
   businessGoals,
   trendingTopics,
-  performanceInsights = ""
+  performanceInsights = "",
+  userId
 }: {
   platform: string;
   niche: string;
@@ -106,6 +115,7 @@ export async function generate30DayCalendar({
   businessGoals: string;
   trendingTopics: string;
   performanceInsights?: string;
+  userId?: string;
 }) {
   if (!genAI || !apiKey) {
     throw new Error("GEMINI_API_KEY is not configured on the server.");
@@ -136,7 +146,8 @@ Schema for each object:
   "contentType": "(educational, promotional, storytelling, tips, meme, video)",
   "caption": "Full ready-to-publish content",
   "hashtags": "Space-separated hash tags",
-  "bestPostingTime": "HH:MM"
+  "bestPostingTime": "HH:MM",
+  "mediaTopic": "Visual keywords for image generation"
 }`;
 
   try {
@@ -145,6 +156,12 @@ Schema for each object:
       return result.response.text();
     });
     
+    // Log usage if userId is provided
+    if (userId) {
+      const { logAIUsage } = await import("./usage");
+      const estTokens = Math.ceil((systemPrompt.length + text.length) / 4);
+      await logAIUsage(userId, `generate_30day_calendar_${platform}`, estTokens);
+    }
     const jsonMatch = text.match(/\[[\s\S]*\]/);
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0]);

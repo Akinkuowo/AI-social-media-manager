@@ -15,12 +15,14 @@ export default NextAuth(authConfig).auth((req) => {
   
   const is2FARoute = nextUrl.pathname === "/login/2fa";
   
+  const isAdminRoute = nextUrl.pathname.startsWith("/admin");
   const isDashboard = nextUrl.pathname.startsWith("/dashboard") || 
                       nextUrl.pathname.startsWith("/calendar") ||
                       nextUrl.pathname.startsWith("/generate") ||
                       nextUrl.pathname.startsWith("/analytics") ||
                       nextUrl.pathname.startsWith("/settings") ||
-                      nextUrl.pathname.startsWith("/media");
+                      nextUrl.pathname.startsWith("/media") ||
+                      nextUrl.pathname.startsWith("/competitors");
 
   // If logged in and on a public route, redirect to dashboard if 2FA is complete
   if (isPublicRoute && isLoggedIn) {
@@ -35,9 +37,14 @@ export default NextAuth(authConfig).auth((req) => {
      return Response.redirect(new URL("/login/2fa", nextUrl));
   }
 
-  // If not logged in and trying to access dashboard/2FA, redirect to login
-  if (!isLoggedIn && (isDashboard || is2FARoute)) {
+  // If not logged in and trying to access dashboard/admin/2FA, redirect to login
+  if (!isLoggedIn && (isDashboard || isAdminRoute || is2FARoute)) {
     return Response.redirect(new URL("/login", nextUrl));
+  }
+
+  // If logged in but trying to access admin route without ADMIN role
+  if (isLoggedIn && isAdminRoute && auth?.user?.role !== "ADMIN") {
+    return Response.redirect(new URL("/dashboard", nextUrl));
   }
 })
 

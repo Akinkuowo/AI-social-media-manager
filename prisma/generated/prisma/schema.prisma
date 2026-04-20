@@ -18,11 +18,29 @@ model User {
   updatedAt        DateTime       @updatedAt
   twoFactorEnabled Boolean        @default(false)
   twoFactorSecret  String?
+  role             AppRole        @default(USER)
   accounts         Account[]
   activityLogs     ActivityLog[]
   sessions         Session[]
   companies        TeamMember[]
   notifications    Notification[]
+  usageLogs        UsageLog[]
+  apiKeys          ApiKey[]
+}
+
+enum AppRole {
+  USER
+  ADMIN
+}
+
+model UsageLog {
+  id           String   @id @default(cuid())
+  userId       String
+  action       String
+  tokens       Int?     @default(0)
+  costEstimate Float?   @default(0)
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -93,6 +111,7 @@ model Company {
   aiInsights     Json?
   lastInsightAt  DateTime?
   competitors    Competitor[]
+  apiKeys        ApiKey[]
 }
 
 model TeamMember {
@@ -323,4 +342,18 @@ model CompetitorPost {
   competitor   Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
 
   @@unique([competitorId, postId])
+}
+
+model ApiKey {
+  id        String    @id @default(cuid())
+  key       String    @unique
+  name      String
+  companyId String
+  userId    String
+  createdAt DateTime  @default(now())
+  lastUsed  DateTime?
+  company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([key])
 }

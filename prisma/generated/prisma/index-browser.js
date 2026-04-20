@@ -130,7 +130,17 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   twoFactorEnabled: 'twoFactorEnabled',
-  twoFactorSecret: 'twoFactorSecret'
+  twoFactorSecret: 'twoFactorSecret',
+  role: 'role'
+};
+
+exports.Prisma.UsageLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  tokens: 'tokens',
+  costEstimate: 'costEstimate',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
@@ -344,6 +354,16 @@ exports.Prisma.CompetitorPostScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ApiKeyScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  companyId: 'companyId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  lastUsed: 'lastUsed'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -369,6 +389,11 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.AppRole = exports.$Enums.AppRole = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
 exports.Role = exports.$Enums.Role = {
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',
@@ -407,6 +432,7 @@ exports.NotificationType = exports.$Enums.NotificationType = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  UsageLog: 'UsageLog',
   VerificationToken: 'VerificationToken',
   PasswordResetToken: 'PasswordResetToken',
   Account: 'Account',
@@ -425,7 +451,8 @@ exports.Prisma.ModelName = {
   ActivityLog: 'ActivityLog',
   Notification: 'Notification',
   Competitor: 'Competitor',
-  CompetitorPost: 'CompetitorPost'
+  CompetitorPost: 'CompetitorPost',
+  ApiKey: 'ApiKey'
 };
 
 /**

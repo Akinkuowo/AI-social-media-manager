@@ -55,6 +55,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                name: user.name,
                twoFactorEnabled: user.twoFactorEnabled,
                isTwoFactorAuthenticated: false,
+               role: String(user.role),
              };
           }
 
@@ -84,6 +85,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: user.name,
           twoFactorEnabled: user.twoFactorEnabled,
           isTwoFactorAuthenticated: true,
+          role: String(user.role),
         };
       },
     }),

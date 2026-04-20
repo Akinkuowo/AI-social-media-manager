@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -12,7 +13,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
     // Reset the post back into the worker queue
     const post = await prisma.post.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         status: "SCHEDULED",
         errorLog: null,
@@ -21,7 +22,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
     // We can explicitly update its timestamp to 'now' so it gets snatched instantly
     await prisma.post.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         scheduledAt: new Date()
       }

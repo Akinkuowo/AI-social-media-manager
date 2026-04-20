@@ -9,7 +9,10 @@ import {
   AlertCircle, 
   RotateCw,
   RefreshCw,
-  TerminalSquare
+  TerminalSquare,
+  Zap,
+  Filter,
+  Search
 } from 'lucide-react';
 import { showAlert } from '@/lib/alerts';
 import { clsx } from 'clsx';
@@ -18,6 +21,21 @@ export default function QueuePage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRetrying, setIsRetrying] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [filterStatus, setFilterStatus] = useState('ALL');
+  const [filterPlatform, setFilterPlatform] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const platforms = [...new Set(posts.map(p => p.socialAccount?.platform).filter(Boolean))];
+
+  const filteredPosts = posts.filter(post => {
+    const matchStatus = filterStatus === 'ALL' || post.status === filterStatus;
+    const matchPlatform = filterPlatform === 'ALL' || post.socialAccount?.platform === filterPlatform;
+    const matchSearch = searchQuery === '' || 
+      post.caption.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.id.includes(searchQuery);
+    return matchStatus && matchPlatform && matchSearch;
+  });
 
   const fetchQueue = async () => {
     setIsLoading(true);
@@ -31,6 +49,24 @@ export default function QueuePage() {
       showAlert.error('Error', 'Failed to fetch the posting queue.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRunPublisher = async () => {
+    setIsProcessing(true);
+    try {
+      const res = await fetch('/api/cron/publish');
+      const data = await res.json();
+      if (res.ok) {
+        showAlert.success('Success', `Publisher run complete. Processed ${data.processedCount || 0} posts.`);
+        fetchQueue();
+      } else {
+        showAlert.error('Error', data.message || 'Failed to trigger publisher.');
+      }
+    } catch (err) {
+      showAlert.error('Error', 'Failed to establish connection to publisher.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -71,32 +107,90 @@ export default function QueuePage() {
           <h1 className="text-2xl font-bold">Publisher Queue & Logs</h1>
           <p className="text-sm text-muted mt-1">Monitor the background workers, recurring loops, and failed dispatches.</p>
         </div>
-        <Button variant="ghost" onClick={fetchQueue} className="border border-white/10 hover:bg-white/5">
-          <RefreshCw size={18} className={clsx("mr-2", isLoading && "animate-spin")} /> 
-          Refresh Queue
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="ghost" 
+            onClick={handleRunPublisher} 
+            isLoading={isProcessing}
+            className="border border-primary/20 hover:bg-primary/5 text-primary"
+          >
+            <Zap size={18} className="mr-2" /> 
+            Run Publisher
+          </Button>
+          <Button variant="ghost" onClick={fetchQueue} className="border border-white/10 hover:bg-white/5">
+            <RefreshCw size={18} className={clsx("mr-2", isLoading && "animate-spin")} /> 
+            Refresh Queue
+          </Button>
+        </div>
       </header>
 
       <Card variant="glass" padding="none" className="flex-1 overflow-hidden flex flex-col">
-        <div className="p-6 border-b border-white/5 flex items-center justify-between bg-surface/50">
-          <div className="flex gap-4 text-sm font-bold">
-            <span className="text-blue-400">{posts.filter(p => p.status === 'SCHEDULED').length} Pending</span>
-            <span className="text-red-400">{posts.filter(p => p.status === 'FAILED').length} Failed</span>
-            <span className="text-emerald-400">{posts.filter(p => p.status === 'PUBLISHED').length} Published Recently</span>
+        <div className="p-6 border-b border-white/5 flex flex-wrap items-center justify-between gap-6 bg-surface/50">
+          <div className="flex gap-4 text-xs font-bold">
+            <span className={clsx("cursor-pointer transition-colors", filterStatus === 'ALL' ? "text-primary border-b border-primary" : "text-muted hover:text-white")} onClick={() => setFilterStatus('ALL')}>
+              All ({posts.length})
+            </span>
+            <span className={clsx("cursor-pointer transition-colors", filterStatus === 'SCHEDULED' ? "text-blue-400 border-b border-blue-400" : "text-muted hover:text-blue-400")} onClick={() => setFilterStatus('SCHEDULED')}>
+              Pending ({posts.filter(p => p.status === 'SCHEDULED').length})
+            </span>
+            <span className={clsx("cursor-pointer transition-colors", filterStatus === 'FAILED' ? "text-red-400 border-b border-red-400" : "text-muted hover:text-red-400")} onClick={() => setFilterStatus('FAILED')}>
+              Failed ({posts.filter(p => p.status === 'FAILED').length})
+            </span>
+            <span className={clsx("cursor-pointer transition-colors", filterStatus === 'PUBLISHED' ? "text-emerald-400 border-b border-emerald-400" : "text-muted hover:text-emerald-400")} onClick={() => setFilterStatus('PUBLISHED')}>
+              Published ({posts.filter(p => p.status === 'PUBLISHED').length})
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 flex-1 justify-end">
+            {/* Search */}
+            <div className="relative flex-1 max-w-[300px]">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+              <input 
+                type="text"
+                placeholder="Search caption or ID..."
+                className="w-full bg-black/40 border border-white/10 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary/40 transition-all"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* Platform Select */}
+            <div className="flex items-center gap-2">
+              <Filter size={14} className="text-muted" />
+              <select 
+                className="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary/40 text-foreground capitalize cursor-pointer hover:bg-black/60 transition-colors"
+                value={filterPlatform}
+                onChange={(e) => setFilterPlatform(e.target.value)}
+              >
+                <option value="ALL">All Platforms</option>
+                {platforms.map(plat => (
+                  <option key={plat} value={plat}>{plat}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
         <div className="flex-1 overflow-auto custom-scrollbar p-6">
           {isLoading ? (
-            <div className="flex justify-center py-12 text-muted">Loading queue...</div>
-          ) : posts.length === 0 ? (
+            <div className="flex justify-center py-12 text-muted">Loading queue metadata...</div>
+          ) : filteredPosts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-muted">
-              <TerminalSquare size={48} className="opacity-20 mb-4" />
-              <p>The queue is completely empty.</p>
+              <TerminalSquare size={48} className="opacity-10 mb-4" />
+              <p className="text-sm">No dispatches match your current criteria.</p>
+              {(filterStatus !== 'ALL' || filterPlatform !== 'ALL' || searchQuery !== '') && (
+                <Button variant="ghost" size="sm" className="mt-4 text-primary" onClick={() => {
+                  setFilterStatus('ALL');
+                  setFilterPlatform('ALL');
+                  setSearchQuery('');
+                }}>
+                  Clear all filters
+                </Button>
+              )}
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {posts.map((post) => (
+              {filteredPosts.map((post) => (
                 <div key={post.id} className="flex flex-col gap-3 p-4 rounded-2xl bg-surface border border-white/5 hover:border-white/10 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">

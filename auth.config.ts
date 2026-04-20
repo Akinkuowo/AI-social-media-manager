@@ -11,20 +11,24 @@ export const authConfig = {
         token.id = user.id;
         token.twoFactorEnabled = (user as any).twoFactorEnabled;
         token.isTwoFactorAuthenticated = (user as any).isTwoFactorAuthenticated;
+        token.role = (user as any).role;
       }
-      if (trigger === "update" && session?.twoFactorEnabled !== undefined) {
-        token.twoFactorEnabled = session.twoFactorEnabled;
+      
+      // Handle session updates (e.g., after 2FA verification)
+      if (trigger === "update" && session) {
+        if (session.twoFactorEnabled !== undefined) token.twoFactorEnabled = session.twoFactorEnabled;
+        if (session.isTwoFactorAuthenticated !== undefined) token.isTwoFactorAuthenticated = session.isTwoFactorAuthenticated;
+        if (session.role !== undefined) token.role = session.role;
       }
-      if (trigger === "update" && session?.isTwoFactorAuthenticated !== undefined) {
-        token.isTwoFactorAuthenticated = session.isTwoFactorAuthenticated;
-      }
+
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = (token.id as string) || (token.sub as string);
-        (session.user as any).twoFactorEnabled = token.twoFactorEnabled;
-        (session.user as any).isTwoFactorAuthenticated = token.isTwoFactorAuthenticated;
+        (session.user as any).twoFactorEnabled = !!token.twoFactorEnabled;
+        (session.user as any).isTwoFactorAuthenticated = !!token.isTwoFactorAuthenticated;
+        (session.user as any).role = token.role || "USER";
       }
       return session;
     },
