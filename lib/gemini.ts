@@ -174,3 +174,20 @@ Schema for each object:
   }
 }
 
+export async function generateImagePrompt(caption: string, niche: string) {
+  if (!genAI || !apiKey) return "A professional cinematic shot representing " + niche;
+
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const prompt = `Convert this social media caption into a 15-word descriptive prompt for an AI image generator (Flux/SDXL). 
+    Focus on lighting, composition, and mood related to the niche: ${niche}.
+    Caption: ${caption}
+    Return ONLY the prompt string. No quotes, no intro.`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    return result.response.text().trim();
+  } catch (err) {
+    console.error("IMAGE_PROMPT_GEN_FAILED:", err);
+    return "A high-quality professional photograph related to " + niche;
+  }
+}

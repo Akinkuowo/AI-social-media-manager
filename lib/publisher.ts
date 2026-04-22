@@ -133,32 +133,50 @@ export async function processQueue() {
           }
 
           case 'facebook': {
-            // Check for image or text
-            const endpoint = optimized.mediaUrls.length > 0 
-              ? `https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/photos`
-              : `https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/feed`;
-            
-            const payload: any = optimized.mediaUrls.length > 0 
-              ? { url: optimized.mediaUrls[0], caption: optimized.chunks[0], access_token: accessToken }
-              : { message: optimized.chunks[0], access_token: accessToken };
+            if (optimized.mediaUrls.length <= 1) {
+              const endpoint = optimized.mediaUrls.length > 0 
+                ? `https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/photos`
+                : `https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/feed`;
+              
+              const payload: any = optimized.mediaUrls.length > 0 
+                ? { url: optimized.mediaUrls[0], caption: optimized.chunks[0], access_token: accessToken }
+                : { message: optimized.chunks[0], access_token: accessToken };
 
-            const fbRes = await fetch(endpoint, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            
-            if (!fbRes.ok) {
-              const fbError = await fbRes.json();
-              throw new Error(fbError.error?.message || "Facebook API Error");
+              const fbRes = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              });
+              if (!fbRes.ok) throw new Error((await fbRes.json()).error?.message || "FB Post Error");
+              platformPostId = (await fbRes.json()).id;
+            } else {
+              // Multi-photo Facebook Post
+              const mediaIds = [];
+              for (const url of optimized.mediaUrls.slice(0, 10)) {
+                const photoRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/photos`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ url, published: false, access_token: accessToken })
+                });
+                if (photoRes.ok) mediaIds.push((await photoRes.json()).id);
+              }
+
+              const carrierRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/feed`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  message: optimized.chunks[0],
+                  attached_media: mediaIds.map(id => ({ media_fbid: id })),
+                  access_token: accessToken
+                })
+              });
+              if (!carrierRes.ok) throw new Error((await carrierRes.json()).error?.message || "FB Carrier Error");
+              platformPostId = (await carrierRes.json()).id;
             }
-            const fbData = await fbRes.json();
-            platformPostId = fbData.id;
             break;
           }
 
           case 'linkedin': {
-            // Simplified LinkedIn Post (Text + Link)
             const liRes = await fetch('https://api.linkedin.com/v2/ugcPosts', {
               method: 'POST',
               headers: {
@@ -172,75 +190,98 @@ export async function processQueue() {
                 specificContent: {
                   'com.linkedin.ugc.ShareContent': {
                     shareCommentary: { text: optimized.chunks[0] },
-                    shareMediaCategory: optimized.mediaUrls.length > 0 ? 'ARTICLE' : 'NONE',
-                    media: optimized.mediaUrls.length > 0 ? [{
+                    shareMediaCategory: optimized.mediaUrls.length > 0 ? 'IMAGE' : 'NONE',
+                    media: optimized.mediaUrls.length > 0 ? optimized.mediaUrls.map(url => ({
                       status: 'READY',
-                      originalUrl: optimized.mediaUrls[0],
+                      originalUrl: url,
                       title: { text: 'Shared Content' }
-                    }] : undefined
+                    })) : undefined
                   }
                 },
                 visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' }
               })
             });
 
-            if (!liRes.ok) {
-              const liErr = await liRes.text();
-              throw new Error(`LinkedIn API Error: ${liErr}`);
-            }
-            const liData = await liRes.json();
-            platformPostId = liData.id;
+            if (!liRes.ok) throw new Error(`LinkedIn API Error: ${await liRes.text()}`);
+            platformPostId = (await liRes.json()).id;
             break;
           }
 
           case 'instagram': {
-            // Smart Visual Resolver: Instagram requires media. 
-            // If none provided, we fetch a high-aesthetic fallback based on keywords.
-            if (optimized.mediaUrls.length === 0) {
-              const keywords = post.caption.split(' ').filter(w => w.length > 4).slice(0, 3).join(',');
-              const dynamicFallback = `https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=1200&h=1200&sig=${Date.now()}`;
-              
-              console.log(`[Publisher] No media for Instagram. Using autonomous fallback: ${dynamicFallback}`);
-              optimized.mediaUrls = [dynamicFallback];
-            }
+            // New Autonomous Visual Resolver: Use the internal media-brand API
+            // This API handles AI generation and Logo watermarking on-the-fly.
+            const domain = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+            const brandedMediaUrl = `${domain}/api/media/${post.id}`;
 
             if (optimized.mediaUrls.length === 0) {
-              throw new Error("Instagram requires at least one image or video.");
+              console.log(`[Publisher] No media for Instagram. Dispatching to Autonomous Visual Engine: ${brandedMediaUrl}`);
+              optimized.mediaUrls = [brandedMediaUrl];
             }
 
-            // Step 1: Create Media Container
-            const containerRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                image_url: optimized.mediaUrls[0],
-                caption: optimized.chunks[0],
-                access_token: accessToken
-              })
-            });
+            if (optimized.mediaUrls.length === 1) {
+              // Single Image/Video Flow
+              const containerRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  image_url: optimized.mediaUrls[0],
+                  caption: optimized.chunks[0],
+                  access_token: accessToken
+                })
+              });
+              if (!containerRes.ok) throw new Error((await containerRes.json()).error?.message || "IG Container Error");
+              const { id: creationId } = await containerRes.json();
 
-            if (!containerRes.ok) {
-              const containerErr = await containerRes.json();
-              throw new Error(containerErr.error?.message || "Instagram Container Error");
+              const publishRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media_publish`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ creation_id: creationId, access_token: accessToken })
+              });
+              if (!publishRes.ok) throw new Error((await publishRes.json()).error?.message || "IG Publish Error");
+              platformPostId = (await publishRes.json()).id;
+            } else {
+              // Carousel Flow (Multi-Media)
+              console.log(`[Publisher] IG Carousel detected with ${optimized.mediaUrls.length} items.`);
+              const childIds: string[] = [];
+
+              for (const url of optimized.mediaUrls.slice(0, 10)) {
+                const itemRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    image_url: url,
+                    is_carousel_item: true,
+                    access_token: accessToken
+                  })
+                });
+                if (!itemRes.ok) throw new Error((await itemRes.json()).error?.message || "IG Carousel Item Error");
+                const { id: itemId } = await itemRes.json();
+                childIds.push(itemId);
+              }
+
+              // Create Carousel Carrier
+              const carrierRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  media_type: 'CAROUSEL',
+                  children: childIds,
+                  caption: optimized.chunks[0],
+                  access_token: accessToken
+                })
+              });
+              if (!carrierRes.ok) throw new Error((await carrierRes.json()).error?.message || "IG Carousel Carrier Error");
+              const { id: carrierId } = await carrierRes.json();
+
+              // Final Publish
+              const publishRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media_publish`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ creation_id: carrierId, access_token: accessToken })
+              });
+              if (!publishRes.ok) throw new Error((await publishRes.json()).error?.message || "IG Carousel Publish Error");
+              platformPostId = (await publishRes.json()).id;
             }
-            const { id: creationId } = await containerRes.json();
-
-            // Step 2: Publish Container
-            const publishRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media_publish`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                creation_id: creationId,
-                access_token: accessToken
-              })
-            });
-
-            if (!publishRes.ok) {
-              const publishErr = await publishRes.json();
-              throw new Error(publishErr.error?.message || "Instagram Final Publish Error");
-            }
-            const publishData = await publishRes.json();
-            platformPostId = publishData.id;
             break;
           }
 

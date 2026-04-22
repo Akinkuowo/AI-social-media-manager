@@ -74,7 +74,13 @@ interface Post {
   socialAccount?: {
     platform: string;
     name?: string;
-  };
+    id?: string;
+  } | null;
+  analytics?: {
+    impressions?: number;
+    reach?: number;
+    engagement?: number;
+  } | null;
 }
 
 const STATUS_CONFIG: Record<string, { icon: any; color: string; label: string; pulse?: boolean }> = {

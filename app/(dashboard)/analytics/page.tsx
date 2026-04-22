@@ -38,20 +38,28 @@ import { showAlert } from '@/lib/alerts';
 const COLORS = ['#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#10B981'];
 
 export default function AnalyticsPage() {
+  const [isSyncing, setIsSyncing] = useState(false);
   const [data, setData] = useState<any>(null);
   const [insights, setInsights] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isInsightLoading, setIsInsightLoading] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = async (forceSync = false) => {
+    if (forceSync) setIsSyncing(true);
     setIsLoading(true);
     try {
+      if (forceSync) {
+        await fetch('/api/analytics/sync', { method: 'POST' });
+        showAlert('Metrics Updated', 'Successfully pulled real-time data from social APIs.', 'success');
+      }
       const res = await fetch('/api/analytics');
       if (res.ok) setData(await res.json());
     } catch (err) {
       console.error(err);
+      if (forceSync) showAlert('Sync Error', 'Failed to reach social APIs. Stale data shown.', 'error');
     } finally {
       setIsLoading(false);
+      setIsSyncing(false);
     }
   };
 
@@ -89,8 +97,18 @@ export default function AnalyticsPage() {
           <h1 className="text-2xl font-bold font-heading">Analytics & Insights</h1>
           <p className="text-sm text-muted mt-1">Measuring your momentum across the digital landscape.</p>
         </div>
-        <Button variant="ghost" onClick={fetchData} className="border border-white/5 bg-white/2 hover:bg-white/10">
-          <Zap size={16} className="mr-2 text-primary" /> Sync Data
+        <Button 
+          variant="ghost" 
+          disabled={isSyncing}
+          onClick={() => fetchData(true)} 
+          className="border border-white/5 bg-white/2 hover:bg-white/10"
+        >
+          {isSyncing ? (
+            <Loader2 size={16} className="mr-2 text-primary animate-spin" />
+          ) : (
+            <Zap size={16} className="mr-2 text-primary" />
+          )}
+          {isSyncing ? "Syncing..." : "Sync Data"}
         </Button>
       </header>
 

@@ -50,7 +50,13 @@ export async function GET(req: Request) {
           year
         },
         include: {
-          posts: true
+          posts: {
+            orderBy: { day: 'asc' },
+            include: {
+              socialAccount: true,
+              analytics: true
+            }
+          }
         }
       });
     }

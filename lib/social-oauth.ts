@@ -8,7 +8,7 @@ export const SOCIAL_SCOPES = {
   instagram: ['instagram_basic', 'instagram_content_publish', 'pages_read_engagement', 'public_profile'],
   linkedin: ['w_member_social', 'openid', 'profile', 'email'],
   twitter: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'],
-  tiktok: ['video.upload', 'user.info.basic'],
+  tiktok: ['user.info.basic', 'video.list', 'video.publish'],
 };
 
 export const PLATFORM_ENDPOINTS = {
@@ -39,12 +39,15 @@ export function getAuthorizationUrl(platform: keyof typeof PLATFORM_ENDPOINTS, s
   const clientId = process.env[`${platform.toUpperCase()}_CLIENT_ID`];
   const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/social/callback/${platform}`;
   
+  // TikTok v2 requires comma-separated scopes, others use space.
+  const scopeSeparator = platform === 'tiktok' ? ',' : ' ';
+  
   const params = new URLSearchParams({
     client_id: clientId || '',
     redirect_uri: redirectUri,
     state: state,
     response_type: 'code',
-    scope: SOCIAL_SCOPES[platform].join(' '),
+    scope: SOCIAL_SCOPES[platform].join(scopeSeparator),
   });
 
   // Twitter PKCE requirement (Allows 'plain' method)
@@ -53,15 +56,10 @@ export function getAuthorizationUrl(platform: keyof typeof PLATFORM_ENDPOINTS, s
     params.append('code_challenge_method', 'plain');
   }
 
-  // TikTok strictly requires 'S256' for its PKCE challenge.
+  // TikTok strictly requires 'S256' for its PKCE challenge and 'client_key' parameter.
   if (platform === 'tiktok') {
-    // Sha256-Base64Url Hash of the word "challenge"
     params.append('code_challenge', 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM'); 
     params.append('code_challenge_method', 'S256');
-  }
-
-  // TikTok requires 'client_key' strictly in its redirect instead of 'client_id'
-  if (platform === 'tiktok') {
     params.delete('client_id');
     params.append('client_key', clientId || '');
   }

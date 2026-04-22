@@ -79,7 +79,7 @@ export const NotificationBell = () => {
       {isOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-          <div className="absolute right-0 mt-4 w-[400px] max-md:w-[300px] glass rounded-3xl border border-white/10 shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="absolute right-0 mt-4 w-[400px] max-md:w-[300px] bg-[#0d0d0d] backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
             <div className="p-6 border-b border-white/5 flex items-center justify-between">
               <h3 className="text-sm font-black uppercase tracking-widest">Notifications</h3>
               <button 
