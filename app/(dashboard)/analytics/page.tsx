@@ -50,13 +50,13 @@ export default function AnalyticsPage() {
     try {
       if (forceSync) {
         await fetch('/api/analytics/sync', { method: 'POST' });
-        showAlert('Metrics Updated', 'Successfully pulled real-time data from social APIs.', 'success');
+        showAlert.success('Metrics Updated', 'Successfully pulled real-time data from social APIs.');
       }
       const res = await fetch('/api/analytics');
       if (res.ok) setData(await res.json());
     } catch (err) {
       console.error(err);
-      if (forceSync) showAlert('Sync Error', 'Failed to reach social APIs. Stale data shown.', 'error');
+      if (forceSync) showAlert.error('Sync Error', 'Failed to reach social APIs. Stale data shown.');
     } finally {
       setIsLoading(false);
       setIsSyncing(false);

@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generate30DayCalendar } from "@/lib/gemini";
 import { logActivity } from "@/lib/logger";
+import { PostStatus } from "@/prisma/generated/prisma";
 
 export async function POST(req: Request) {
   try {
@@ -92,11 +93,11 @@ export async function POST(req: Request) {
         socialAccountId: socialAccount?.id || null,
         day: aiPost.day || 1,
         scheduledAt: scheduledDate,
-        status: "DRAFT", // Saving them as DRAFT so the user can review before they are auto-published.
-        type: safeType,
+        status: PostStatus.DRAFT, // Saving them as DRAFT so the user can review before they are auto-published.
+        type: safeType as string,
         caption: aiPost.caption || "Missing Caption",
         hashtags: aiPost.hashtags || "",
-        mediaUrls: []
+        mediaUrls: [] as string[]
       };
     });
 
