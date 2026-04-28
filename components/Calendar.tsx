@@ -118,14 +118,15 @@ export const Calendar = ({ posts, onAddPost, onEditPost, onDropPost, currentDate
   return (
     <div className="flex flex-col h-full bg-surface/30 backdrop-blur-xl border border-white/10 rounded-[32px] overflow-hidden shadow-2xl">
       {/* Header */}
-      <div className="flex items-center justify-between px-8 py-6 border-b border-white/5 bg-white/5">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-            <CalendarIcon size={24} />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 lg:px-8 py-4 lg:py-6 border-b border-white/5 bg-white/5 gap-4">
+        <div className="flex items-center gap-3 lg:gap-4">
+          <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+            <CalendarIcon size={20} className="lg:hidden" />
+            <CalendarIcon size={24} className="hidden lg:block" />
           </div>
           <div>
-            <h2 className="text-xl font-bold tracking-tight">{format(currentDate, 'MMMM yyyy')}</h2>
-            <p className="text-xs text-muted uppercase tracking-widest font-bold mt-0.5">Content Schedule</p>
+            <h2 className="text-lg lg:text-xl font-bold tracking-tight">{format(currentDate, 'MMMM yyyy')}</h2>
+            <p className="text-[10px] text-muted uppercase tracking-widest font-bold mt-0.5">Content Schedule</p>
           </div>
         </div>
         
@@ -151,105 +152,110 @@ export const Calendar = ({ posts, onAddPost, onEditPost, onDropPost, currentDate
         </div>
       </div>
 
-      {/* Weekdays */}
-      <div className="grid grid-cols-7 border-b border-white/5 bg-white/2">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="py-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-muted">
-            {day}
+      {/* Responsive Grid Container */}
+      <div className="overflow-x-auto custom-scrollbar">
+        <div className="min-w-[800px] lg:min-w-0">
+          {/* Weekdays */}
+          <div className="grid grid-cols-7 border-b border-white/5 bg-white/2">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+              <div key={day} className="py-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                {day}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-7 flex-1">
-        {days.map((day, idx) => {
-          const isCurrentMonth = isSameMonth(day, monthStart);
-          const isToday = isSameDay(day, new Date());
-          const dayPosts = posts.filter(p => p.day === day.getDate() && isCurrentMonth);
+          {/* Grid */}
+          <div className="grid grid-cols-7 flex-1">
+            {days.map((day, idx) => {
+              const isCurrentMonth = isSameMonth(day, monthStart);
+              const isToday = isSameDay(day, new Date());
+              const dayPosts = posts.filter(p => p.day === day.getDate() && isCurrentMonth);
 
-          return (
-            <div 
-              key={day.toString()}
-              onDragOver={(e) => {
-                // Prevent default to allow drop
-                if (isCurrentMonth) e.preventDefault(); 
-              }}
-              onDrop={(e) => {
-                e.preventDefault();
-                const droppedPostId = e.dataTransfer.getData('postId');
-                if (droppedPostId && onDropPost && isCurrentMonth) {
-                  onDropPost(droppedPostId, day.getDate());
-                }
-              }}
-              className={clsx(
-                "min-h-[140px] p-2 border-r border-b border-white/5 transition-all relative group",
-                !isCurrentMonth ? "bg-black/20 opacity-30" : "bg-white/0 hover:bg-white/2",
-                isToday && "bg-primary/5"
-              )}
-            >
-              <div className="flex justify-between items-start mb-2 px-1">
-                <span className={clsx(
-                  "text-sm font-bold flex items-center justify-center w-7 h-7 rounded-full",
-                  isToday ? "bg-primary text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]" : "text-muted/80"
-                )}>
-                  {format(day, 'd')}
-                </span>
-                
-                {isCurrentMonth && (
-                  <button 
-                    onClick={() => onAddPost(day.getDate())}
-                    className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-primary/20 rounded-lg text-primary transition-all"
-                  >
-                    <Plus size={14} />
-                  </button>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <AnimatePresence mode="popLayout">
-                  {dayPosts.map((post) => {
-                    const PlatformIcon = PLATFORM_ICONS[post.socialAccount?.platform || 'instagram'] || Instagram;
-                    const statusCfg = STATUS_CONFIG[post.status] || STATUS_CONFIG.DRAFT;
-                    const StatusIcon = statusCfg.icon;
-                    return (
-                      <motion.div
-                        layoutId={post.id}
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        key={post.id}
-                        draggable={true}
-                        onDragStart={(e: any) => {
-                          e.dataTransfer.setData('postId', post.id);
-                        }}
-                        onClick={(e: any) => {
-                          e.stopPropagation();
-                          onEditPost(post);
-                        }}
-                        className={clsx(
-                          "px-2 py-1.5 rounded-xl border text-[10px] font-medium flex items-center gap-1.5 cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg",
-                          post.status === 'SCHEDULED' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" : 
-                          post.status === 'DRAFT' ? "bg-surface text-muted border-white/10" :
-                          post.status === 'PUBLISHED' ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
-                          post.status === 'FAILED' ? "bg-red-500/10 text-red-400 border-red-500/20" :
-                          "bg-surface text-foreground border-white/5"
-                        )}
+              return (
+                <div 
+                  key={day.toString()}
+                  onDragOver={(e) => {
+                    // Prevent default to allow drop
+                    if (isCurrentMonth) e.preventDefault(); 
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const droppedPostId = e.dataTransfer.getData('postId');
+                    if (droppedPostId && onDropPost && isCurrentMonth) {
+                      onDropPost(droppedPostId, day.getDate());
+                    }
+                  }}
+                  className={clsx(
+                    "min-h-[140px] p-2 border-r border-b border-white/5 transition-all relative group",
+                    !isCurrentMonth ? "bg-black/20 opacity-30" : "bg-white/0 hover:bg-white/2",
+                    isToday && "bg-primary/5"
+                  )}
+                >
+                  <div className="flex justify-between items-start mb-2 px-1">
+                    <span className={clsx(
+                      "text-sm font-bold flex items-center justify-center w-7 h-7 rounded-full",
+                      isToday ? "bg-primary text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]" : "text-muted/80"
+                    )}>
+                      {format(day, 'd')}
+                    </span>
+                    
+                    {isCurrentMonth && (
+                      <button 
+                        onClick={() => onAddPost(day.getDate())}
+                        className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1.5 hover:bg-primary/20 rounded-lg text-primary transition-all"
                       >
-                        <PlatformIcon size={11} className="flex-shrink-0" />
-                        <span className="truncate flex-1">{post.caption.substring(0, 25)}...</span>
-                        <StatusIcon size={10} className={clsx("flex-shrink-0", statusCfg.color, statusCfg.pulse && "animate-pulse")} />
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
-              </div>
+                        <Plus size={14} />
+                      </button>
+                    )}
+                  </div>
 
-              {isToday && (
-                <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-              )}
-            </div>
-          );
-        })}
+                  <div className="flex flex-col gap-1.5">
+                    <AnimatePresence mode="popLayout">
+                      {dayPosts.map((post) => {
+                        const PlatformIcon = PLATFORM_ICONS[post.socialAccount?.platform || 'instagram'] || Instagram;
+                        const statusCfg = STATUS_CONFIG[post.status] || STATUS_CONFIG.DRAFT;
+                        const StatusIcon = statusCfg.icon;
+                        return (
+                          <motion.div
+                            layoutId={post.id}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            key={post.id}
+                            draggable={true}
+                            onDragStart={(e: any) => {
+                              e.dataTransfer.setData('postId', post.id);
+                            }}
+                            onClick={(e: any) => {
+                              e.stopPropagation();
+                              onEditPost(post);
+                            }}
+                            className={clsx(
+                              "px-2 py-1.5 rounded-xl border text-[10px] font-medium flex items-center gap-1.5 cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg",
+                              post.status === 'SCHEDULED' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" : 
+                              post.status === 'DRAFT' ? "bg-surface text-muted border-white/10" :
+                              post.status === 'PUBLISHED' ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
+                              post.status === 'FAILED' ? "bg-red-500/10 text-red-400 border-red-500/20" :
+                              "bg-surface text-foreground border-white/5"
+                            )}
+                          >
+                            <PlatformIcon size={11} className="flex-shrink-0" />
+                            <span className="truncate flex-1">{post.caption.substring(0, 25)}...</span>
+                            <StatusIcon size={10} className={clsx("flex-shrink-0", statusCfg.color, statusCfg.pulse && "animate-pulse")} />
+                          </motion.div>
+                        );
+                      })}
+                    </AnimatePresence>
+                  </div>
+
+                  {isToday && (
+                    <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

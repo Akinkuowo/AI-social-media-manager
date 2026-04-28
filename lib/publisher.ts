@@ -208,14 +208,20 @@ export async function processQueue() {
           }
 
           case 'instagram': {
-            // New Autonomous Visual Resolver: Use the internal media-brand API
-            // This API handles AI generation and Logo watermarking on-the-fly.
-            const domain = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-            const brandedMediaUrl = `${domain}/api/media/${post.id}`;
-
+            // Instagram requires a PUBLICLY ACCESSIBLE image URL.
+            // ngrok free tier shows an HTML interstitial that blocks IG crawlers.
+            // Solution: Generate a direct Pollinations AI image URL (public, no auth).
+            
             if (optimized.mediaUrls.length === 0) {
-              console.log(`[Publisher] No media for Instagram. Dispatching to Autonomous Visual Engine: ${brandedMediaUrl}`);
-              optimized.mediaUrls = [brandedMediaUrl];
+              // Generate a public AI image URL directly
+              const { generateImagePrompt } = await import('./gemini');
+              const company = await prisma.company.findFirst({
+                where: { calendars: { some: { posts: { some: { id: post.id } } } } }
+              });
+              const visualPrompt = await generateImagePrompt(post.caption, company?.niche || "General");
+              const publicImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1024&height=1024&seed=${Date.now()}&nologo=true`;
+              console.log(`[Publisher] Generated direct public image URL for Instagram: ${publicImageUrl}`);
+              optimized.mediaUrls = [publicImageUrl];
             }
 
             if (optimized.mediaUrls.length === 1) {
@@ -226,10 +232,14 @@ export async function processQueue() {
                 body: JSON.stringify({
                   image_url: optimized.mediaUrls[0],
                   caption: optimized.chunks[0],
+                  media_type: 'IMAGE',
                   access_token: accessToken
                 })
               });
-              if (!containerRes.ok) throw new Error((await containerRes.json()).error?.message || "IG Container Error");
+              if (!containerRes.ok) {
+                const igError = (await containerRes.json()).error?.message || "IG Container Error";
+                throw new Error(igError);
+              }
               const { id: creationId } = await containerRes.json();
 
               const publishRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media_publish`, {

@@ -58,7 +58,19 @@ export default function QueuePage() {
       const res = await fetch('/api/cron/publish');
       const data = await res.json();
       if (res.ok) {
-        showAlert.success('Success', `Publisher run complete. Processed ${data.processedCount || 0} posts.`);
+        const failedCount = (data.results || []).filter((r: any) => r.status === 'failed').length;
+        const successCount = (data.results || []).filter((r: any) => r.status === 'success').length;
+        
+        if (failedCount > 0 && successCount === 0) {
+          const firstError = data.results.find((r: any) => r.status === 'failed')?.error || 'Unknown error';
+          showAlert.error('Publishing Failed', `${failedCount} post(s) failed. Error: ${firstError}`);
+        } else if (failedCount > 0) {
+          showAlert.warning('Partial Success', `${successCount} published, ${failedCount} failed.`);
+        } else if (data.processedCount === 0) {
+          showAlert.info('No Posts', 'No scheduled posts found to publish.');
+        } else {
+          showAlert.success('Success', `${successCount} post(s) published successfully!`);
+        }
         fetchQueue();
       } else {
         showAlert.error('Error', data.message || 'Failed to trigger publisher.');
@@ -101,31 +113,31 @@ export default function QueuePage() {
   };
 
   return (
-    <div className="flex flex-col gap-8 h-full">
-      <header className="flex items-center justify-between">
+    <div className="flex flex-col gap-4 lg:gap-8 h-full">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Publisher Queue & Logs</h1>
-          <p className="text-sm text-muted mt-1">Monitor the background workers, recurring loops, and failed dispatches.</p>
+          <h1 className="text-xl lg:text-2xl font-bold">Publisher Queue & Logs</h1>
+          <p className="text-xs lg:text-sm text-muted mt-1">Monitor the background workers, recurring loops, and failed dispatches.</p>
         </div>
         <div className="flex gap-2">
           <Button 
             variant="ghost" 
             onClick={handleRunPublisher} 
             isLoading={isProcessing}
-            className="border border-primary/20 hover:bg-primary/5 text-primary"
+            className="flex-1 sm:flex-none border border-primary/20 hover:bg-primary/5 text-primary text-xs lg:text-sm"
           >
-            <Zap size={18} className="mr-2" /> 
+            <Zap size={16} className="mr-1.5" /> 
             Run Publisher
           </Button>
-          <Button variant="ghost" onClick={fetchQueue} className="border border-white/10 hover:bg-white/5">
-            <RefreshCw size={18} className={clsx("mr-2", isLoading && "animate-spin")} /> 
+          <Button variant="ghost" onClick={fetchQueue} className="flex-1 sm:flex-none border border-white/10 hover:bg-white/5 text-xs lg:text-sm">
+            <RefreshCw size={16} className={clsx("mr-1.5", isLoading && "animate-spin")} /> 
             Refresh Queue
           </Button>
         </div>
       </header>
 
       <Card variant="glass" padding="none" className="flex-1 overflow-hidden flex flex-col">
-        <div className="p-6 border-b border-white/5 flex flex-wrap items-center justify-between gap-6 bg-surface/50">
+        <div className="p-3 lg:p-6 border-b border-white/5 flex flex-wrap items-center justify-between gap-3 lg:gap-6 bg-surface/50">
           <div className="flex gap-4 text-xs font-bold">
             <span className={clsx("cursor-pointer transition-colors", filterStatus === 'ALL' ? "text-primary border-b border-primary" : "text-muted hover:text-white")} onClick={() => setFilterStatus('ALL')}>
               All ({posts.length})
@@ -141,9 +153,9 @@ export default function QueuePage() {
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 flex-1 justify-end">
+          <div className="flex flex-wrap items-center gap-3 lg:gap-4 w-full sm:w-auto sm:flex-1 justify-end">
             {/* Search */}
-            <div className="relative flex-1 max-w-[300px]">
+            <div className="relative flex-1 min-w-[150px] max-w-[300px]">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
               <input 
                 type="text"
@@ -171,7 +183,7 @@ export default function QueuePage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto custom-scrollbar p-6">
+        <div className="flex-1 overflow-auto custom-scrollbar p-3 lg:p-6">
           {isLoading ? (
             <div className="flex justify-center py-12 text-muted">Loading queue metadata...</div>
           ) : filteredPosts.length === 0 ? (
@@ -192,13 +204,13 @@ export default function QueuePage() {
             <div className="flex flex-col gap-4">
               {filteredPosts.map((post) => (
                 <div key={post.id} className="flex flex-col gap-3 p-4 rounded-2xl bg-surface border border-white/5 hover:border-white/10 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-xl bg-black/20">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="p-2 rounded-xl bg-black/20 shrink-0">
                         {getStatusIcon(post.status)}
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-1.5 lg:gap-2">
                           <span className="font-bold text-sm">Post #{post.id.slice(-6)}</span>
                           <span className="text-[10px] uppercase font-black tracking-wider text-muted bg-white/5 px-2 py-0.5 rounded-full">
                             {post.socialAccount?.platform || 'Unknown'}
@@ -219,7 +231,7 @@ export default function QueuePage() {
                       <Button 
                         size="sm" 
                         variant="ghost" 
-                        className="text-red-400 hover:bg-red-400/10 border border-red-400/20"
+                        className="text-red-400 hover:bg-red-400/10 border border-red-400/20 w-full sm:w-auto shrink-0"
                         onClick={() => handleRetry(post.id)}
                         isLoading={isRetrying === post.id}
                       >

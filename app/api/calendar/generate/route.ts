@@ -93,7 +93,7 @@ export async function POST(req: Request) {
         socialAccountId: socialAccount?.id || null,
         day: aiPost.day || 1,
         scheduledAt: scheduledDate,
-        status: PostStatus.DRAFT, // Saving them as DRAFT so the user can review before they are auto-published.
+        status: PostStatus.SCHEDULED, // Default to SCHEDULED so posts can be auto-published easily
         type: safeType as string,
         caption: aiPost.caption || "Missing Caption",
         hashtags: aiPost.hashtags || "",

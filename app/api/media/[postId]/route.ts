@@ -8,7 +8,10 @@ export async function GET(
   { params }: { params: Promise<{ postId: string }> }
 ) {
   try {
-    const { postId } = await params;
+    let { postId } = await params;
+    
+    // Strip file extension if present (e.g. .png, .jpg) to get clean ID
+    postId = postId.replace(/\.[^/.]+$/, "");
     
     // Find post and company logo
     const post = await prisma.post.findUnique({
@@ -34,23 +37,31 @@ export async function GET(
       baseImageUrl = `https://pollinations.ai/p/${encodeURIComponent(visualPrompt)}?width=1024&height=1024&seed=${postId}&model=flux`;
     }
 
+    // Common headers to bypass tunnel warnings and set cache
+    const headers = {
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=86400",
+      "ngrok-skip-browser-warning": "true",
+    };
+
     // Apply watermark if logo exists
     if (company.logo) {
       console.log(`[MediaEngine] Applying brand watermark for ${company.name}`);
       const bufferedImage = await watermarkImage(baseImageUrl, company.logo);
-      return new Response(bufferedImage, {
-        headers: {
-          "Content-Type": "image/png",
-          "Cache-Control": "public, max-age=86400", // Cache for 24h
-        }
-      });
+      return new Response(bufferedImage, { headers });
     }
 
-    // If no logo, just redirect to the generated image
-    return NextResponse.redirect(baseImageUrl);
+    // Proxy the image instead of redirecting to ensure extension compatibility and bypass tunnel warnings
+    const imageRes = await fetch(baseImageUrl);
+    const imageBlob = await imageRes.arrayBuffer();
+    
+    return new Response(imageBlob, { headers });
 
   } catch (err) {
     console.error("[MEDIA_ENGINE_CRITICAL_ERR]:", err);
-    return new Response("Internal Media Generation Error", { status: 500 });
+    return new Response("Internal Media Generation Error", { 
+      status: 500,
+      headers: { "ngrok-skip-browser-warning": "true" }
+    });
   }
 }

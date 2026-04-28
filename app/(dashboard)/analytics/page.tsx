@@ -92,16 +92,16 @@ export default function AnalyticsPage() {
 
   return (
     <div className="flex flex-col gap-10 pb-20">
-      <header className="flex items-center justify-between">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-heading">Analytics & Insights</h1>
+          <h1 className="text-xl md:text-2xl font-bold font-heading">Analytics & Insights</h1>
           <p className="text-sm text-muted mt-1">Measuring your momentum across the digital landscape.</p>
         </div>
         <Button 
           variant="ghost" 
           disabled={isSyncing}
           onClick={() => fetchData(true)} 
-          className="border border-white/5 bg-white/2 hover:bg-white/10"
+          className="w-full md:w-auto border border-white/5 bg-white/2 hover:bg-white/10"
         >
           {isSyncing ? (
             <Loader2 size={16} className="mr-2 text-primary animate-spin" />
@@ -128,7 +128,7 @@ export default function AnalyticsPage() {
              </div>
           </Card>
         ) : (
-          <div className="grid grid-cols-3 gap-6 max-xl:grid-cols-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             <Card variant="glass" padding="lg" className="bg-primary/5 border-primary/10 relative overflow-hidden group">
                <Lightbulb className="absolute -top-4 -right-4 w-24 h-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700 -rotate-12 group-hover:rotate-0" />
                <div className="flex items-center gap-3 mb-4">
@@ -178,14 +178,14 @@ export default function AnalyticsPage() {
       </section>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-4 gap-6 max-xl:grid-cols-2 max-md:grid-cols-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <StatCard label="Total Impressions" value={totalStats?.impressions.toLocaleString()} change="+18.5%" icon={Users} color="primary" />
         <StatCard label="Net Reach" value={totalStats?.reach.toLocaleString()} change="+5.2%" icon={Target} color="secondary" />
         <StatCard label="Engagement Rate" value={`${engagementRate?.toFixed(2)}%`} change="+2.4%" icon={Zap} color="success" />
         <StatCard label="Total Interactions" value={totalStats?.engagement.toLocaleString()} change="+12.1%" icon={Share2} color="warning" />
       </div>
 
-      <div className="grid grid-cols-[1fr_350px] gap-8 max-xl:grid-cols-1">
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_350px] gap-6 md:gap-8">
         <div className="flex flex-col gap-8">
           {/* Growth Chart */}
           <Card variant="glass" padding="lg">

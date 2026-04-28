@@ -833,9 +833,31 @@ export default function CalendarPage() {
 
               {/* Error Message (for failed posts) */}
               {selectedPost.status === 'FAILED' && selectedPost.errorLog && !isEditing && (
-                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex gap-3 text-red-300">
-                  <AlertCircle size={16} className="mt-0.5 shrink-0" />
-                  <p className="text-[10px] font-mono leading-relaxed">{selectedPost.errorLog}</p>
+                <div className="flex flex-col gap-3">
+                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex gap-3 text-red-300">
+                    <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                    <div className="flex flex-col gap-1.5">
+                      <p className="text-[10px] font-bold uppercase tracking-wider">Publication Failure</p>
+                      <p className="text-[10px] font-mono leading-relaxed">{selectedPost.errorLog.replace('LOCAL_TUNNEL_REQUIRED: ', '')}</p>
+                    </div>
+                  </div>
+
+                  {selectedPost.errorLog.includes('LOCAL_TUNNEL_REQUIRED') && (
+                    <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex flex-col gap-3">
+                      <div className="flex items-center gap-2">
+                        <Zap size={16} />
+                        <span className="text-[11px] font-bold uppercase tracking-wider">Localhost Testing detected</span>
+                      </div>
+                      <p className="text-[11px] leading-relaxed">
+                        Instagram's servers cannot crawl images from your private computer. To fix this locally:
+                      </p>
+                      <div className="bg-black/40 p-2 rounded-lg font-mono text-[10px] text-white/80 border border-white/5">
+                        1. Run: <span className="text-amber-300">ngrok http 3000</span><br />
+                        2. Copy the <span className="text-amber-300">https://...</span> URL<br />
+                        3. Update <span className="text-amber-300">NEXT_PUBLIC_APP_URL</span> in your .env
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
