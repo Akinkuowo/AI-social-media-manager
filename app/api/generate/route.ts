@@ -48,6 +48,9 @@ export async function POST(req: Request) {
     return NextResponse.json(result);
   } catch (err: any) {
     console.error("GENERATE_API_ERROR:", err);
+    if (err.message && err.message.includes('503 Service Unavailable')) {
+      return NextResponse.json({ message: "AI Assistant is busy at the moment try again later" }, { status: 503 });
+    }
     return NextResponse.json({ message: "Failed to generate content" }, { status: 500 });
   }
 }

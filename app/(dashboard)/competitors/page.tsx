@@ -16,7 +16,9 @@ import {
   Heart,
   Calendar,
   Eye,
-  Info
+  Info,
+  Edit3,
+  Trash2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
@@ -147,6 +149,123 @@ export default function CompetitorsPage() {
     }
   };
 
+  const handleUpdateStats = async (comp: Competitor) => {
+    const { value: result } = await MySwal.fire({
+      title: `Update ${comp.name} Stats`,
+      html:
+        `<div class="space-y-4">
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 12px; font-weight: bold; color: #94a3b8; text-align: left; margin-bottom: 5px;">Follower Count</label>
+            <input id="swal-input-followers" class="swal2-input" type="number" value="${comp.followerCount}" style="margin: 0; width: 100%;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; font-weight: bold; color: #94a3b8; text-align: left; margin-bottom: 5px;">Engagement Rate (%)</label>
+            <input id="swal-input-engagement" class="swal2-input" type="number" step="0.01" value="${comp.engagementRate}" style="margin: 0; width: 100%;">
+          </div>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
+             <button id="swal-btn-sync" class="swal2-confirm swal2-styled" style="background-color: #10b981; margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+               Sync from ${comp.platform}
+             </button>
+          </div>
+        </div>`,
+      didOpen: () => {
+        const syncBtn = document.getElementById('swal-btn-sync');
+        if (syncBtn) {
+          syncBtn.onclick = async () => {
+            MySwal.showLoading();
+            try {
+              const res = await fetch(`/api/competitors/${comp.id}/sync`, { method: 'POST' });
+              const data = await res.json();
+              if (res.ok) {
+                (document.getElementById('swal-input-followers') as HTMLInputElement).value = data.followerCount;
+                MySwal.hideLoading();
+                MySwal.fire({ icon: 'success', title: 'Synced!', text: `Found ${data.followerCount} followers.`, background: '#1e1e2e', color: '#fff' });
+              } else {
+                throw new Error(data.message || 'Sync failed');
+              }
+            } catch (err: any) {
+              MySwal.hideLoading();
+              MySwal.fire({ icon: 'error', title: 'Sync Failed', text: err.message, background: '#1e1e2e', color: '#fff' });
+            }
+          };
+        }
+      },
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (document.getElementById('swal-input-followers') as HTMLInputElement).value,
+          (document.getElementById('swal-input-engagement') as HTMLInputElement).value
+        ];
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Save Changes',
+      confirmButtonColor: '#6366f1',
+      background: '#1e1e2e',
+      color: '#ffffff'
+    });
+
+    if (result) {
+      const [followerCount, engagementRate] = result;
+      try {
+        const res = await fetch(`/api/competitors/${comp.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ followerCount, engagementRate })
+        });
+        if (res.ok) {
+          MySwal.fire({
+            icon: 'success',
+            title: 'Updated',
+            text: 'Competitor stats updated successfully.',
+            background: '#1e1e2e',
+            color: '#fff'
+          });
+          fetchCompetitors();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleDeleteCompetitor = async (comp: Competitor) => {
+    const result = await MySwal.fire({
+      title: 'Stop Monitoring?',
+      text: `Are you sure you want to remove ${comp.name}? All historical data will be lost.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it',
+      cancelButtonText: 'No, keep it',
+      confirmButtonColor: '#ef4444',
+      background: '#1e1e2e',
+      color: '#ffffff'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await fetch(`/api/competitors/${comp.id}`, {
+          method: "DELETE"
+        });
+        if (res.ok) {
+          MySwal.fire({
+            icon: 'success',
+            title: 'Deleted',
+            text: 'Competitor removed.',
+            background: '#1e1e2e',
+            color: '#fff'
+          });
+          setCompetitors(prev => prev.filter(c => c.id !== comp.id));
+          if (selectedComp?.id === comp.id) {
+            setSelectedComp(null);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -256,6 +375,22 @@ export default function CompetitorsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-6 divide-x divide-border">
+                    <div className="flex items-center gap-2 pr-6">
+                      <button 
+                        onClick={() => handleUpdateStats(selectedComp)}
+                        className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                        title="Update Stats"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteCompetitor(selectedComp)}
+                        className="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                        title="Delete Competitor"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                     <div className="pl-6 first:pl-0">
                       <p className="text-[10px] uppercase text-muted-foreground font-bold tracking-wider">Followers</p>
                       <p className="text-xl font-bold text-foreground">{selectedComp.followerCount.toLocaleString()}</p>

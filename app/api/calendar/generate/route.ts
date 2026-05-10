@@ -111,6 +111,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, count: result.count });
   } catch (err: any) {
     console.error("CALENDAR_GENERATE_API_ERROR:", err);
+    if (err.message && err.message.includes('503 Service Unavailable')) {
+      return NextResponse.json({ message: "AI Assistant is busy at the moment try again later" }, { status: 503 });
+    }
     return NextResponse.json({ message: "Failed to generate AI calendar mapping." }, { status: 500 });
   }
 }

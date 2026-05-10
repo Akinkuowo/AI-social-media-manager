@@ -54,7 +54,16 @@ export default function StrategyPage() {
         const data = await res.json();
         setResult(data.result);
       } else {
-        showAlert.error('Error', 'Failed to consult the AI assistant.');
+        let errorMsg = 'Failed to consult the AI assistant.';
+        try {
+          const errorData = await res.json();
+          if (errorData?.message === 'AI Assistant is busy at the moment try again later') {
+            errorMsg = errorData.message;
+          } else if (errorData?.message?.includes('503 Service Unavailable')) {
+            errorMsg = 'AI Assistant is busy at the moment try again later';
+          }
+        } catch (e) {}
+        showAlert.error('Error', errorMsg);
       }
     } catch (err) {
       console.error(err);

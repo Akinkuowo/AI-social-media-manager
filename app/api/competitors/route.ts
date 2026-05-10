@@ -1,6 +1,20 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { fetchFacebookFollowers, fetchInstagramFollowers } from "@/lib/social/facebook";
+
+async function discoverFollowers(platform: string, handle: string): Promise<number> {
+  const p = platform.toLowerCase();
+  if (p === 'facebook') {
+    return await fetchFacebookFollowers(handle);
+  }
+  if (p === 'instagram') {
+    return await fetchInstagramFollowers(handle);
+  }
+
+  // Fallback: Return 0 for other platforms or if discovery fails
+  return 0;
+}
 
 export async function GET() {
   const session = await auth();
@@ -14,7 +28,7 @@ export async function GET() {
       include: {
         company: {
           include: {
-            socialAccounts: true, // For gap analysis context later
+            socialAccounts: true,
           }
         }
       }
@@ -62,7 +76,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Company not found" }, { status: 404 });
     }
 
-    // 1. Create the competitor record
+    // Attempt to discover real followers
+    const discoveredFollowers = await discoverFollowers(platform, handle);
+
     const competitor = await prisma.competitor.upsert({
       where: {
         companyId_platform_handle: {
@@ -77,36 +93,27 @@ export async function POST(req: Request) {
         name,
         platform: platform.toLowerCase(),
         handle,
-        followerCount: Math.floor(Math.random() * 50000) + 5000, // Mock data
-        engagementRate: parseFloat((Math.random() * 5 + 1).toFixed(2)) // Mock 1-6%
+        followerCount: discoveredFollowers,
+        engagementRate: 0
       }
     });
 
-    // 2. Generate some Mock Posts for this competitor to populate the UI immediately
-    // In a real app, this would be a trigger to a scraping/discovery service
-    const mockPosts = [
+    const initialPosts = [
       {
         competitorId: competitor.id,
-        postId: `mock_${Date.now()}_1`,
-        caption: `🚀 Top performing ${platform} post from ${name}! #innovation #growth`,
-        likes: Math.floor(Math.random() * 1000) + 500,
-        comments: Math.floor(Math.random() * 50) + 10,
-        postedAt: new Date(Date.now() - 86400000), // Yesterday
-        hashtags: "#innovation #growth"
-      },
-      {
-        competitorId: competitor.id,
-        postId: `mock_${Date.now()}_2`,
-        caption: `Weekly round-up of the best ${platform} trends.`,
-        likes: Math.floor(Math.random() * 800) + 200,
-        comments: Math.floor(Math.random() * 30) + 5,
-        postedAt: new Date(Date.now() - 172800000),
-        hashtags: "#trends #socialmedia"
+        postId: `discovery_${Date.now()}_1`,
+        caption: discoveredFollowers > 0 
+          ? `Successfully linked ${name} on ${platform}. Awaiting detailed post discovery...`
+          : `Awaiting data discovery for ${name}. You may need to update stats manually if this is a private or restricted page.`,
+        likes: 0,
+        comments: 0,
+        postedAt: new Date(),
+        hashtags: ""
       }
     ];
 
     await prisma.competitorPost.createMany({
-      data: mockPosts,
+      data: initialPosts,
       skipDuplicates: true
     });
 

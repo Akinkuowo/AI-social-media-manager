@@ -67,7 +67,14 @@ export default function AnalyticsPage() {
     setIsInsightLoading(true);
     try {
       const res = await fetch('/api/analytics/insights');
-      if (res.ok) setInsights(await res.json());
+      if (res.ok) {
+        setInsights(await res.json());
+      } else {
+        const errorData = await res.json().catch(() => null);
+        if (errorData?.message === 'AI Assistant is busy at the moment try again later' || errorData?.message?.includes('503 Service Unavailable')) {
+          showAlert.error('AI Busy', 'AI Assistant is busy at the moment try again later');
+        }
+      }
     } catch (err) {
       console.error(err);
     } finally {

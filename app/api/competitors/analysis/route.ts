@@ -96,8 +96,11 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ analysis: text });
 
-  } catch (err) {
+  } catch (err: any) {
     console.error("COMPETITOR_ANALYSIS_ERROR:", err);
+    if (err.message && err.message.includes('503 Service Unavailable')) {
+      return NextResponse.json({ message: "AI Assistant is busy at the moment try again later" }, { status: 503 });
+    }
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }

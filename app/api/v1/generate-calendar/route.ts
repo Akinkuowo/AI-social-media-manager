@@ -50,6 +50,9 @@ export async function POST(req: Request) {
 
   } catch (err: any) {
     console.error("[V1_GENERATE_CALENDAR_ERR]:", err);
+    if (err.message && err.message.includes('503 Service Unavailable')) {
+      return NextResponse.json({ message: "AI Assistant is busy at the moment try again later" }, { status: 503 });
+    }
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }
