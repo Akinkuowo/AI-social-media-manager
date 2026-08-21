@@ -16,18 +16,20 @@ export async function GET(req: Request) {
 
   const cookieStore = await cookies();
   const savedState = cookieStore.get('oauth_state')?.value;
+  const codeVerifier = cookieStore.get('oauth_code_verifier')?.value;
 
-  if (!code || state !== savedState) {
+  if (!code || state !== savedState || !codeVerifier) {
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=oauth_failed`);
   }
 
   try {
-    const tokenData = await exchangeCodeForToken('twitter', code);
-    
-    // Fetch real profile data from Twitter V2 API
+    const tokenData = await exchangeCodeForToken('twitter', code, codeVerifier);
+
+
+
     const profileResponse = await fetchTwitterProfile(tokenData.access_token);
     const profile = profileResponse.data;
-    
+
     const teamMember = await prisma.teamMember.findFirst({
       where: { userId: session.user.id },
       include: {
@@ -46,7 +48,7 @@ export async function GET(req: Request) {
 
     const plan = teamMember.company.subscription?.plan || "FREE";
     const currentCount = teamMember.company.socialAccounts.length;
-    
+
     if (plan === "FREE" && currentCount >= 2) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?error=limit_reached`);
     }
@@ -92,6 +94,7 @@ export async function GET(req: Request) {
     });
 
     cookieStore.delete('oauth_state');
+    cookieStore.delete('oauth_code_verifier');
 
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/settings/accounts?success=connected`);
   } catch (err) {

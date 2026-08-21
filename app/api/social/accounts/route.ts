@@ -1,30 +1,37 @@
-import { auth } from "@/auth";
+import { requireAuth, getCompanyId } from "@/lib/api-auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
+  const company = await getCompanyId(auth.userId);
+  if (company.error) return company.error;
 
   try {
-    const teamMember = await prisma.teamMember.findFirst({
-      where: { userId: session.user.id }
-    });
-
-    if (!teamMember) {
-      return NextResponse.json({ message: "No company association found" }, { status: 404 });
-    }
-
     const accounts = await prisma.socialAccount.findMany({
-      where: { companyId: teamMember.companyId },
-      orderBy: { platform: 'asc' }
+      where: { companyId: company.companyId },
+      orderBy: { platform: "asc" },
+      // Never expose tokens to the client
+      select: {
+        id: true,
+        platform: true,
+        platformId: true,
+        name: true,
+        expiresAt: true,
+        metadata: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     return NextResponse.json(accounts);
   } catch (err) {
     console.error("SOCIAL_ACCOUNTS_FETCH_ERROR:", err);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

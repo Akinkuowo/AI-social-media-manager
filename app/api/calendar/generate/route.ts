@@ -114,6 +114,6 @@ export async function POST(req: Request) {
     if (err.message && err.message.includes('503 Service Unavailable')) {
       return NextResponse.json({ message: "AI Assistant is busy at the moment try again later" }, { status: 503 });
     }
-    return NextResponse.json({ message: "Failed to generate AI calendar mapping." }, { status: 500 });
+    return NextResponse.json({ message: err.message || "Failed to generate AI calendar mapping." }, { status: 500 });
   }
 }

@@ -45,7 +45,7 @@ export async function generateSocialContent({
     return getMockContent(platform, type, tone);
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const systemPrompt = `You are an expert social media manager and content creator. 
     Your niche is ${niche}. 
@@ -86,9 +86,12 @@ export async function generateSocialContent({
       hashtags: ["#ai", "#socialmedia"],
       mediaPrompt: "A professional cinematic shot of a modern workspace."
     };
-  } catch (err) {
+  } catch (err: any) {
     console.error("GEMINI_GENERATION_FAILED:", err);
-    return getMockContent(platform, type, tone);
+    if (err.status === 429 || (err.message && err.message.includes('429'))) {
+      throw new Error("AI quota exceeded. Please check your Gemini API plan or billing details.");
+    }
+    throw new Error(err.message || "Failed to generate content with AI. Please check your API key.");
   }
 }
 
@@ -121,7 +124,7 @@ export async function generate30DayCalendar({
     throw new Error("GEMINI_API_KEY is not configured on the server.");
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const systemPrompt = `You are an expert social media manager. 
 A key part of your job is to LEARN from past performance and optimize for growth.
@@ -168,9 +171,12 @@ Schema for each object:
     }
     
     throw new Error("AI did not return a valid array of days.");
-  } catch (err) {
+  } catch (err: any) {
     console.error("GEMINI_30DAY_GENERATION_FAILED:", err);
-    throw err;
+    if (err.status === 429 || (err.message && err.message.includes('429'))) {
+      throw new Error("AI quota exceeded. Please check your Gemini API plan or billing details.");
+    }
+    throw new Error(err.message || "Failed to generate calendar with AI. Please check your API key.");
   }
 }
 

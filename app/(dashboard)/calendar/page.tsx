@@ -333,6 +333,27 @@ export default function CalendarPage() {
     }
   };
 
+  const handleClearMonth = async () => {
+    if (!confirm('Are you sure you want to clear all scheduled posts for this month?')) return;
+    
+    try {
+      const month = currentDate.getMonth();
+      const year = currentDate.getFullYear();
+      const res = await fetch(`/api/calendar?month=${month}&year=${year}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        showAlert.success('Calendar Cleared', 'All posts for this month have been deleted.');
+        fetchCalendar(currentDate);
+      } else {
+        const data = await res.json();
+        showAlert.error('Clear Failed', data.message || 'Could not clear calendar.');
+      }
+    } catch (err) {
+      showAlert.error('Clear Failed', 'An error occurred while clearing the calendar.');
+    }
+  };
+
   if (isLoading && !calendar) {
     return (
       <div className="flex items-center justify-center h-[500px]">
@@ -361,6 +382,22 @@ export default function CalendarPage() {
           <p className="text-sm text-muted mt-1">Manage your multi-platform content schedule effortlessly.</p>
         </div>
         <div className="flex items-center gap-3">
+          {(() => {
+            const now = new Date();
+            const isFutureMonth = currentDate.getFullYear() > now.getFullYear() || 
+              (currentDate.getFullYear() === now.getFullYear() && currentDate.getMonth() > now.getMonth());
+            
+            return isFutureMonth ? (
+              <Button 
+                variant="ghost" 
+                onClick={handleClearMonth}
+                className="text-red-400 hover:bg-red-400/10 border border-red-400/20"
+              >
+                <Trash2 size={18} className="mr-2" /> Clear Month
+              </Button>
+            ) : null;
+          })()}
+
           <Button variant="ghost" onClick={handleExportCalendar}>
             <Download size={18} className="mr-2 text-muted" /> Export
           </Button>

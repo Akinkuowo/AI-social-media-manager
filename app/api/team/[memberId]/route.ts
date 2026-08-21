@@ -5,12 +5,12 @@ import { logActivity } from "@/lib/logger";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const session = await auth();
     const { role } = await req.json();
-    const { memberId } = params;
+    const { memberId } = await params;
 
     if (!session?.user?.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -59,11 +59,11 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const session = await auth();
-    const { memberId } = params;
+    const { memberId } = await params;
 
     if (!session?.user?.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

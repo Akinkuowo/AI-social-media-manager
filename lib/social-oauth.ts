@@ -34,14 +34,17 @@ export const PLATFORM_ENDPOINTS = {
   }
 };
 
-export function getAuthorizationUrl(platform: keyof typeof PLATFORM_ENDPOINTS, state: string) {
+export function getAuthorizationUrl(
+  platform: keyof typeof PLATFORM_ENDPOINTS,
+  state: string,
+  codeChallenge?: string
+) {
   const config = PLATFORM_ENDPOINTS[platform];
   const clientId = process.env[`${platform.toUpperCase()}_CLIENT_ID`];
   const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/social/callback/${platform}`;
-  
-  // TikTok v2 requires comma-separated scopes, others use space.
+
   const scopeSeparator = platform === 'tiktok' ? ',' : ' ';
-  
+
   const params = new URLSearchParams({
     client_id: clientId || '',
     redirect_uri: redirectUri,
@@ -50,15 +53,13 @@ export function getAuthorizationUrl(platform: keyof typeof PLATFORM_ENDPOINTS, s
     scope: SOCIAL_SCOPES[platform].join(scopeSeparator),
   });
 
-  // Twitter PKCE requirement (Allows 'plain' method)
   if (platform === 'twitter') {
-    params.append('code_challenge', 'challenge');
-    params.append('code_challenge_method', 'plain');
+    params.append('code_challenge', codeChallenge || '');
+    params.append('code_challenge_method', 'S256'); // switched from 'plain'
   }
 
-  // TikTok strictly requires 'S256' for its PKCE challenge and 'client_key' parameter.
   if (platform === 'tiktok') {
-    params.append('code_challenge', 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM'); 
+    params.append('code_challenge', codeChallenge || '');
     params.append('code_challenge_method', 'S256');
     params.delete('client_id');
     params.append('client_key', clientId || '');
@@ -67,11 +68,16 @@ export function getAuthorizationUrl(platform: keyof typeof PLATFORM_ENDPOINTS, s
   return `${config.auth}?${params.toString()}`;
 }
 
-export async function exchangeCodeForToken(platform: keyof typeof PLATFORM_ENDPOINTS, code: string) {
+export async function exchangeCodeForToken(
+  platform: keyof typeof PLATFORM_ENDPOINTS,
+  code: string,
+  codeVerifier?: string
+) {
   const config = PLATFORM_ENDPOINTS[platform];
-  const clientId = process.env[`${platform.toUpperCase()}_CLIENT_ID`];
-  const clientSecret = process.env[`${platform.toUpperCase()}_CLIENT_SECRET`];
+  const clientId = process.env[`${platform.toUpperCase()}_CLIENT_ID`]?.trim();
+  const clientSecret = process.env[`${platform.toUpperCase()}_CLIENT_SECRET`]?.trim();
   const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/social/callback/${platform}`;
+  console.log('[TWITTER_TOKEN_EXCHANGE] clientId:', clientId, 'secret present:', !!clientSecret, 'secret length:', clientSecret?.length);
 
   const params = new URLSearchParams({
     client_id: clientId || '',
@@ -85,29 +91,28 @@ export async function exchangeCodeForToken(platform: keyof typeof PLATFORM_ENDPO
   };
 
   if (platform === 'twitter') {
-    // Twitter PKCE requires the code_verifier, and it expects Basic Auth
-    params.append('code_verifier', 'challenge');
+    params.append('code_verifier', codeVerifier || '');
     const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
     headers['Authorization'] = `Basic ${basicAuth}`;
+  } else if (platform === 'tiktok') {
+    params.append('code_verifier', codeVerifier || '');
+    params.append('client_secret', clientSecret || '');
   } else {
-    // Other platforms usually accept client_secret in the body
     params.append('client_secret', clientSecret || '');
   }
 
-  const response = await fetch(config.token, {
-    method: 'POST',
-    body: params,
-    headers: headers,
-  });
+  const response = await fetch(config.token, { method: 'POST', body: params, headers });
 
   if (!response.ok) {
-    const error = await response.json();
+    const error = await response.json().catch(() => ({}));
     console.error(`[OAUTH_TOKEN_EXCHANGE] Error for ${platform}:`, error);
     throw new Error(`Failed to exchange code for token on ${platform}`);
   }
 
   return response.json();
 }
+
+
 
 /**
  * Fetch the basic profile of the authenticated Facebook user.

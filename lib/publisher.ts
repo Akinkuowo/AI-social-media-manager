@@ -7,8 +7,9 @@ import { sendNotification } from "./notifications";
  * Downloads a remote file and converts to Base64 for API transmission.
  */
 async function getMediaBase64(url: string) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`Failed to fetch media from ${url}`);
+  const absoluteUrl = url.startsWith('/') ? `${process.env.NEXT_PUBLIC_APP_URL}${url}` : url;
+  const response = await fetch(absoluteUrl);
+  if (!response.ok) throw new Error(`Failed to fetch media from ${absoluteUrl}: ${response.statusText}`);
   const buffer = Buffer.from(await response.arrayBuffer());
   return buffer.toString('base64');
 }
@@ -87,7 +88,11 @@ export async function processQueue() {
           }
         }
 
-        const optimized = optimizePost(platform, post.caption, post.hashtags || "", post.mediaUrls);
+        const absoluteMediaUrls = post.mediaUrls.map(url => 
+          url.startsWith('/') ? `${process.env.NEXT_PUBLIC_APP_URL}${url}` : url
+        );
+
+        const optimized = optimizePost(platform, post.caption, post.hashtags || "", absoluteMediaUrls);
 
         switch (platform.toLowerCase()) {
           case 'twitter':
@@ -147,8 +152,13 @@ export async function processQueue() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
               });
-              if (!fbRes.ok) throw new Error((await fbRes.json()).error?.message || "FB Post Error");
-              platformPostId = (await fbRes.json()).id;
+              
+              const fbData = await fbRes.json().catch(() => ({}));
+              if (!fbRes.ok) {
+                console.error("[FB_PUBLISH_RAW_ERR]:", JSON.stringify(fbData));
+                throw new Error(fbData.error?.message || `FB API Error ${fbRes.status}`);
+              }
+              platformPostId = fbData.id;
             } else {
               // Multi-photo Facebook Post
               const mediaIds = [];
@@ -170,8 +180,12 @@ export async function processQueue() {
                   access_token: accessToken
                 })
               });
-              if (!carrierRes.ok) throw new Error((await carrierRes.json()).error?.message || "FB Carrier Error");
-              platformPostId = (await carrierRes.json()).id;
+              
+              const carrierData = await carrierRes.json().catch(() => ({}));
+              if (!carrierRes.ok) {
+                throw new Error(carrierData.error?.message || `FB Carrier Error ${carrierRes.status}`);
+              }
+              platformPostId = carrierData.id;
             }
             break;
           }
@@ -236,19 +250,25 @@ export async function processQueue() {
                   access_token: accessToken
                 })
               });
+              
+              const containerData = await containerRes.json().catch(() => ({}));
               if (!containerRes.ok) {
-                const igError = (await containerRes.json()).error?.message || "IG Container Error";
-                throw new Error(igError);
+                console.error("[IG_CONTAINER_RAW_ERR]:", JSON.stringify(containerData));
+                throw new Error(containerData.error?.message || `IG Container Error ${containerRes.status}`);
               }
-              const { id: creationId } = await containerRes.json();
+              const { id: creationId } = containerData;
 
               const publishRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media_publish`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ creation_id: creationId, access_token: accessToken })
               });
-              if (!publishRes.ok) throw new Error((await publishRes.json()).error?.message || "IG Publish Error");
-              platformPostId = (await publishRes.json()).id;
+              
+              const publishData = await publishRes.json().catch(() => ({}));
+              if (!publishRes.ok) {
+                throw new Error(publishData.error?.message || `IG Publish Error ${publishRes.status}`);
+              }
+              platformPostId = publishData.id;
             } else {
               // Carousel Flow (Multi-Media)
               console.log(`[Publisher] IG Carousel detected with ${optimized.mediaUrls.length} items.`);
@@ -264,9 +284,10 @@ export async function processQueue() {
                     access_token: accessToken
                   })
                 });
-                if (!itemRes.ok) throw new Error((await itemRes.json()).error?.message || "IG Carousel Item Error");
-                const { id: itemId } = await itemRes.json();
-                childIds.push(itemId);
+                
+                const itemData = await itemRes.json().catch(() => ({}));
+                if (!itemRes.ok) throw new Error(itemData.error?.message || `IG Carousel Item Error ${itemRes.status}`);
+                childIds.push(itemData.id);
               }
 
               // Create Carousel Carrier
@@ -280,8 +301,10 @@ export async function processQueue() {
                   access_token: accessToken
                 })
               });
-              if (!carrierRes.ok) throw new Error((await carrierRes.json()).error?.message || "IG Carousel Carrier Error");
-              const { id: carrierId } = await carrierRes.json();
+              
+              const carrierData = await carrierRes.json().catch(() => ({}));
+              if (!carrierRes.ok) throw new Error(carrierData.error?.message || `IG Carousel Carrier Error ${carrierRes.status}`);
+              const { id: carrierId } = carrierData;
 
               // Final Publish
               const publishRes = await fetch(`https://graph.facebook.com/v18.0/${post.socialAccount.platformId}/media_publish`, {
@@ -289,8 +312,10 @@ export async function processQueue() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ creation_id: carrierId, access_token: accessToken })
               });
-              if (!publishRes.ok) throw new Error((await publishRes.json()).error?.message || "IG Carousel Publish Error");
-              platformPostId = (await publishRes.json()).id;
+              
+              const publishData = await publishRes.json().catch(() => ({}));
+              if (!publishRes.ok) throw new Error(publishData.error?.message || `IG Carousel Publish Error ${publishRes.status}`);
+              platformPostId = publishData.id;
             }
             break;
           }

@@ -18,10 +18,13 @@ export async function GET(req: Request) {
       return NextResponse.json({ message: "No company association found" }, { status: 404 });
     }
 
-    const posts = await prisma.post.findMany({
+    const recentPosts = await prisma.post.findMany({
       where: {
         calendar: {
           companyId: teamMember.companyId
+        },
+        status: {
+          not: 'FAILED'
         }
       },
       include: {
@@ -31,6 +34,28 @@ export async function GET(req: Request) {
         scheduledAt: 'desc'
       },
       take: 100 // Fetch latest 100 queue logs
+    });
+
+    const failedPosts = await prisma.post.findMany({
+      where: {
+        calendar: {
+          companyId: teamMember.companyId
+        },
+        status: 'FAILED'
+      },
+      include: {
+        socialAccount: true
+      },
+      orderBy: {
+        scheduledAt: 'desc'
+      },
+      take: 50 // Always surface up to 50 failed posts so they don't get lost
+    });
+
+    const posts = [...failedPosts, ...recentPosts].sort((a, b) => {
+      const timeB = b.scheduledAt ? new Date(b.scheduledAt).getTime() : 0;
+      const timeA = a.scheduledAt ? new Date(a.scheduledAt).getTime() : 0;
+      return timeB - timeA;
     });
 
     return NextResponse.json(posts);

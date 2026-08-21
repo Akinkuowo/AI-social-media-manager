@@ -6,9 +6,9 @@ export interface OptimizedPayload {
 const PLATFORM_LIMITS: Record<string, { chars: number, hashtags: number, media: number }> = {
   twitter: { chars: 280, hashtags: 10, media: 4 },
   linkedin: { chars: 3000, hashtags: 15, media: 9 }, 
-  facebook: { chars: 63206, hashtags: 30, media: 10 },
-  instagram: { chars: 2200, hashtags: 30, media: 10 },
-  default: { chars: 2200, hashtags: 30, media: 4 }
+  facebook: { chars: 63206, hashtags: 9, media: 10 },
+  instagram: { chars: 2200, hashtags: 9, media: 10 },
+  default: { chars: 2200, hashtags: 9, media: 4 }
 };
 
 export function optimizePost(
@@ -19,7 +19,10 @@ export function optimizePost(
 ): OptimizedPayload {
   const rules = PLATFORM_LIMITS[platform.toLowerCase()] || PLATFORM_LIMITS.default;
   
-  const hashString = hashtags ? `\n\n${hashtags}` : '';
+  // Actually enforce the hashtag limit by splitting and slicing
+  const hashtagArray = hashtags.split(' ').filter(Boolean).slice(0, rules.hashtags);
+  const safeHashtags = hashtagArray.join(' ');
+  const hashString = safeHashtags ? `\n\n${safeHashtags}` : '';
   const fullText = caption + hashString;
 
   const finalMedia = mediaUrls.slice(0, rules.media);

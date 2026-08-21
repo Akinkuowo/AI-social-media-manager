@@ -124,6 +124,8 @@ model TeamMember {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, companyId])
+  @@index([userId])
+  @@index([companyId])
 }
 
 model SocialAccount {
@@ -142,6 +144,7 @@ model SocialAccount {
   company      Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@unique([companyId, platform, platformId])
+  @@index([companyId])
   metrics      PlatformMetric[]
 }
 
@@ -155,6 +158,7 @@ model PlatformMetric {
   socialAccount   SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
 
   @@unique([socialAccountId, date])
+  @@index([socialAccountId])
 }
 
 model Calendar {
@@ -189,6 +193,11 @@ model Post {
   analytics         Analytics?
   calendar          Calendar       @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   socialAccount     SocialAccount? @relation(fields: [socialAccountId], references: [id])
+
+  @@index([calendarId])
+  @@index([socialAccountId])
+  @@index([status])
+  @@index([scheduledAt])
 }
 
 model Analytics {

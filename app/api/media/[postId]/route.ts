@@ -48,7 +48,7 @@ export async function GET(
     if (company.logo) {
       console.log(`[MediaEngine] Applying brand watermark for ${company.name}`);
       const bufferedImage = await watermarkImage(baseImageUrl, company.logo);
-      return new Response(bufferedImage, { headers });
+      return new Response(bufferedImage as any, { headers });
     }
 
     // Proxy the image instead of redirecting to ensure extension compatibility and bypass tunnel warnings
